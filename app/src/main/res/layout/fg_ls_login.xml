@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.ideal.vox.utils.UtilsKt" />
+
+        <variable
+            name="model"
+            type="com.ideal.vox.fragment.loginSignup.login.LoginFragViewModel" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/_10dp">
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/emailTIL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:theme="@style/TextLabel"
+            app:layout_constraintBottom_toTopOf="@+id/passTIL"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <com.ideal.vox.customViews.MyEditText
+                android:id="@+id/emailET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="USERNAME"
+                android:inputType="text"
+                android:textColor="@color/WhiteSmoke" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/passTIL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:theme="@style/TextLabel"
+            app:layout_constraintBottom_toTopOf="@+id/signInBT"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.ideal.vox.customViews.MyEditText
+                android:id="@+id/passET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="PASSWORD"
+                android:inputType="textPassword"
+                android:longClickable="false"
+                android:textColor="@color/WhiteSmoke" />
+        </android.support.design.widget.TextInputLayout>
+
+        <com.ideal.vox.customViews.MyButton
+            android:id="@+id/signInBT"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/btn_yellow"
+            android:onClick="@{() ->model.onLoginClick()}"
+            android:text="Sign In"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/signUpTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:onClick="@{() ->model.onSignUpClick()}"
+            android:padding="7dp"
+            android:text="Don't have account? SignUp"
+            android:textColor="@color/WhiteSmoke"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signInBT" />
+
+        <ImageView
+            android:id="@+id/fbIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/white_circle"
+            android:onClick="@{() ->model.onFbClick()}"
+            android:src="@drawable/ic_fb"
+            app:layout_constraintEnd_toStartOf="@id/gIV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signUpTV" />
+
+        <ImageView
+            android:id="@+id/gIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/white_circle"
+            android:onClick="@{() ->model.onGPlusClick()}"
+            android:src="@drawable/ic_google"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fbIV"
+            app:layout_constraintTop_toBottomOf="@+id/signUpTV" />
+
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/forgotTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:onClick="@{() ->model.onForgotClick()}"
+            android:padding="7dp"
+            android:text="Forgot Password ?"
+            android:textColor="@color/WhiteSmoke"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

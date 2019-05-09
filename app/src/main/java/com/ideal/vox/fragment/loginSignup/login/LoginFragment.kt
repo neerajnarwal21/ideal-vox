@@ -1,0 +1,132 @@
+package com.ideal.vox.fragment.loginSignup.login
+
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.databinding.DataBindingUtil
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.ideal.vox.BuildConfig
+import com.ideal.vox.R
+import com.ideal.vox.activity.main.MainActivity
+import com.ideal.vox.data.UserData
+import com.ideal.vox.databinding.FgLsLoginBinding
+import com.ideal.vox.fragment.BaseFragment
+import com.ideal.vox.fragment.loginSignup.ForgotPasswordFragment
+import com.ideal.vox.fragment.loginSignup.OTPFragment
+import com.ideal.vox.fragment.loginSignup.signup.SignupFragment
+import com.ideal.vox.utils.Const
+import com.ideal.vox.utils.FacebookLogin
+import com.ideal.vox.utils.GPlusLoginActivity
+import com.ideal.vox.utils.SocialLogin
+import kotlinx.android.synthetic.main.fg_ls_login.*
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import retrofit2.Call
+
+
+/**
+ * Created by Neeraj Narwal on 5/5/17.
+ */
+class LoginFragment : BaseFragment() {
+
+    lateinit var model: LoginFragViewModel
+    private var loginCall: Call<JsonObject>? = null
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        val binding: FgLsLoginBinding = DataBindingUtil.inflate(inflater, R.layout.fg_ls_login, container, false)
+
+        model = ViewModelProviders.of(this).get(LoginFragViewModel::class.java)
+        binding.model = model
+        model.getStatus().observe(this, Observer {
+            when (it) {
+                LoginStatus.LOGIN -> if (validate()) doLogin()
+                LoginStatus.SIGNUP -> jumpToSignUpFragment()
+                LoginStatus.FORGOT -> jumpToForgotFragment()
+                LoginStatus.FB -> {
+                    baseActivity.startActivity(Intent(baseActivity, FacebookLogin::class.java))
+                    SocialLogin.doFbSignin { }
+                }
+                LoginStatus.GPLUS -> {
+                    baseActivity.startActivity(Intent(baseActivity, GPlusLoginActivity::class.java))
+                    SocialLogin.doGSignin { }
+                }
+            }
+        })
+        binding.setLifecycleOwner(this)
+        val view = binding.getRoot()
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setLoginTimeToolbar("Login")
+        if (BuildConfig.DEBUG) {
+            emailET.setText("7015004571")
+            passET.setText("admin")
+        }
+    }
+
+    private fun jumpToForgotFragment() {
+        baseActivity.supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fc_ls, ForgotPasswordFragment())
+                .addToBackStack(null)
+                .commit()
+    }
+
+    private fun jumpToSignUpFragment() {
+        baseActivity.supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fc_ls, SignupFragment())
+                .addToBackStack(null)
+                .commit()
+    }
+
+    private fun validate(): Boolean {
+        when {
+            getText(emailET).isEmpty() -> showToast("Please enter email", true)
+            getText(passET).isEmpty() -> showToast("Please enter password", true)
+            else -> return true
+        }
+        return false
+    }
+
+    private fun doLogin() {
+        store.saveString(Const.SESSION_KEY, null)
+        val email = RequestBody.create(MediaType.parse("text/plain"), getText(emailET))
+        val pass = RequestBody.create(MediaType.parse("text/plain"), getText(passET))
+        loginCall = apiInterface.login(email, pass)
+        apiManager.makeApiCall(loginCall!!, this)
+    }
+
+    override fun onSuccess(call: Call<*>, payload: Any) {
+        super.onSuccess(call, payload)
+        val jsonObj = payload as JsonObject
+
+        val userObj = jsonObj.getAsJsonObject("user")
+        val userData = Gson().fromJson(userObj, UserData::class.java)
+        store.saveUserData(Const.USER_DATA, userData)
+        if (userData.is_active == 1) {
+            val token = jsonObj.get("token").asString
+            store.saveString(Const.SESSION_KEY, token)
+
+            val intent = Intent(baseActivity, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            startActivity(intent)
+        } else {
+            baseActivity.supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fc_ls, OTPFragment())
+                    .addToBackStack(null)
+                    .commit()
+        }
+    }
+}

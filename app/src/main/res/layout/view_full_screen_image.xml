@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:orientation="vertical"
+    android:padding="@dimen/_10dp">
+
+    <com.ideal.vox.utils.TouchImageView
+        android:id="@+id/imageTIV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/_10dp"
+        android:background="@color/White" />
+
+    <ImageView
+        android:id="@+id/closeIV"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/btn_yellow"
+        android:padding="4dp"
+        android:src="@drawable/ic_close_white" />
+</RelativeLayout>

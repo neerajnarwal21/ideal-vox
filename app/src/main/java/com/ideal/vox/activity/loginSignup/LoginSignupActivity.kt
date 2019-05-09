@@ -1,0 +1,48 @@
+package com.ideal.vox.activity.loginSignup
+
+import android.os.Bundle
+import android.view.View
+import com.ideal.vox.R
+import com.ideal.vox.activity.BaseActivity
+import com.ideal.vox.fragment.loginSignup.login.LoginFragment
+import com.ideal.vox.fragment.profile.ProfileFragment
+import kotlinx.android.synthetic.main.toolbar_custom.*
+
+
+class LoginSignupActivity : BaseActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_ls)
+        initUI()
+    }
+
+    private fun initUI() {
+        jumpToLogin()
+    }
+
+    private fun jumpToLogin() {
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fc_ls, LoginFragment())
+                .commit()
+    }
+
+    fun setToolbar(text: String) {
+        titleTBTV.text = text
+        menuTBIV.visibility = View.GONE
+        backTBIV.visibility = View.VISIBLE
+        backTBIV.setOnClickListener { onBackPressed() }
+    }
+
+    override fun onBackPressed() {
+        hideSoftKeyboard()
+        val frag = supportFragmentManager.findFragmentById(R.id.fc_ls)
+        if (frag is LoginFragment) {
+            finish()
+        } else if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        }
+    }
+}

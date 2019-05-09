@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parentCL"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/otpTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_20dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:padding="@dimen/_30dp"
+            android:textColor="@color/White"
+            app:layout_constraintBottom_toTopOf="@id/otpET" />
+
+        <com.mukesh.OtpView
+            android:id="@+id/otpET"
+            android:layout_width="206dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="true"
+            android:inputType="number"
+            android:itemBackground="@color/colorSecondary"
+            android:textColor="@color/colorPrimary"
+            android:textSize="26sp"
+            app:itemCount="4"
+            app:layout_constraintBottom_toTopOf="@+id/submitBT"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:lineColor="@color/colorPrimary"
+            app:viewType="none" />
+
+        <com.ideal.vox.customViews.MyButton
+            android:id="@+id/submitBT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btn_yellow"
+            android:text="Confirm OTP"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/resendTV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/resendTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:padding="7dp"
+            android:text="Resend OTP"
+            android:textColor="@color/WhiteSmoke"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>

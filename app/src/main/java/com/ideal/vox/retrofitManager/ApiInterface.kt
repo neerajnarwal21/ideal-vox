@@ -1,0 +1,104 @@
+package com.ideal.vox.retrofitManager
+
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.http.*
+
+
+/**
+ * Created by Neeraj Narwal on 5/5/17.
+ */
+interface ApiInterface {
+
+    @Multipart
+    @POST("register")
+    fun signupUser(@Part("name") name: RequestBody,
+                   @Part("mobile_number") mobile: RequestBody,
+                   @Part("email") email: RequestBody,
+                   @Part("password") password: RequestBody,
+                   @Part("c_password") confPassword: RequestBody)
+            : Call<JsonObject>
+
+    @Multipart
+    @POST("login")
+    fun login(@Part("email") email: RequestBody,
+              @Part("password") password: RequestBody)
+            : Call<JsonObject>
+
+    @Multipart
+    @POST("confirm_otp")
+    fun confirmOTP(@Part("user_id") userId: RequestBody,
+                   @Part("otp") otp: RequestBody)
+            : Call<JsonObject>
+
+    @Multipart
+    @POST("resend_otp")
+    fun resendOTP(@Part("user_id") userId: RequestBody,
+                  @Part("mobile_number") mobile: RequestBody)
+            : Call<JsonObject>
+
+    @Multipart
+    @POST("forgot_password")
+    fun forgotPassword(@Part("mobile_number") mobile: RequestBody)
+            : Call<JsonObject>
+
+    @Multipart
+    @POST("reset_password")
+    fun resetPassword(@Part("user_id") userId: RequestBody,
+                      @Part("otp") otp: RequestBody,
+                      @Part("password") password: RequestBody)
+            : Call<JsonObject>
+
+    @Multipart
+    @POST("update_avatar")
+    fun updateDP(@Part fileDP: MultipartBody.Part?)
+            : Call<JsonObject>
+
+    @Multipart
+    @POST("Profile/Update_User")
+    fun updateUser(@Part("Name") name: RequestBody,
+                   @Part("Father_name") fName: RequestBody,
+                   @Part("Dob") dob: RequestBody,
+                   @Part("Sex") gender: RequestBody,
+                   @Part("Mobileno") mobile: RequestBody,
+                   @Part("Emailid") email: RequestBody,
+                   @Part("Password") password: RequestBody,
+                   @Part("Address") address: RequestBody,
+                   @Part("City") city: RequestBody,
+                   @Part("State") state: RequestBody)
+            : Call<JsonArray>
+
+    @Multipart
+    @POST("Accessories/update_accessories")
+    fun updateAccessories(@Part("Userid") userId: RequestBody,
+                          @Part("pname") name: RequestBody,
+                          @Part("pmake") make: RequestBody,
+                          @Part sign: MultipartBody.Part?)
+            : Call<JsonArray>
+
+    @GET("GetAccessriesList/get_list")
+    fun allAccessories(@Query("userid") userId: String)
+            : Call<JsonArray>
+
+
+    @Multipart
+    @POST("customer-mobile-register")
+    fun submitPhoneNumber(@Part("mobile_number") mobile: RequestBody)
+            : Call<JsonObject>
+
+    @Multipart
+    @POST("customer-registration-loan")
+    fun formStep4(@Part("customer_loans_id") loanId: RequestBody?,
+                  @Part("params") loandata: RequestBody,
+                  @Part sign: MultipartBody.Part?): Call<JsonObject>
+
+
+    @GET("all-loans")
+    fun allLoans(): Call<JsonObject>
+
+    @GET
+    fun searchIfsc(@Url url: String): Call<JsonObject>
+}
