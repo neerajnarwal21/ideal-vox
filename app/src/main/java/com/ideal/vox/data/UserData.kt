@@ -10,7 +10,9 @@ data class UserData(
         @SerializedName("id") var id: Int = 0,
         @SerializedName("mobile_number") var mobileNumber: String = "",
         @SerializedName("name") var name: String = "",
-        @SerializedName("is_active") var is_active: Int = 0
+        @SerializedName("is_active") var is_active: Int = 0,
+        @SerializedName("role") var userType: UserType,
+        @SerializedName("photo_graphic_profile") var photoProfile: PhotographicData
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readString(),
@@ -18,7 +20,9 @@ data class UserData(
             parcel.readInt(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readInt()) {
+            parcel.readInt(),
+            UserType.values()[parcel.readInt()],
+            parcel.readParcelable(PhotographicData::class.java.classLoader)) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -28,6 +32,8 @@ data class UserData(
         parcel.writeString(mobileNumber)
         parcel.writeString(name)
         parcel.writeInt(is_active)
+        parcel.writeInt(userType.ordinal)
+        parcel.writeParcelable(photoProfile, flags)
     }
 
     override fun describeContents(): Int {

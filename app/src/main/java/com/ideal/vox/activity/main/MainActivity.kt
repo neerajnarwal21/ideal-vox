@@ -1,9 +1,11 @@
 package com.ideal.vox.activity.main
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.AlertDialog
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
@@ -13,11 +15,14 @@ import com.ideal.vox.activity.loginSignup.LoginSignupActivity
 import com.ideal.vox.activity.splash.SplashActivity
 import com.ideal.vox.customViews.MyTextView
 import com.ideal.vox.data.UserData
-import com.ideal.vox.fragment.HomeFragment
+import com.ideal.vox.data.UserType
+import com.ideal.vox.fragment.AddLocationPinFragment
+import com.ideal.vox.fragment.home.BecomePhotographerFragment
+import com.ideal.vox.fragment.home.HomeFragment
 import com.ideal.vox.fragment.profile.ProfileBasicFragment
-import com.ideal.vox.fragment.profile.ProfileFragment
 import com.ideal.vox.utils.CircleTransform
 import com.ideal.vox.utils.Const
+import com.ideal.vox.utils.LocationManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_custom.*
 
@@ -51,7 +56,11 @@ class MainActivity : BaseActivity() {
         if (store.getString(Const.SESSION_KEY, null) == null) {
             navigationView.inflateMenu(R.menu.drawer_guest)
         } else {
-            navigationView.inflateMenu(R.menu.drawer)
+            val data = store.getUserData(Const.USER_DATA, UserData::class.java)
+            if (data?.userType == UserType.USER)
+                navigationView.inflateMenu(R.menu.drawer)
+            else
+                navigationView.inflateMenu(R.menu.drawer_photographer)
         }
         navigationView.setNavigationItemSelectedListener { menuItem ->
             // This method will trigger on item Click of navigation menu
@@ -62,6 +71,7 @@ class MainActivity : BaseActivity() {
                     fragment = HomeFragment()
                     menuItem.isChecked = true
                 }
+                R.id.become_photographer -> showPhotographerDialog()
                 R.id.logout -> {
                     store.saveString(Const.SESSION_KEY, null)
                     store.saveUserData(Const.USER_DATA, null)
@@ -79,6 +89,21 @@ class MainActivity : BaseActivity() {
         }
 
         setupHeaderView()
+    }
+
+    private fun showPhotographerDialog() {
+        val bldr = AlertDialog.Builder(this)
+        bldr.setTitle("Become a photographer")
+        bldr.setMessage("By continuing, you will be registered as a photographer with us\n\n" +
+                "You need to provide some more details about you.\n\n" +
+                "Are you good to go ?")
+        bldr.setNegativeButton("No", null)
+        bldr.setPositiveButton("Yes") { _, _ ->
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.fc_home, BecomePhotographerFragment())
+                    .commit()
+        }
+        bldr.create().show()
     }
 
     fun setupHeaderView() {
@@ -136,6 +161,27 @@ class MainActivity : BaseActivity() {
                 supportFragmentManager.popBackStack()
             } else {
                 jumpToHome()
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val fragment = supportFragmentManager.findFragmentById(R.id.fc_home)
+        if (fragment is AddLocationPinFragment) {
+            when (requestCode) {
+                LocationManager.REQUEST_LOCATION ->
+                    when (resultCode) {
+                        Activity.RESULT_OK -> {
+                            fragment.onGPSEnable()
+                        }
+                        Activity.RESULT_CANCELED -> {
+                            fragment.onGPSEnableDenied()
+                        }
+                        else -> {
+                            fragment.onGPSEnableDenied()
+                        }
+                    }
             }
         }
     }

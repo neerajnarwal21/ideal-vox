@@ -118,15 +118,15 @@ class ApiManager(val context: Context, val progressDialog: ProgressDialog) {
         progressDialog.stopProgressDialog()
         val responseListener = apiResponseHashMap[call]
         try {
-            if(response.isSuccessful) {
+            if (response.isSuccessful) {
                 val body = response.body() as JsonObject
                 log(body.toString())
                 if (body.has("success")) {
-                    responseListener?.onSuccess(call, body.getAsJsonObject("success"))
+                    responseListener?.onSuccess(call, body.get("success"))
                 } else {
                     responseListener?.onError(call, response.code(), body.asJsonObject.get("error").asString, responseListener)
                 }
-            }else{
+            } else {
                 val parser = JsonParser()
                 val mJson = parser.parse(response.errorBody()!!.string())
                 val gson = Gson()

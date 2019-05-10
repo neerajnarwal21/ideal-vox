@@ -29,6 +29,7 @@
     <string name="fb_login_protocol_scheme">fb624898131313139</string>
 
     <string name="not_connected">Not connected to internet</string>
+    <string name="move_the_map_to_set_pin">Move the pin to address\n%1$s</string>
 
 
     <string-array name="gender">

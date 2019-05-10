@@ -17,6 +17,12 @@
         <item name="colorAccent">@color/White</item>
     </style>
 
+    <style name="RadioTheme" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <!-- Customize your theme here. -->
+        <item name="colorControlNormal">@color/colorSecondaryDark</item>
+        <item name="colorControlActivated">@color/colorSecondary</item>
+    </style>
+
     <style name="MyTabWidget" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">normal</item>

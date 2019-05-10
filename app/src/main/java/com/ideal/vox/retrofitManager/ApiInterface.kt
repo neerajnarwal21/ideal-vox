@@ -57,6 +57,21 @@ interface ApiInterface {
     fun updateDP(@Part fileDP: MultipartBody.Part?)
             : Call<JsonObject>
 
+    @GET("get_expertises")
+    fun getExpertise(): Call<JsonObject>
+
+    @Multipart
+    @POST("become_photographer")
+    fun becomePhotographer(@Part("expertise") expertise: RequestBody,
+                           @Part("experience_in_year") year: RequestBody,
+                           @Part("experience_in_months") month: RequestBody,
+                           @Part("dob") dob: RequestBody,
+                           @Part("gender") gender: RequestBody,
+                           @Part("address") password: RequestBody,
+                           @Part("lat") lat: RequestBody,
+                           @Part("lng") lng: RequestBody)
+            : Call<JsonObject>
+
     @Multipart
     @POST("Profile/Update_User")
     fun updateUser(@Part("Name") name: RequestBody,
@@ -79,25 +94,22 @@ interface ApiInterface {
                           @Part sign: MultipartBody.Part?)
             : Call<JsonArray>
 
+
     @GET("GetAccessriesList/get_list")
     fun allAccessories(@Query("userid") userId: String)
             : Call<JsonArray>
-
 
     @Multipart
     @POST("customer-mobile-register")
     fun submitPhoneNumber(@Part("mobile_number") mobile: RequestBody)
             : Call<JsonObject>
 
+
     @Multipart
     @POST("customer-registration-loan")
     fun formStep4(@Part("customer_loans_id") loanId: RequestBody?,
                   @Part("params") loandata: RequestBody,
                   @Part sign: MultipartBody.Part?): Call<JsonObject>
-
-
-    @GET("all-loans")
-    fun allLoans(): Call<JsonObject>
 
     @GET
     fun searchIfsc(@Url url: String): Call<JsonObject>

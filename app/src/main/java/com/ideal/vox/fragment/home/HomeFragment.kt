@@ -1,10 +1,11 @@
-package com.ideal.vox.fragment
+package com.ideal.vox.fragment.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ideal.vox.R
+import com.ideal.vox.fragment.BaseFragment
 
 
 /**
