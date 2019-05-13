@@ -50,7 +50,7 @@ class AddLocationPinFragment : BaseFragment(), LocationManager.LocationUpdates {
             val parent = vieww?.parent as ViewGroup
             parent.removeView(vieww)
         }
-        setToolbar(false, "Add Address")
+        setToolbar(false, "Add Address", false)
         try {
             vieww = inflater.inflate(R.layout.fg_ls_add_pin, container, false)
         } catch (e: InflateException) {
@@ -185,24 +185,4 @@ class AddLocationPinFragment : BaseFragment(), LocationManager.LocationUpdates {
         showToast("Please check GPS is ON and working fine!", true)
         goBack = true
     }
-
-
-//    override fun onLocationChanged(location: Location) {
-//
-//    }
-//
-//    override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {
-//
-//    }
-//
-//    override fun onProviderEnabled(provider: String) {
-//        if (provider.equals(LocationManager.GPS_PROVIDER, ignoreCase = true))
-//            getAndSetCurrentLocation()
-//    }
-//
-//    override fun onProviderDisabled(provider: String) {
-//        if (provider.equals(LocationManager.GPS_PROVIDER, ignoreCase = true))
-//            buildAlertMessageNoGps()
-//
-//    }
 }

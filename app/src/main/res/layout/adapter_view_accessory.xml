@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:padding="15dp">
+
+
+    <ImageView
+        android:id="@+id/picIV"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/yellow_circle"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_camera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/nameTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="start"
+        android:inputType="textCapWords"
+        android:text="ACCESSORY NAME"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toRightOf="@+id/picIV"
+        app:layout_constraintRight_toLeftOf="@id/removeIV"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/makeTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="start"
+        android:inputType="text"
+        android:text="MAKE"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/picIV"
+        app:layout_constraintRight_toLeftOf="@id/removeIV"
+        app:layout_constraintTop_toBottomOf="@id/nameTV" />
+
+    <ImageView
+        android:id="@+id/removeIV"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@drawable/red_circle"
+        android:padding="3dp"
+        android:src="@drawable/ic_remove_white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

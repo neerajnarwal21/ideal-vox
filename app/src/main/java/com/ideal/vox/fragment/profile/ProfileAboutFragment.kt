@@ -1,14 +1,22 @@
 package com.ideal.vox.fragment.profile
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.gson.JsonArray
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
 import com.ideal.vox.R
+import com.ideal.vox.adapter.AccessoryAdapter
+import com.ideal.vox.data.AccessoryData
 import com.ideal.vox.data.UserData
 import com.ideal.vox.fragment.BaseFragment
+import com.ideal.vox.retrofitManager.ResponseListener
 import com.ideal.vox.utils.Const
+import com.ideal.vox.utils.getAge
 import kotlinx.android.synthetic.main.fg_p_about.*
 import retrofit2.Call
 
@@ -18,7 +26,9 @@ import retrofit2.Call
  */
 class ProfileAboutFragment : BaseFragment() {
 
-    private var listCall: Call<JsonArray>? = null
+    private var adapter: AccessoryAdapter? = null
+    private var listCall: Call<JsonObject>? = null
+    private var userData: UserData? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -27,33 +37,66 @@ class ProfileAboutFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar(false, "Profile")
+        setToolbar(false, "Profile", true)
         initUI()
     }
 
     private fun initUI() {
-        val userData = store.getUserData(Const.USER_DATA, UserData::class.java)
+        userData = store.getUserData(Const.USER_DATA, UserData::class.java)
         if (userData != null) {
-            nameET.setText(userData.name)
-            mobileET.setText(userData.mobileNumber)
-            emailET.setText(userData.email)
+            aboutTV.text = "${userData!!.photoProfile.expertise}\n" +
+                    "Working since ${userData!!.photoProfile.experienceInYear} years, ${userData!!.photoProfile.experienceInMonths} months\n" +
+                    "${getAge(userData!!.photoProfile.dob)}, ${userData!!.photoProfile.gender}\n" +
+                    "${userData!!.mobileNumber}\n" +
+                    "${userData!!.email}\n" +
+                    "${userData!!.photoProfile.address}"
+            callIV.setOnClickListener {
+                val call = Uri.parse("tel:${userData!!.mobileNumber}")
+                val callIntent = Intent(Intent.ACTION_DIAL, call)
+                baseActivity.startActivity(Intent.createChooser(callIntent, "Call with"))
+            }
+            mapIV.setOnClickListener {
+                val gmmIntentUri = Uri.parse("geo:${userData!!.photoProfile.lat},${userData!!.photoProfile.lng}")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                if (mapIntent.resolveActivity(baseActivity.getPackageManager()) != null) {
+                    startActivity(Intent.createChooser(mapIntent, "Open with"))
+                }
+            }
+            getList()
         }
-        addAccessoryIV.setOnClickListener {
-            baseActivity.supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fc_home, ProfileAddAccessoryFragment())
-                    .addToBackStack(null)
-                    .commit()
+        editAccessoryIV.setOnClickListener {
+            if (adapter != null)
+                baseActivity.supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fc_home, ProfileEditAccessoryFragment())
+                        .addToBackStack(null)
+                        .commit()
         }
-        getList()
     }
 
     private fun getList() {
-//        listCall = apiInterface.allAccessories(store.getString(Const.SESSION_KEY)!!)
-//        apiManager.makeApiCall(listCall!!, this)
+        loadingPB.visibility = View.VISIBLE
+        listCall = apiInterface.allAccessories(userData!!.id)
+        apiManager.makeApiCall(listCall!!, this, false)
     }
 
     override fun onSuccess(call: Call<*>, payload: Any) {
         super.onSuccess(call, payload)
+        loadingPB.visibility = View.GONE
+        if (listCall != null && listCall == call) {
+            val jsonObj = payload as JsonObject
+            val listArr = jsonObj.get("accessories").asJsonArray
+            val objectType = object : TypeToken<ArrayList<AccessoryData>>() {}.type
+            val datas = Gson().fromJson<ArrayList<AccessoryData>>(listArr, objectType)
+            adapter = AccessoryAdapter(baseActivity, datas, userData!!.id,false)
+            if (datas.size == 0) emptyTV.visibility = View.VISIBLE
+            accListRV.adapter = adapter
+        }
+    }
+
+    override fun onError(call: Call<*>, statusCode: Int, errorMessage: String, responseListener: ResponseListener) {
+        super.onError(call, statusCode, errorMessage, responseListener)
+        loadingPB.visibility = View.GONE
     }
 }

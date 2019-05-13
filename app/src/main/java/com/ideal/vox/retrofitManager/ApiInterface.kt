@@ -73,6 +73,14 @@ interface ApiInterface {
             : Call<JsonObject>
 
     @Multipart
+    @POST("update_account_information")
+    fun updateBankDetails(@Part("account_name") name: RequestBody,
+                          @Part("account_number") accNo: RequestBody,
+                          @Part("ifsc_code") ifsc: RequestBody,
+                          @Part pic: MultipartBody.Part?)
+            : Call<JsonObject>
+
+    @Multipart
     @POST("Profile/Update_User")
     fun updateUser(@Part("Name") name: RequestBody,
                    @Part("Father_name") fName: RequestBody,
@@ -86,18 +94,21 @@ interface ApiInterface {
                    @Part("State") state: RequestBody)
             : Call<JsonArray>
 
+    @GET("get_accessories/{user_id} ")
+    fun allAccessories(@Path("user_id") userId: Int): Call<JsonObject>
+
     @Multipart
-    @POST("Accessories/update_accessories")
-    fun updateAccessories(@Part("Userid") userId: RequestBody,
-                          @Part("pname") name: RequestBody,
-                          @Part("pmake") make: RequestBody,
-                          @Part sign: MultipartBody.Part?)
-            : Call<JsonArray>
+    @POST("add_accessories")
+    fun updateAccessories(@Part("name") name: RequestBody,
+                          @Part("model") make: RequestBody,
+                          @Part pic: MultipartBody.Part?)
+            : Call<JsonObject>
 
+    @Multipart
+    @POST("update_profile")
+    fun updateProfile(@Part("name") name: RequestBody)
+            : Call<JsonObject>
 
-    @GET("GetAccessriesList/get_list")
-    fun allAccessories(@Query("userid") userId: String)
-            : Call<JsonArray>
 
     @Multipart
     @POST("customer-mobile-register")

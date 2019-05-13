@@ -9,13 +9,20 @@ import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.ideal.vox.R
+import com.ideal.vox.activity.main.MainActivity
 import com.ideal.vox.adapter.PageAdapter
 import com.ideal.vox.data.UserData
 import com.ideal.vox.databinding.FgProfileBinding
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.utils.*
 import kotlinx.android.synthetic.main.fg_profile.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Call
 import java.io.File
 
 
@@ -25,6 +32,7 @@ import java.io.File
 class ProfileFragment : BaseFragment() {
 
     lateinit var model: ProfileViewModel
+    private var avatarCall: Call<JsonObject>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -110,6 +118,25 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun updateUser(file: File) {
+        var fileFirst: MultipartBody.Part? = null
+        try {
+            baseActivity.log("File size: ${file.length()}")
+            fileFirst = MultipartBody.Part.createFormData("avatar", file.name, RequestBody.create(MediaType.parse("image/jpeg"), file))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        avatarCall = apiInterface.updateDP(fileFirst)
+        apiManager.makeApiCall(avatarCall!!, this)
+    }
 
+    override fun onSuccess(call: Call<*>, payload: Any) {
+        super.onSuccess(call, payload)
+        if (avatarCall != null && call === avatarCall) {
+            val jsonObj = payload as JsonObject
+            val userData = Gson().fromJson(jsonObj, UserData::class.java)
+            store.saveUserData(Const.USER_DATA, userData)
+            (baseActivity as MainActivity).setupHeaderView()
+            showToast("Profile picture updated")
+        }
     }
 }

@@ -20,6 +20,8 @@ import com.ideal.vox.fragment.AddLocationPinFragment
 import com.ideal.vox.fragment.home.BecomePhotographerFragment
 import com.ideal.vox.fragment.home.HomeFragment
 import com.ideal.vox.fragment.profile.ProfileBasicFragment
+import com.ideal.vox.fragment.profile.ProfileFragment
+import com.ideal.vox.fragment.profile.edit.ProfileEditAdvFragment
 import com.ideal.vox.utils.CircleTransform
 import com.ideal.vox.utils.Const
 import com.ideal.vox.utils.LocationManager
@@ -126,27 +128,28 @@ class MainActivity : BaseActivity() {
                 startActivity(intent)
                 finish()
             } else {
+                val frag = if (userData.userType == UserType.USER) ProfileBasicFragment() else ProfileFragment()
                 supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.fc_home, ProfileBasicFragment())
+                        .replace(R.id.fc_home, frag)
                         .commit()
             }
         }
     }
 
-    fun setToolbar(showDrawer: Boolean, text: String) {
+    fun setToolbar(showDrawer: Boolean, text: String, showEdit: Boolean) {
         titleTBTV.text = text
         menuTBIV.visibility = if (showDrawer) View.VISIBLE else View.GONE
         menuTBIV.setOnClickListener { drawer.openDrawer(Gravity.START) }
         backTBIV.visibility = if (showDrawer) View.GONE else View.VISIBLE
+        editTBIV.visibility = if (showEdit) View.VISIBLE else View.GONE
         backTBIV.setOnClickListener { onBackPressed() }
-//        newTBIV.visibility = if (showAddUser) View.VISIBLE else View.GONE
-//        closeTBIV.visibility = if (showClose) View.VISIBLE else View.GONE
-//        closeTBIV.setImageResource(R.drawable.ic_close_white)
-//        navTBIV.setOnClickListener(this)
-//        backTBIV.setOnClickListener(this)
-//        newTBIV.setOnClickListener(this)
-//        closeTBIV.setOnClickListener(this)
+        editTBIV.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.fc_home, ProfileEditAdvFragment())
+                    .addToBackStack(null)
+                    .commit()
+        }
     }
 
     override fun onBackPressed() {

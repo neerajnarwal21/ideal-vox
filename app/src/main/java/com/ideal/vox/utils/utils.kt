@@ -49,6 +49,15 @@ fun getNonEmptyText(text: String?): String {
     return if (text == null || text.isEmpty()) "Not Provided" else text
 }
 
+fun getAge(age: String): String {
+    val cal = Calendar.getInstance()
+    val calNow = Calendar.getInstance()
+    val date = getDateFromStringDate(age, "yyyy-MM-dd")
+    cal.time = date
+    val ageInt = calNow[Calendar.YEAR] - cal[Calendar.YEAR]
+    return ageInt.toString()
+}
+
 fun Spinner.mySpinnerCallback(callBack: (Int) -> Unit) {
     this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(parent: AdapterView<*>?) {

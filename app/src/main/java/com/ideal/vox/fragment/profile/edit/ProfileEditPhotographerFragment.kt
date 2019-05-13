@@ -1,9 +1,7 @@
-package com.ideal.vox.fragment.home
+package com.ideal.vox.fragment.profile.edit
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,15 +11,15 @@ import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ideal.vox.R
-import com.ideal.vox.activity.main.MainActivity
 import com.ideal.vox.data.ExpertiseData
 import com.ideal.vox.data.UserData
 import com.ideal.vox.fragment.AddLocationPinFragment
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.utils.Const
 import com.ideal.vox.utils.PinAdd
+import com.ideal.vox.utils.getDateFromStringDate
 import com.ideal.vox.utils.selection
-import kotlinx.android.synthetic.main.fg_form_photographer.*
+import kotlinx.android.synthetic.main.fg_p_edit_advance_photographer.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -32,29 +30,42 @@ import java.util.*
 /**
  * Created by Neeraj Narwal on 5/5/17.
  */
-class BecomePhotographerFragment : BaseFragment() {
+class ProfileEditPhotographerFragment : BaseFragment() {
 
     private var confirmCall: Call<JsonObject>? = null
     private var listCall: Call<JsonObject>? = null
+    private var data: UserData? = null
     private var list = ArrayList<ExpertiseData>()
     private var currentCal: Calendar = Calendar.getInstance()
     private var dobCal: Calendar = Calendar.getInstance()
     private var latLng: LatLng? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fg_form_photographer, container, false)
+        return inflater.inflate(R.layout.fg_p_edit_advance_photographer, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar(false, "Details", false)
-        initUI()
+        data = store.getUserData(Const.USER_DATA, UserData::class.java)
+        listCall = apiInterface.getExpertise()
+        apiManager.makeApiCall(listCall!!, this)
     }
 
     private fun initUI() {
-        dobCal.roll(Calendar.YEAR, -20)
-        listCall = apiInterface.getExpertise()
-        apiManager.makeApiCall(listCall!!, this)
+        for ((i, item) in list.withIndex()) {
+            if (data?.photoProfile?.expertise == item.name) {
+                expSP.setSelection(i)
+                break
+            }
+        }
+        yearET.setText(data?.photoProfile?.experienceInYear.toString())
+        monthET.setText(data?.photoProfile?.experienceInMonths.toString())
+        dobCal.time = getDateFromStringDate(data?.photoProfile?.dob, "yyyy-MM-dd")
+        dobET.setText(SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH).format(dobCal.time))
+        if (data?.photoProfile?.gender == "M") maleRB.isChecked = true else femaleRB.isChecked = true
+        addressET.setText(data?.photoProfile?.address)
+        latLng = LatLng(data?.photoProfile?.lat!!, data?.photoProfile?.lng!!)
+
         dobTIL.setOnClickListener { showDateDialog() }
         dobET.setOnClickListener { showDateDialog() }
         addPinIV.setOnClickListener { if (getText(addressET).isNotEmpty()) gotoAddPin() else showToast("Enter address first") }
@@ -79,7 +90,6 @@ class BecomePhotographerFragment : BaseFragment() {
     private fun gotoAddPin() {
         PinAdd.setListener { address, latLng ->
             this.latLng = latLng
-            setToolbar(false, "Details", false)
             addPinIV.selection(true)
             addPinIV.setImageResource(R.drawable.ic_pin_added)
         }
@@ -133,8 +143,7 @@ class BecomePhotographerFragment : BaseFragment() {
             val userObj = jsonObj.getAsJsonObject("user")
             val userData = Gson().fromJson(userObj, UserData::class.java)
             store.saveUserData(Const.USER_DATA, userData)
-
-            showSuccessDialog()
+            showToast("Details updated successfully")
         } else if (listCall != null && call === listCall) {
             list.clear()
             val jsonArr = payload as JsonArray
@@ -146,21 +155,8 @@ class BecomePhotographerFragment : BaseFragment() {
                 list.add(data)
             }
             loadSpinner(array)
+            initUI()
         }
-    }
-
-    private fun showSuccessDialog() {
-        val bldr = AlertDialog.Builder(baseActivity)
-        bldr.setTitle("Registeration Success")
-        bldr.setMessage("You have successfully registered as photographer\n" +
-                "You can add payment details in profile section")
-        bldr.setCancelable(false)
-        bldr.setPositiveButton("Ok, Great") { _, _ ->
-            val intent = Intent(baseActivity, MainActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TOP }
-            startActivity(intent)
-            baseActivity.finish()
-        }
-        bldr.create().show()
     }
 
     private fun loadSpinner(array: Array<String?>) {

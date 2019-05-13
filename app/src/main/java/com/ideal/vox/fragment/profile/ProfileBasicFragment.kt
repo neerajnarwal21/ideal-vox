@@ -27,6 +27,7 @@ class ProfileBasicFragment : BaseFragment() {
 
 
     private var avatarCall: Call<JsonObject>? = null
+    private var updateCall: Call<JsonObject>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fg_p_basic, container, false)
@@ -34,7 +35,7 @@ class ProfileBasicFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar(false, "Profile")
+        setToolbar(false, "Profile", false)
         initUI()
     }
 
@@ -52,6 +53,24 @@ class ProfileBasicFragment : BaseFragment() {
             if (PermissionsManager.checkPermissions(baseActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA), 12,
                             PermissionsManager.PCallback({ selectImage() }))) selectImage()
         }
+        nameIV.setOnClickListener {
+            nameET.isEnabled = true
+            nameET.isFocusableInTouchMode = true
+            saveBT.visibility = View.VISIBLE
+            saveBT.setOnClickListener {
+                if (getText(nameET).isEmpty()) {
+                    showToast("Please enter name")
+                } else {
+                    updateProfile()
+                }
+            }
+        }
+    }
+
+    private fun updateProfile() {
+        val name = RequestBody.create(MediaType.parse("text/plain"), getText(nameET))
+        updateCall = apiInterface.updateProfile(name)
+        apiManager.makeApiCall(updateCall!!, this)
     }
 
     private fun selectImage() {
@@ -83,6 +102,11 @@ class ProfileBasicFragment : BaseFragment() {
             store.saveUserData(Const.USER_DATA, userData)
             (baseActivity as MainActivity).setupHeaderView()
             showToast("Profile picture updated")
+        } else if (updateCall != null && updateCall === call) {
+            val jsonObj = payload as JsonObject
+            val userData = Gson().fromJson(jsonObj, UserData::class.java)
+            store.saveUserData(Const.USER_DATA, userData)
+            (baseActivity as MainActivity).setupHeaderView()
         }
     }
 }

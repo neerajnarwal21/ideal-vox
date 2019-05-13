@@ -4,6 +4,8 @@ public class Const {
 
     public static final String SERVER_REMOTE_URL = "http://idealvox.com/public/api/";
     public static final String IMAGE_BASE_URL = "http://idealvox.com/storage/app/public/avatars/";
+    public static final String IMAGE_BANK_BASE_URL = "http://idealvox.com/storage/app/public/passbook_pic/";
+    public static final String IMAGE_ACC_BASE_URL = "http://idealvox.com/storage/app/public/accessorie_pic/";
     public static final String DISPLAY_MESSAGE_ACTION = "com.packagename.DISPLAY_MESSAGE";
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 1234;
     public static final String NOTI_CHANNEL_ID = "my_custom_channel";
