@@ -1,8 +1,9 @@
-package com.ideal.vox.fragment.profile
+package com.ideal.vox.fragment.profile.about
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,26 +38,26 @@ class ProfileAboutFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar(false, "Profile", true)
         initUI()
     }
 
     private fun initUI() {
         userData = store.getUserData(Const.USER_DATA, UserData::class.java)
         if (userData != null) {
-            aboutTV.text = "${userData!!.photoProfile.expertise}\n" +
-                    "Working since ${userData!!.photoProfile.experienceInYear} years, ${userData!!.photoProfile.experienceInMonths} months\n" +
-                    "${getAge(userData!!.photoProfile.dob)}, ${userData!!.photoProfile.gender}\n" +
-                    "${userData!!.mobileNumber}\n" +
-                    "${userData!!.email}\n" +
-                    "${userData!!.photoProfile.address}"
+            expTV.text = userData!!.photoProfile.expertise
+            experTV.text = "${userData!!.photoProfile.experienceInYear} years, ${userData!!.photoProfile.experienceInMonths}"
+            ageTV.text = "${getAge(userData!!.photoProfile.dob)}, ${userData!!.photoProfile.gender}"
+            mobileTV.text = userData!!.mobileNumber
+            emailTV.text = userData!!.email
+            addressTV.text = "${userData!!.photoProfile.address}\n${userData!!.photoProfile.pinCode}"
             callIV.setOnClickListener {
                 val call = Uri.parse("tel:${userData!!.mobileNumber}")
                 val callIntent = Intent(Intent.ACTION_DIAL, call)
                 baseActivity.startActivity(Intent.createChooser(callIntent, "Call with"))
             }
             mapIV.setOnClickListener {
-                val gmmIntentUri = Uri.parse("geo:${userData!!.photoProfile.lat},${userData!!.photoProfile.lng}")
+                val gmmIntentUri = Uri.parse("geo:${userData!!.photoProfile.lat},${userData!!.photoProfile.lng}" +
+                        "?q=${userData!!.photoProfile.lat},${userData!!.photoProfile.lng}")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
                 if (mapIntent.resolveActivity(baseActivity.getPackageManager()) != null) {
@@ -89,7 +90,7 @@ class ProfileAboutFragment : BaseFragment() {
             val listArr = jsonObj.get("accessories").asJsonArray
             val objectType = object : TypeToken<ArrayList<AccessoryData>>() {}.type
             val datas = Gson().fromJson<ArrayList<AccessoryData>>(listArr, objectType)
-            adapter = AccessoryAdapter(baseActivity, datas, userData!!.id,false)
+            adapter = AccessoryAdapter(baseActivity, datas, userData!!.id, false)
             if (datas.size == 0) emptyTV.visibility = View.VISIBLE
             accListRV.adapter = adapter
         }

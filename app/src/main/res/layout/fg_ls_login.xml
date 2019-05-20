@@ -38,7 +38,7 @@
                 android:id="@+id/emailET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="start"
                 android:hint="USERNAME"
                 android:inputType="text"
                 android:textColor="@color/WhiteSmoke" />
@@ -58,7 +58,7 @@
                 android:id="@+id/passET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="start"
                 android:hint="PASSWORD"
                 android:inputType="textPassword"
                 android:longClickable="false"

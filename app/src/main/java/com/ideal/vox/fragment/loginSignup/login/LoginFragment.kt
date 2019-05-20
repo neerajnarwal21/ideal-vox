@@ -36,6 +36,7 @@ class LoginFragment : BaseFragment() {
 
     lateinit var model: LoginFragViewModel
     private var loginCall: Call<JsonObject>? = null
+    private var socailLoginCall: Call<JsonObject>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -50,17 +51,34 @@ class LoginFragment : BaseFragment() {
                 LoginStatus.FORGOT -> jumpToForgotFragment()
                 LoginStatus.FB -> {
                     baseActivity.startActivity(Intent(baseActivity, FacebookLogin::class.java))
-                    SocialLogin.doFbSignin { }
+                    SocialLogin.doFbSignin {
+                        val jsonObject = it.jsonObject
+                        val name = jsonObject["first_name"].toString() + " " + jsonObject["last_name"].toString()
+                        val email = jsonObject["email"].toString()
+                        doSocialLogin(name, email)
+                    }
                 }
                 LoginStatus.GPLUS -> {
                     baseActivity.startActivity(Intent(baseActivity, GPlusLoginActivity::class.java))
-                    SocialLogin.doGSignin { }
+                    SocialLogin.doGSignin {
+                        val name = it.displayName.toString()
+                        val email = it.email.toString()
+                        doSocialLogin(name, email)
+                    }
                 }
             }
         })
         binding.setLifecycleOwner(this)
         val view = binding.getRoot()
         return view
+    }
+
+    private fun doSocialLogin(name: String, email: String) {
+        store.saveString(Const.SESSION_KEY, null)
+        val namee = RequestBody.create(MediaType.parse("text/plain"), name)
+        val emaill = RequestBody.create(MediaType.parse("text/plain"), email)
+        socailLoginCall = apiInterface.socialLogin(namee, emaill)
+        apiManager.makeApiCall(socailLoginCall!!, this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

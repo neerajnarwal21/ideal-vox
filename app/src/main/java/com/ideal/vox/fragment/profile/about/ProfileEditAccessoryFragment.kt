@@ -1,4 +1,4 @@
-package com.ideal.vox.fragment.profile
+package com.ideal.vox.fragment.profile.about
 
 import android.Manifest
 import android.content.DialogInterface
@@ -34,6 +34,7 @@ import java.io.File
 class ProfileEditAccessoryFragment : BaseFragment() {
     var file: File? = null
     private var addCall: Call<JsonObject>? = null
+    private var deleteCall: Call<JsonObject>? = null
     private var nameET: MyEditText? = null
     private var makeET: MyEditText? = null
     private var picIV: ImageView? = null
@@ -49,7 +50,7 @@ class ProfileEditAccessoryFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar(false, "Edit Accessories", false)
+        setToolbar("Edit Accessories")
         initUI()
     }
 
@@ -67,6 +68,7 @@ class ProfileEditAccessoryFragment : BaseFragment() {
     }
 
     private fun showAddDialog() {
+        file = null
         val bldr = AlertDialog.Builder(baseActivity)
         val dialog: AlertDialog
         val view = View.inflate(baseActivity, R.layout.dialog_add_accessory, null)
@@ -108,9 +110,22 @@ class ProfileEditAccessoryFragment : BaseFragment() {
         apiManager.makeApiCall(addCall!!, this)
     }
 
+    fun deleteAccessory(id: Int) {
+        val bldr = AlertDialog.Builder(baseActivity)
+        bldr.setTitle("Confirm !")
+        bldr.setMessage("Are you sure you want to delete this accessory?")
+        bldr.setPositiveButton("Yes") { dialogInterface, i ->
+            deleteCall = apiInterface.deleteAccessory(id)
+            apiManager.makeApiCall(deleteCall!!, this)
+            dialogInterface.dismiss()
+        }
+        bldr.setNegativeButton("No", null)
+        bldr.create().show()
+    }
+
     private fun validate(): Boolean {
         when {
-            file == null -> showToast("Please add file", true)
+            file == null -> showToast("Please add image", true)
             getText(nameET!!).isEmpty() -> showToast("Please enter name", true)
             getText(makeET!!).isEmpty() -> showToast("Please enter make model", true)
             else -> return true
@@ -132,17 +147,25 @@ class ProfileEditAccessoryFragment : BaseFragment() {
         if (addCall != null && addCall === call) {
             showToast("Successfully added")
             apiClient.clearCache()
-            getList()
+            setupAdapter(payload)
+        } else if (deleteCall != null && deleteCall === call) {
+            showToast("Accessory deleted")
+            apiClient.clearCache()
+            setupAdapter(payload)
         } else if (listCall != null && listCall === call) {
-            loadingPB.visibility = View.GONE
-            val jsonObj = payload as JsonObject
-            val listArr = jsonObj.get("accessories").asJsonArray
-            val objectType = object : TypeToken<ArrayList<AccessoryData>>() {}.type
-            val datas = Gson().fromJson<ArrayList<AccessoryData>>(listArr, objectType)
-            adapter = AccessoryAdapter(baseActivity, datas, userData!!.id, true)
-            if (datas.size == 0) emptyTV.visibility = View.VISIBLE else emptyTV.visibility = View.GONE
-            listRV.adapter = adapter
+            setupAdapter(payload)
         }
+    }
+
+    private fun setupAdapter(payload: Any) {
+        loadingPB.visibility = View.GONE
+        val jsonObj = payload as JsonObject
+        val listArr = jsonObj.get("accessories").asJsonArray
+        val objectType = object : TypeToken<ArrayList<AccessoryData>>() {}.type
+        val datas = Gson().fromJson<ArrayList<AccessoryData>>(listArr, objectType)
+        adapter = AccessoryAdapter(baseActivity, datas, userData!!.id, true)
+        if (datas.size == 0) emptyTV.visibility = View.VISIBLE else emptyTV.visibility = View.GONE
+        listRV.adapter = adapter
     }
 
     override fun onError(call: Call<*>, statusCode: Int, errorMessage: String, responseListener: ResponseListener) {

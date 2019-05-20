@@ -20,7 +20,6 @@ import com.ideal.vox.fragment.AddLocationPinFragment
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.utils.Const
 import com.ideal.vox.utils.PinAdd
-import com.ideal.vox.utils.selection
 import kotlinx.android.synthetic.main.fg_form_photographer.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -47,7 +46,7 @@ class BecomePhotographerFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar(false, "Details", false)
+        setToolbar( "Details")
         initUI()
     }
 
@@ -57,7 +56,7 @@ class BecomePhotographerFragment : BaseFragment() {
         apiManager.makeApiCall(listCall!!, this)
         dobTIL.setOnClickListener { showDateDialog() }
         dobET.setOnClickListener { showDateDialog() }
-        addPinIV.setOnClickListener { if (getText(addressET).isNotEmpty()) gotoAddPin() else showToast("Enter address first") }
+        locTV.setOnClickListener { if (getText(addressET).isNotEmpty()) gotoAddPin() else showToast("Enter address first") }
         submitBT.setOnClickListener { if (validate()) submit() }
     }
 
@@ -79,9 +78,8 @@ class BecomePhotographerFragment : BaseFragment() {
     private fun gotoAddPin() {
         PinAdd.setListener { address, latLng ->
             this.latLng = latLng
-            setToolbar(false, "Details", false)
-            addPinIV.selection(true)
-            addPinIV.setImageResource(R.drawable.ic_pin_added)
+            setToolbar( "Details")
+            locTV.visibility = View.VISIBLE
         }
 
         val bundle = Bundle()
@@ -104,9 +102,10 @@ class BecomePhotographerFragment : BaseFragment() {
         val dob = RequestBody.create(MediaType.parse("text/plain"), SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dobCal.time))
         val gender = RequestBody.create(MediaType.parse("text/plain"), if (maleRB.isChecked) "M" else "F")
         val address = RequestBody.create(MediaType.parse("text/plain"), getText(addressET))
+        val pin = RequestBody.create(MediaType.parse("text/plain"), getText(pinET))
         val lat = RequestBody.create(MediaType.parse("text/plain"), latLng?.latitude.toString())
         val lng = RequestBody.create(MediaType.parse("text/plain"), latLng?.longitude.toString())
-        confirmCall = apiInterface.becomePhotographer(expertise, expYear, expMonth, dob, gender, address, lat, lng)
+        confirmCall = apiInterface.becomePhotographer(expertise, expYear, expMonth, dob, gender, address, pin, lat, lng)
         apiManager.makeApiCall(confirmCall!!, this)
     }
 
@@ -116,10 +115,8 @@ class BecomePhotographerFragment : BaseFragment() {
             getText(monthET).isNotEmpty() && getText(monthET).toInt() > 12 -> showToast("Month value is wrong in experience")
             getText(dobET).isEmpty() -> showToast("Please enter date of birth", true)
             getText(addressET).isEmpty() -> showToast("Please enter address", true)
-            latLng == null -> {
-                showToast("Please add location pin for address", true)
-                addPinIV.selection(false)
-            }
+            getText(pinET).isEmpty() -> showToast("Please enter pincode", true)
+            latLng == null -> gotoAddPin()
             else -> return true
         }
         return false

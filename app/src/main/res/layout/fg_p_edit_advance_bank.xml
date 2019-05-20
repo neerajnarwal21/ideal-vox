@@ -48,7 +48,6 @@
                 android:id="@+id/nameET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:hint="ACCOUNT HOLDER'S NAME"
                 android:inputType="textCapWords"
                 android:textColor="@color/WhiteSmoke" />
@@ -69,7 +68,6 @@
                 android:id="@+id/accountET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:hint="ACCOUNT NUMBER"
                 android:inputType="text"
                 android:textColor="@color/WhiteSmoke" />
@@ -90,7 +88,6 @@
                 android:id="@+id/confAccountET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:hint="CONFIRM ACCOUNT NUMBER"
                 android:inputType="text"
                 android:textColor="@color/WhiteSmoke" />
@@ -111,7 +108,6 @@
                 android:id="@+id/ifscET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:hint="IFSC CODE"
                 android:inputType="text"
                 android:textColor="@color/WhiteSmoke" />

@@ -9,10 +9,12 @@ import com.ideal.vox.utils.Const.ErrorCodes.*
 import com.ideal.vox.utils.debugLog
 import okhttp3.RequestBody
 import okio.Buffer
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
+import java.net.ProtocolException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.*
@@ -120,7 +122,8 @@ class ApiManager(val context: Context, val progressDialog: ProgressDialog) {
         try {
             if (response.isSuccessful) {
                 val body = response.body() as JsonObject
-                log(body.toString())
+                val bodyLog = JSONObject(body.toString())
+                log("${call.request().url()}\n${bodyLog.toString(4)}")
                 if (body.has("success")) {
                     responseListener?.onSuccess(call, body.get("success"))
                 } else {
@@ -136,6 +139,7 @@ class ApiManager(val context: Context, val progressDialog: ProgressDialog) {
             }
         } catch (e: Exception) {
             log(call.request().url().toString() + "\n" + e.localizedMessage + "\n\n" + e.printStackTrace())
+            log(response.raw().toString())
         }
         apiResponseHashMap.remove(call)
     }
@@ -151,6 +155,8 @@ class ApiManager(val context: Context, val progressDialog: ProgressDialog) {
                     responseListener?.onError(call, SERVER_ERROR, "Internal server error", responseListener)
                 UnknownHostException::class.java ->
                     responseListener?.onError(call, NO_INTERNET, "No Network", responseListener)
+                ProtocolException::class.java ->
+                    responseListener?.onError(call, SESSION_ERROR, "Session timeout", responseListener)
                 else ->
                     responseListener?.onError(call, SERVER_ERROR, t.localizedMessage, responseListener)
             }

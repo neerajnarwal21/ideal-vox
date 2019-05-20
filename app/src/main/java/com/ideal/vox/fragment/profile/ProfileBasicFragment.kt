@@ -35,7 +35,7 @@ class ProfileBasicFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar(false, "Profile", false)
+        setToolbar( "Profile")
         initUI()
     }
 
@@ -43,9 +43,10 @@ class ProfileBasicFragment : BaseFragment() {
         val userData = store.getUserData(Const.USER_DATA, UserData::class.java)
         if (userData != null) {
             nameET.setText(userData.name)
+            nameEditET.setText(userData.name)
             emailET.setText(userData.email)
             mobileET.setText(userData.mobileNumber)
-            if (userData.avatar.isNotEmpty()) {
+            if (userData.avatar!=null && userData.avatar.isNotEmpty()) {
                 baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData.avatar).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
             }
         }
@@ -54,8 +55,10 @@ class ProfileBasicFragment : BaseFragment() {
                             PermissionsManager.PCallback({ selectImage() }))) selectImage()
         }
         nameIV.setOnClickListener {
-            nameET.isEnabled = true
-            nameET.isFocusableInTouchMode = true
+            nameTIL.visibility = View.INVISIBLE
+            nameEditTIL.visibility = View.VISIBLE
+            nameEditET.showKeyboard()
+            nameEditET.setSelection(getText(nameET).length)
             saveBT.visibility = View.VISIBLE
             saveBT.setOnClickListener {
                 if (getText(nameET).isEmpty()) {
@@ -68,7 +71,7 @@ class ProfileBasicFragment : BaseFragment() {
     }
 
     private fun updateProfile() {
-        val name = RequestBody.create(MediaType.parse("text/plain"), getText(nameET))
+        val name = RequestBody.create(MediaType.parse("text/plain"), getText(nameEditET))
         updateCall = apiInterface.updateProfile(name)
         apiManager.makeApiCall(updateCall!!, this)
     }

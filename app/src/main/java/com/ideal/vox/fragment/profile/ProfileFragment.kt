@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,8 @@ import com.ideal.vox.adapter.PageAdapter
 import com.ideal.vox.data.UserData
 import com.ideal.vox.databinding.FgProfileBinding
 import com.ideal.vox.fragment.BaseFragment
+import com.ideal.vox.fragment.profile.about.ProfileAboutFragment
+import com.ideal.vox.fragment.profile.albums.ProfileAlbumsFragment
 import com.ideal.vox.utils.*
 import kotlinx.android.synthetic.main.fg_profile.*
 import okhttp3.MediaType
@@ -47,18 +50,22 @@ class ProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        setToolbar(true, "Profile")
+        setToolbar("Profile", showEdit = true)
         model.getStatus().observe(this, Observer {
             when (it) {
                 ProfileStatus.ABOUT, ProfileStatus.ABOUT_PAGER -> {
                     aboutTV.doColorChange(false)
                     albumsTV.doColorChange(true)
+                    aboutCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary2))
+                    albumsCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary))
                     aboutIV.isSelected = true
                     albumsIV.isSelected = false
                 }
                 ProfileStatus.ALBUMS, ProfileStatus.ALBUMS_PAGER -> {
                     aboutTV.doColorChange(true)
                     albumsTV.doColorChange(false)
+                    aboutCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary))
+                    albumsCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary2))
                     aboutIV.isSelected = false
                     albumsIV.isSelected = true
                 }
@@ -98,7 +105,7 @@ class ProfileFragment : BaseFragment() {
         val userData = store.getUserData(Const.USER_DATA, UserData::class.java)
         if (userData != null) {
             nameTV.setText(userData.name)
-            if (userData.avatar.isNotEmpty()) {
+            if (userData.avatar != null && userData.avatar.isNotEmpty()) {
                 baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData.avatar).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
             }
         }

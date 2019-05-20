@@ -17,6 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.ideal.vox.R;
 import com.ideal.vox.di.BaseApp;
 import com.ideal.vox.di.module.ActivityModule;
@@ -26,20 +31,17 @@ import com.ideal.vox.retrofitManager.ApiManager;
 import com.ideal.vox.retrofitManager.ResponseListener;
 import com.ideal.vox.utils.Const;
 import com.ideal.vox.utils.ImageUtils;
-import com.ideal.vox.utils.NetworkUtil;
 import com.ideal.vox.utils.PermissionsManager;
 import com.ideal.vox.utils.PrefStore;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 
 import javax.inject.Inject;
@@ -47,6 +49,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 
 import static com.ideal.vox.utils.UtilsKt.debugLog;
+import static com.ideal.vox.utils.UtilsKt.logout;
 
 /**
  * Created by Neeraj Narwal on 2/7/15.
@@ -54,10 +57,10 @@ import static com.ideal.vox.utils.UtilsKt.debugLog;
 public class BaseActivity extends AppCompatActivity implements View.OnClickListener, ResponseListener {
     @Inject
     public PrefStore store;
-    //    @Inject
-    ApiManager apiManager;
     @Inject
-    ApiClient apiClient;
+    public ApiManager apiManager;
+    @Inject
+    public ApiClient apiClient;
 
     public ApiInterface apiInterface;
     private Toast toast;
@@ -96,8 +99,15 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     private void createPicassoDownloader() {
         OkHttpClient okHttpClient = new OkHttpClient();
+        try {
+            okHttpClient.setCache(new Cache(new File(getExternalCacheDir(), "img-cache"),
+                    (20 * 1024 * 1024)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         picasso = new Picasso.Builder(this)
                 .downloader(new OkHttpDownloader(okHttpClient))
+                .loggingEnabled(true)
                 .build();
     }
 
@@ -114,7 +124,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case Const.ErrorCodes.SESSION_ERROR:
                 showToast(errorMessage, true);
-//                logoutUser(this);
+                apiClient.clearCache();
+                logout(this, store);
                 break;
             case Const.ErrorCodes.NO_INTERNET:
                 showToast("Bad Internet Connection", true);

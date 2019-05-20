@@ -2,11 +2,15 @@ package com.ideal.vox.utils
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.databinding.BindingAdapter
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
 import android.net.ConnectivityManager
@@ -22,13 +26,18 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.RotateAnimation
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import com.ideal.vox.BuildConfig
 import com.ideal.vox.R
+import com.ideal.vox.activity.splash.SplashActivity
 import com.ideal.vox.customViews.MyTextView
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.RequestCreator
+import com.squareup.picasso.Target
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.text.ParseException
@@ -47,6 +56,15 @@ fun ImageView.selection(enable: Boolean) {
 
 fun getNonEmptyText(text: String?): String {
     return if (text == null || text.isEmpty()) "Not Provided" else text
+}
+
+fun View.showKeyboard() {
+    this.requestFocus()
+    try {
+        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    } catch (ignored: Exception) {
+    }
 }
 
 fun getAge(age: String): String {
@@ -213,11 +231,11 @@ fun showFullScreenImage(activity: Activity, bitmap: Bitmap) {
     val builder = AlertDialog.Builder(activity)
     builder.setView(view)
 
-    val closeIV = view.findViewById<ImageView>(R.id.closeIV)
+//    val closeIV = view.findViewById<ImageView>(R.id.closeIV)
     view.findViewById<TouchImageView>(R.id.imageTIV).setImageBitmap(bitmap)
     val dialogg = builder.create()
-    closeIV.tag = dialogg
-    closeIV.setOnClickListener { (it.tag as AlertDialog).dismiss() }
+//    closeIV.tag = dialogg
+//    closeIV.setOnClickListener { (it.tag as AlertDialog).dismiss() }
     dialogg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     if (!dialogg.isShowing) dialogg.show()
     dialogg.window?.setLayout(getDisplaySize(activity), getDisplaySize(activity))
@@ -229,4 +247,44 @@ fun getDisplaySize(activity: Activity): Int {
     val height = metrics.heightPixels
     val width = metrics.widthPixels
     return if (height < width) height else width
+}
+
+fun Drawable.toBitmap(): Bitmap {
+    fun Int.nonZero() = if (this <= 0) 1 else this
+
+    if (this is BitmapDrawable) {
+        return bitmap
+    }
+
+    val width = if (bounds.isEmpty) intrinsicWidth else bounds.width()
+    val height = if (bounds.isEmpty) intrinsicHeight else bounds.height()
+    return Bitmap.createBitmap(width.nonZero(), height.nonZero(), Bitmap.Config.ARGB_8888).also {
+        val canvas = Canvas(it)
+        setBounds(0, 0, canvas.width, canvas.height)
+        draw(canvas)
+    }
+}
+
+fun RequestCreator.intoMyTarget(activity: Activity, imageView: ImageView) {
+    this.into(object :Target {
+        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+        }
+
+        override fun onBitmapFailed(errorDrawable: Drawable?) {
+        }
+
+        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+            imageView.setImageBitmap(bitmap)
+            imageView.setOnClickListener {
+                if (bitmap != null) showFullScreenImage(activity, bitmap)
+            }
+        }
+    })
+}
+
+fun logout(context: Context,store: PrefStore){
+    store.saveString(Const.SESSION_KEY, null)
+    store.saveUserData(Const.USER_DATA, null)
+    val intent = Intent(context, SplashActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TOP }
+    context.startActivity(intent)
 }

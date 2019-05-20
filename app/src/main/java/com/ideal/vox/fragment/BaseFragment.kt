@@ -47,8 +47,8 @@ open class BaseFragment : Fragment(), AdapterView.OnItemClickListener, View.OnCl
         apiInterface = apiClient.client.create(ApiInterface::class.java)
     }
 
-    fun setToolbar(showDrawer: Boolean, title: String, showEdit: Boolean) {
-        (baseActivity as MainActivity).setToolbar(showDrawer, title, showEdit);
+    fun setToolbar(title: String, showDrawer: Boolean = false, showEdit: Boolean = false, showToolbar: Boolean = true) {
+        (baseActivity as MainActivity).setToolbar(showDrawer, title, showEdit,showToolbar);
     }
 
     fun setLoginTimeToolbar(title: String) {

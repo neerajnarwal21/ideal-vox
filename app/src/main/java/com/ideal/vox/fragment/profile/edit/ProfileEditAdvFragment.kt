@@ -23,7 +23,7 @@ class ProfileEditAdvFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar(false,"Edit Profile",false)
+        setToolbar("Edit Profile")
 
         val adapter = PageAdapter(childFragmentManager)
         val frag = ProfileEditBasicFragment()

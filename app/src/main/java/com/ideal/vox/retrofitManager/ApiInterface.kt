@@ -1,6 +1,5 @@
 package com.ideal.vox.retrofitManager
 
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -26,6 +25,12 @@ interface ApiInterface {
     @POST("login")
     fun login(@Part("email") email: RequestBody,
               @Part("password") password: RequestBody)
+            : Call<JsonObject>
+
+    @Multipart
+    @POST("social_login")
+    fun socialLogin(@Part("name") name: RequestBody,
+                    @Part("email") email: RequestBody)
             : Call<JsonObject>
 
     @Multipart
@@ -68,6 +73,7 @@ interface ApiInterface {
                            @Part("dob") dob: RequestBody,
                            @Part("gender") gender: RequestBody,
                            @Part("address") password: RequestBody,
+                           @Part("pin") pinCode: RequestBody,
                            @Part("lat") lat: RequestBody,
                            @Part("lng") lng: RequestBody)
             : Call<JsonObject>
@@ -81,21 +87,16 @@ interface ApiInterface {
             : Call<JsonObject>
 
     @Multipart
-    @POST("Profile/Update_User")
-    fun updateUser(@Part("Name") name: RequestBody,
-                   @Part("Father_name") fName: RequestBody,
-                   @Part("Dob") dob: RequestBody,
-                   @Part("Sex") gender: RequestBody,
-                   @Part("Mobileno") mobile: RequestBody,
-                   @Part("Emailid") email: RequestBody,
-                   @Part("Password") password: RequestBody,
-                   @Part("Address") address: RequestBody,
-                   @Part("City") city: RequestBody,
-                   @Part("State") state: RequestBody)
-            : Call<JsonArray>
+    @POST("update_profile")
+    fun updateProfile(@Part("name") name: RequestBody)
+            : Call<JsonObject>
+
 
     @GET("get_accessories/{user_id} ")
     fun allAccessories(@Path("user_id") userId: Int): Call<JsonObject>
+
+    @GET("delete_accessories/{acc_id} ")
+    fun deleteAccessory(@Path("acc_id") accId: Int): Call<JsonObject>
 
     @Multipart
     @POST("add_accessories")
@@ -104,24 +105,33 @@ interface ApiInterface {
                           @Part pic: MultipartBody.Part?)
             : Call<JsonObject>
 
+
     @Multipart
-    @POST("update_profile")
-    fun updateProfile(@Part("name") name: RequestBody)
+    @POST("create_album")
+    fun createAlbum(@Part("name") name: RequestBody)
             : Call<JsonObject>
 
+    @GET("get_albums/{user_id} ")
+    fun allAlbums(@Path("user_id") userId: Int): Call<JsonObject>
 
     @Multipart
-    @POST("customer-mobile-register")
-    fun submitPhoneNumber(@Part("mobile_number") mobile: RequestBody)
+    @POST("rename_album/{album_id} ")
+    fun renameAlbum(@Path("album_id") albumId: Int,
+                    @Part("name") name: RequestBody): Call<JsonObject>
+
+    @GET("get_album_pics/{album_id} ")
+    fun allAlbumPics(@Path("album_id") albumId: Int): Call<JsonObject>
+
+    @Multipart
+    @POST("add_album_picture")
+    fun addPic(@Part("album_id") albumId: RequestBody,
+               @Part pic: MultipartBody.Part?)
             : Call<JsonObject>
 
+    @GET("delete_album_picture/{pic_id}")
+    fun deletePicture(@Path("pic_id") picId: Int): Call<JsonObject>
 
-    @Multipart
-    @POST("customer-registration-loan")
-    fun formStep4(@Part("customer_loans_id") loanId: RequestBody?,
-                  @Part("params") loandata: RequestBody,
-                  @Part sign: MultipartBody.Part?): Call<JsonObject>
+    @GET("get_photographers")
+    fun allPhotographers(): Call<JsonObject>
 
-    @GET
-    fun searchIfsc(@Url url: String): Call<JsonObject>
 }

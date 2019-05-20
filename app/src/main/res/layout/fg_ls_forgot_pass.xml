@@ -38,7 +38,7 @@
                 android:id="@+id/mobileET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="start"
                 android:hint="MOBILE NO."
                 android:inputType="number"
                 android:textColor="@color/WhiteSmoke" />

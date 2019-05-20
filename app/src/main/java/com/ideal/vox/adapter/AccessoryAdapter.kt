@@ -9,6 +9,7 @@ import com.ideal.vox.R
 import com.ideal.vox.activity.BaseActivity
 import com.ideal.vox.customViews.MyTextView
 import com.ideal.vox.data.AccessoryData
+import com.ideal.vox.fragment.profile.about.ProfileEditAccessoryFragment
 import com.ideal.vox.utils.CircleTransform
 import com.ideal.vox.utils.Const
 
@@ -23,12 +24,19 @@ class AccessoryAdapter(private val activity: BaseActivity, private val data: Arr
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val daata = data[holder.adapterPosition]
-        activity.picasso.load(Const.IMAGE_ACC_BASE_URL + "/${userId}/" + daata.picture).transform(CircleTransform()).into(holder.picIV)
+        activity.picasso.load(Const.IMAGE_ACC_BASE_URL + "/${userId}/" + daata.picture)
+                .transform(CircleTransform()).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera)
+                .into(holder.picIV)
         holder.nameTV.text = daata.name
         holder.makeTV.text = daata.model
         if (showEdit) {
             holder.removeIV.visibility = View.VISIBLE
-            holder.removeIV.setOnClickListener { activity.showToast("Yet to implement", true) }
+            holder.removeIV.setOnClickListener {
+                val frag = activity.supportFragmentManager.findFragmentById(R.id.fc_home)
+                if(frag is ProfileEditAccessoryFragment){
+                    frag.deleteAccessory(daata.id)
+                }
+            }
         }
     }
 

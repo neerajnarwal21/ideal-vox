@@ -11,8 +11,6 @@ import android.view.View
 import android.widget.ImageView
 import com.ideal.vox.R
 import com.ideal.vox.activity.BaseActivity
-import com.ideal.vox.activity.loginSignup.LoginSignupActivity
-import com.ideal.vox.activity.splash.SplashActivity
 import com.ideal.vox.customViews.MyTextView
 import com.ideal.vox.data.UserData
 import com.ideal.vox.data.UserType
@@ -25,11 +23,14 @@ import com.ideal.vox.fragment.profile.edit.ProfileEditAdvFragment
 import com.ideal.vox.utils.CircleTransform
 import com.ideal.vox.utils.Const
 import com.ideal.vox.utils.LocationManager
+import com.ideal.vox.utils.logout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_custom.*
 
 
 class MainActivity : BaseActivity() {
+
+    var userData: UserData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,10 +76,8 @@ class MainActivity : BaseActivity() {
                 }
                 R.id.become_photographer -> showPhotographerDialog()
                 R.id.logout -> {
-                    store.saveString(Const.SESSION_KEY, null)
-                    store.saveUserData(Const.USER_DATA, null)
-                    val intent = Intent(this, SplashActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TOP }
-                    startActivity(intent)
+                    apiClient.clearCache()
+                    logout(this, store)
                 }
             }
 
@@ -121,12 +120,8 @@ class MainActivity : BaseActivity() {
         view.setOnClickListener {
             drawer.closeDrawers()
             if (userData == null) {
-                val intent = Intent(this, LoginSignupActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                }
-                startActivity(intent)
-                finish()
+                apiClient.clearCache()
+                logout(this, store)
             } else {
                 val frag = if (userData.userType == UserType.USER) ProfileBasicFragment() else ProfileFragment()
                 supportFragmentManager
@@ -137,12 +132,13 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun setToolbar(showDrawer: Boolean, text: String, showEdit: Boolean) {
+    fun setToolbar(showDrawer: Boolean, text: String, showEdit: Boolean, showToolbar: Boolean) {
         titleTBTV.text = text
         menuTBIV.visibility = if (showDrawer) View.VISIBLE else View.GONE
         menuTBIV.setOnClickListener { drawer.openDrawer(Gravity.START) }
         backTBIV.visibility = if (showDrawer) View.GONE else View.VISIBLE
         editTBIV.visibility = if (showEdit) View.VISIBLE else View.GONE
+        toolbar.visibility = if (showToolbar) View.VISIBLE else View.GONE
         backTBIV.setOnClickListener { onBackPressed() }
         editTBIV.setOnClickListener {
             supportFragmentManager.beginTransaction()

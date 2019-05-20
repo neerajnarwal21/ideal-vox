@@ -6,40 +6,37 @@ import com.google.gson.annotations.SerializedName
 
 data class PhotographicData(
         @SerializedName("address") var address: String = "",
+        @SerializedName("pin") var pinCode: String = "",
         @SerializedName("dob") var dob: String = "",
         @SerializedName("experience_in_months") var experienceInMonths: Int = 0,
         @SerializedName("experience_in_year") var experienceInYear: Int = 0,
         @SerializedName("expertise") var expertise: String = "",
         @SerializedName("gender") var gender: String = "",
-        @SerializedName("id") var id: Int = 0,
         @SerializedName("lat") var lat: Double = 0.0,
-        @SerializedName("lng") var lng: Double = 0.0,
-        @SerializedName("user_id") var userId: String = ""
-):Parcelable{
+        @SerializedName("lng") var lng: Double = 0.0
+) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
+            parcel.readString(),
             parcel.readInt(),
             parcel.readInt(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readInt(),
             parcel.readDouble(),
-            parcel.readDouble(),
-            parcel.readString()) {
+            parcel.readDouble()) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(address)
+        parcel.writeString(pinCode)
         parcel.writeString(dob)
         parcel.writeInt(experienceInMonths)
         parcel.writeInt(experienceInYear)
         parcel.writeString(expertise)
         parcel.writeString(gender)
-        parcel.writeInt(id)
         parcel.writeDouble(lat)
         parcel.writeDouble(lng)
-        parcel.writeString(userId)
     }
 
     override fun describeContents(): Int {
