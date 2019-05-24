@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/titleTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:padding="@dimen/_7dp"
+        android:text="Enter your new phone number"
+        android:textColor="@color/Black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ideal.vox.customViews.MyEditText
+        android:id="@+id/phoneET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog_et"
+        android:gravity="center"
+        android:hint="Phone number"
+        android:inputType="number"
+        android:padding="@dimen/_7dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTV" />
+
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/resendTV"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:padding="7dp"
+        android:text="Send OTP"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/phoneET" />
+
+    <com.mukesh.OtpView
+        android:id="@+id/otpET"
+        android:layout_width="206dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:cursorVisible="false"
+        android:focusableInTouchMode="true"
+        android:inputType="number"
+        android:itemBackground="@color/colorPrimary"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="26sp"
+        app:itemCount="4"
+        app:layout_constraintTop_toBottomOf="@id/resendTV"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:lineColor="@color/colorPrimary"
+        app:viewType="none" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:padding="7dp"
+        android:text="Enter OTP here"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/otpET" />
+
+
+
+</android.support.constraint.ConstraintLayout>

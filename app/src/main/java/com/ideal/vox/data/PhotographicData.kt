@@ -12,6 +12,10 @@ data class PhotographicData(
         @SerializedName("experience_in_year") var experienceInYear: Int = 0,
         @SerializedName("expertise") var expertise: String = "",
         @SerializedName("gender") var gender: String = "",
+        @SerializedName("youtube_link") var youtube: String = "",
+        @SerializedName("day_price") var dayPrice: String = "",
+        @SerializedName("night_price") var nightPrice: String = "",
+        @SerializedName("full_day_price") var fullDayPrice: String = "",
         @SerializedName("lat") var lat: Double = 0.0,
         @SerializedName("lng") var lng: Double = 0.0
 ) : Parcelable {
@@ -21,6 +25,10 @@ data class PhotographicData(
             parcel.readString(),
             parcel.readInt(),
             parcel.readInt(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
             parcel.readString(),
             parcel.readString(),
             parcel.readDouble(),
@@ -35,6 +43,10 @@ data class PhotographicData(
         parcel.writeInt(experienceInYear)
         parcel.writeString(expertise)
         parcel.writeString(gender)
+        parcel.writeString(youtube)
+        parcel.writeString(dayPrice)
+        parcel.writeString(nightPrice)
+        parcel.writeString(fullDayPrice)
         parcel.writeDouble(lat)
         parcel.writeDouble(lng)
     }

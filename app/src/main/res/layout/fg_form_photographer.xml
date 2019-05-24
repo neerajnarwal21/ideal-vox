@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
@@ -236,6 +237,35 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pinTIL" />
 
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/otpTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:textColor="@color/White"
+            app:layout_constraintTop_toBottomOf="@id/locTV" />
+
+        <com.mukesh.OtpView
+            android:id="@+id/otpET"
+            android:layout_width="206dp"
+            android:layout_height="52dp"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="true"
+            android:inputType="number"
+            android:itemBackground="@color/colorSecondary"
+            android:textColor="@color/colorPrimary"
+            android:textSize="26sp"
+            app:itemCount="4"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/otpTV"
+            app:lineColor="@color/colorPrimary"
+            app:viewType="none" />
+
+
         <com.ideal.vox.customViews.MyButton
             android:id="@+id/submitBT"
             android:layout_width="match_parent"
@@ -249,6 +279,6 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/locTV" />
+            app:layout_constraintTop_toBottomOf="@id/otpET" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

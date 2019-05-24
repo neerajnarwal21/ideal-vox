@@ -24,6 +24,7 @@ import android.util.Base64
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.RotateAnimation
 import android.view.inputmethod.InputMethodManager
@@ -266,7 +267,7 @@ fun Drawable.toBitmap(): Bitmap {
 }
 
 fun RequestCreator.intoMyTarget(activity: Activity, imageView: ImageView) {
-    this.into(object :Target {
+    this.into(object : Target {
         override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
         }
 
@@ -282,9 +283,22 @@ fun RequestCreator.intoMyTarget(activity: Activity, imageView: ImageView) {
     })
 }
 
-fun logout(context: Context,store: PrefStore){
+fun logout(context: Context, store: PrefStore) {
     store.saveString(Const.SESSION_KEY, null)
     store.saveUserData(Const.USER_DATA, null)
     val intent = Intent(context, SplashActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TOP }
     context.startActivity(intent)
+}
+
+fun createDrawableFromView(context: Context, view: View): Bitmap {
+    val displayMetrics = DisplayMetrics()
+    (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
+    view.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels)
+    view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
+    view.buildDrawingCache()
+    val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+    view.draw(canvas)
+    return bitmap
 }

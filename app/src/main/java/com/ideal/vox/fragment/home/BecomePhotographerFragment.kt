@@ -35,6 +35,7 @@ class BecomePhotographerFragment : BaseFragment() {
 
     private var confirmCall: Call<JsonObject>? = null
     private var listCall: Call<JsonObject>? = null
+    private var otpCall: Call<JsonObject>? = null
     private var list = ArrayList<ExpertiseData>()
     private var currentCal: Calendar = Calendar.getInstance()
     private var dobCal: Calendar = Calendar.getInstance()
@@ -46,7 +47,7 @@ class BecomePhotographerFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar( "Details")
+        setToolbar("Details")
         initUI()
     }
 
@@ -74,11 +75,10 @@ class BecomePhotographerFragment : BaseFragment() {
         datePickerDialog.show()
     }
 
-
     private fun gotoAddPin() {
         PinAdd.setListener { address, latLng ->
             this.latLng = latLng
-            setToolbar( "Details")
+            setToolbar("Details")
             locTV.visibility = View.VISIBLE
         }
 
@@ -105,7 +105,8 @@ class BecomePhotographerFragment : BaseFragment() {
         val pin = RequestBody.create(MediaType.parse("text/plain"), getText(pinET))
         val lat = RequestBody.create(MediaType.parse("text/plain"), latLng?.latitude.toString())
         val lng = RequestBody.create(MediaType.parse("text/plain"), latLng?.longitude.toString())
-        confirmCall = apiInterface.becomePhotographer(expertise, expYear, expMonth, dob, gender, address, pin, lat, lng)
+        val otp = RequestBody.create(MediaType.parse("text/plain"), getText(otpET))
+        confirmCall = apiInterface.becomePhotographer(otp, expertise, expYear, expMonth, dob, gender, address, pin, lat, lng, null)
         apiManager.makeApiCall(confirmCall!!, this)
     }
 
@@ -116,6 +117,7 @@ class BecomePhotographerFragment : BaseFragment() {
             getText(dobET).isEmpty() -> showToast("Please enter date of birth", true)
             getText(addressET).isEmpty() -> showToast("Please enter address", true)
             getText(pinET).isEmpty() -> showToast("Please enter pincode", true)
+            getText(otpET).isEmpty() -> showToast("Please enter OTP", true)
             latLng == null -> gotoAddPin()
             else -> return true
         }
@@ -143,6 +145,25 @@ class BecomePhotographerFragment : BaseFragment() {
                 list.add(data)
             }
             loadSpinner(array)
+            sendOTPtoUser()
+        } else if (otpCall != null && otpCall === call) {
+            val jsonObj = payload as JsonObject
+
+            val userObj = jsonObj.getAsJsonObject("user")
+            val userData = Gson().fromJson(userObj, UserData::class.java)
+            otpTV.setText("An OTP has been sent to ${userData.mobileNumber} kindly enter that here")
+        }
+    }
+
+    private fun sendOTPtoUser() {
+        val userData = store.getUserData(Const.USER_DATA, UserData::class.java)
+        if (userData != null && (userData.mobileNumber.isNotEmpty())) {
+            val phone = RequestBody.create(MediaType.parse("text/plain"), userData.mobileNumber)
+            otpCall = apiInterface.resendOTPToPhone(phone)
+            apiManager.makeApiCall(otpCall!!, this, false)
+        } else {
+            showToast("Please enter your phone number in profile first")
+            baseActivity.onBackPressed()
         }
     }
 
@@ -150,7 +171,7 @@ class BecomePhotographerFragment : BaseFragment() {
         val bldr = AlertDialog.Builder(baseActivity)
         bldr.setTitle("Registeration Success")
         bldr.setMessage("You have successfully registered as photographer\n" +
-                "You can add payment details in profile section")
+                "You should add price and payment details in profile section.")
         bldr.setCancelable(false)
         bldr.setPositiveButton("Ok, Great") { _, _ ->
             val intent = Intent(baseActivity, MainActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TOP }

@@ -43,7 +43,7 @@ class OTPFragment : BaseFragment() {
 
     private fun initUI() {
         data = store.getUserData(Const.USER_DATA, UserData::class.java)
-        otpTV.setText("An OTP has been sent to\n\n${data?.mobileNumber}")
+        otpTV.setText("An OTP has been sent to\n\n${data?.email}")
         submitBT.setOnClickListener { if (validate()) confirmOTP() }
         resendTV.setOnClickListener { showResendDialog() }
         //Just in case auto API to be hit
@@ -57,25 +57,25 @@ class OTPFragment : BaseFragment() {
         bldr.setTitle("Resend OTP")
         val view = View.inflate(baseActivity, R.layout.dialog_resend_otp, null)
         bldr.setView(view)
-        val numberET = view.findViewById<MyEditText>(R.id.numberET)
-        numberET.setText(data?.mobileNumber)
+        val emailET = view.findViewById<MyEditText>(R.id.emailET)
+        emailET.setText(data?.email)
         bldr.setPositiveButton("Submit") { _, _ -> }
         bldr.setNegativeButton("Cancel", null)
         dialog = bldr.create()
         dialog.show()
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
-            if (getText(numberET).isNotEmpty()) {
+            if (getText(emailET).isNotEmpty()) {
                 dialog.dismiss()
-                resendOTP(getText(numberET))
+                resendOTP(getText(emailET))
                 baseActivity.hideSoftKeyboard()
             }
         }
     }
 
-    private fun resendOTP(number: String) {
+    private fun resendOTP(email: String) {
         val id = RequestBody.create(MediaType.parse("text/plain"), data?.id.toString())
-        val mobile = RequestBody.create(MediaType.parse("text/plain"), number)
-        resendCall = apiInterface.resendOTP(id, mobile)
+        val to = RequestBody.create(MediaType.parse("text/plain"), email)
+        resendCall = apiInterface.resendOTP(id, to)
         apiManager.makeApiCall(resendCall!!, this)
     }
 

@@ -13,10 +13,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabBackground="@color/colorSecondary"
-        app:tabGravity="fill"
         app:tabIndicatorColor="@color/WhiteSmoke"
         app:tabIndicatorHeight="2dp"
-        app:tabMaxWidth="0dp"
+        app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextColor="@color/WhiteSmokeDark" />
 

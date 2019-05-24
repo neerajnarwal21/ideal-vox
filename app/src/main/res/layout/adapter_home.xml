@@ -58,13 +58,12 @@
             tool:text="Experience" />
 
         <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/addTV"
+            android:id="@+id/expertTV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="5dp"
             android:gravity="start"
-            android:lines="2"
             android:textColor="@color/WhiteSmoke"
             android:textSize="12sp"
             app:layout_constraintLeft_toRightOf="@+id/picIV"

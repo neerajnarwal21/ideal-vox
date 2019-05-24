@@ -74,7 +74,6 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun doSocialLogin(name: String, email: String) {
-        store.saveString(Const.SESSION_KEY, null)
         val namee = RequestBody.create(MediaType.parse("text/plain"), name)
         val emaill = RequestBody.create(MediaType.parse("text/plain"), email)
         socailLoginCall = apiInterface.socialLogin(namee, emaill)
@@ -116,7 +115,6 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun doLogin() {
-        store.saveString(Const.SESSION_KEY, null)
         val email = RequestBody.create(MediaType.parse("text/plain"), getText(emailET))
         val pass = RequestBody.create(MediaType.parse("text/plain"), getText(passET))
         loginCall = apiInterface.login(email, pass)

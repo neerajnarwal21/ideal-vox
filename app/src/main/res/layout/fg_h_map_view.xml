@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White">
+
+    <FrameLayout
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!--<include-->
+    <!--android:id="@+id/userV"-->
+    <!--layout="@layout/adapter_home"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content" />-->
+
+
+    <View
+        android:id="@+id/center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true" />
+
+    <ImageView
+        android:id="@+id/pin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/center"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/ic_pin_add"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/searchPinIV"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/distanceCV"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/yellow_circle"
+        android:padding="10dp"
+        android:src="@drawable/ic_pin_settled" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/distanceCV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="30dp"
+        app:cardBackgroundColor="@color/WhiteSmoke"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.ideal.vox.customViews.MyTextView
+                android:id="@+id/emptyTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@color/IndianRed"
+                android:gravity="center"
+                android:padding="15dp"
+                android:visibility="gone"
+                android:text="No photographers in this area"
+                android:textColor="@color/WhiteSmoke"
+                app:layout_constraintBottom_toTopOf="@id/distanceSB"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.ideal.vox.customViews.MyTextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Adjust search distance (KM)"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.warkiz.widget.IndicatorSeekBar
+                android:id="@+id/distanceSB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/text"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:paddingTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                app:isb_indicator_color="@color/transparent"
+                app:isb_indicator_text_color="@color/transparent"
+                app:isb_indicator_text_size="18sp"
+                app:isb_max="10"
+                app:isb_min="1"
+                app:isb_only_thumb_draggable="false"
+                app:isb_seek_smoothly="true"
+                app:isb_show_indicator="rounded_rectangle"
+                app:isb_show_tick_marks_type="oval"
+                app:isb_show_tick_texts="true"
+                app:isb_thumb_color="@color/colorSecondary"
+                app:isb_thumb_size="22dp"
+                app:isb_tick_marks_color="@color/colorSecondaryDark"
+                app:isb_tick_marks_size="12dp"
+                app:isb_tick_texts_color="@color/colorPrimary"
+                app:isb_tick_texts_size="16sp"
+                app:isb_ticks_count="10"
+                app:isb_track_background_color="@color/DarkGray"
+                app:isb_track_background_size="2dp"
+                app:isb_track_progress_color="@color/WhiteSmokeDark"
+                app:isb_track_progress_size="5dp"
+                app:layout_constraintBottom_toTopOf="@+id/text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/pinCV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="30dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/WhiteSmoke"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.ideal.vox.customViews.MyTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="Move the map to set pin to new location"
+                android:textColor="@color/WhiteSmoke"
+                app:layout_constraintBottom_toTopOf="@id/doneBT"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.ideal.vox.customViews.MyButton
+                android:id="@+id/doneBT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/_20dp"
+                android:background="@drawable/btn_yellow"
+                android:minHeight="@dimen/_40dp"
+                android:text="Search here"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>

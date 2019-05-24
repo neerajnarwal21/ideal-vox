@@ -11,9 +11,9 @@ data class UserData(
         @SerializedName("mobile_number") var mobileNumber: String = "",
         @SerializedName("name") var name: String = "",
         @SerializedName("is_active") var is_active: Int = 0,
-        @SerializedName("role") var userType: UserType,
-        @SerializedName("photo_graphic_profile") var photoProfile: PhotographicData,
-        @SerializedName("bank_account") var bankAccount: BankData
+        @SerializedName("role") var userType: UserType = UserType.USER,
+        @SerializedName("photo_graphic_profile") var photoProfile: PhotographicData? = null,
+        @SerializedName("bank_account") var bankAccount: BankData? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readString(),

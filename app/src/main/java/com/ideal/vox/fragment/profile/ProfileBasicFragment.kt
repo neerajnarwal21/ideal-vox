@@ -1,7 +1,9 @@
 package com.ideal.vox.fragment.profile
 
 import android.Manifest
+import android.content.DialogInterface
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +11,12 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.ideal.vox.R
 import com.ideal.vox.activity.main.MainActivity
+import com.ideal.vox.customViews.MyEditText
+import com.ideal.vox.customViews.MyTextView
 import com.ideal.vox.data.UserData
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.utils.*
+import com.mukesh.OtpView
 import kotlinx.android.synthetic.main.fg_p_basic.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -28,6 +33,8 @@ class ProfileBasicFragment : BaseFragment() {
 
     private var avatarCall: Call<JsonObject>? = null
     private var updateCall: Call<JsonObject>? = null
+    private var phoneCall: Call<JsonObject>? = null
+    private var otpCall: Call<JsonObject>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fg_p_basic, container, false)
@@ -46,6 +53,7 @@ class ProfileBasicFragment : BaseFragment() {
             nameEditET.setText(userData.name)
             emailET.setText(userData.email)
             mobileET.setText(userData.mobileNumber)
+            mobileIV.setOnClickListener { showChangePhoneNumberDialog() }
             if (userData.avatar!=null && userData.avatar.isNotEmpty()) {
                 baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData.avatar).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
             }
@@ -68,6 +76,50 @@ class ProfileBasicFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    private fun showChangePhoneNumberDialog() {
+        val bldr = AlertDialog.Builder(baseActivity)
+        val dialog: AlertDialog
+        bldr.setTitle("Change Phone number")
+        val view = View.inflate(baseActivity, R.layout.dialog_change_phone, null)
+        bldr.setView(view)
+        val phoneET = view.findViewById<MyEditText>(R.id.phoneET)
+        val resendTV = view.findViewById<MyTextView>(R.id.resendTV)
+        val otpET = view.findViewById<OtpView>(R.id.otpET)
+        resendTV.setOnClickListener { resendOTP(getText(phoneET)) }
+        bldr.setPositiveButton("Submit") { _, _ -> }
+        bldr.setNegativeButton("Cancel", null)
+        dialog = bldr.create()
+        dialog.show()
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+            if (validatePhone(getText(phoneET), getText(otpET))) {
+                dialog.dismiss()
+                changePhone(getText(phoneET), getText(otpET))
+                baseActivity.hideSoftKeyboard()
+            }
+        }
+    }
+    private fun validatePhone(text: String, text1: String): Boolean {
+        when {
+            text.isEmpty() -> showToast("Please enter Phone number")
+            text1.isEmpty() -> showToast("Please enter OTP")
+            else -> return true
+        }
+        return false
+    }
+
+    private fun resendOTP(text: String) {
+        val phone = RequestBody.create(MediaType.parse("text/plain"), text)
+        otpCall = apiInterface.resendOTPToPhone(phone)
+        apiManager.makeApiCall(otpCall!!, this)
+    }
+
+    private fun changePhone(phone: String, otp: String) {
+        val phonee = RequestBody.create(MediaType.parse("text/plain"), phone)
+        val otpp = RequestBody.create(MediaType.parse("text/plain"), otp)
+        phoneCall = apiInterface.updatePhone(otpp, phonee)
+        apiManager.makeApiCall(phoneCall!!, this)
     }
 
     private fun updateProfile() {
@@ -110,6 +162,19 @@ class ProfileBasicFragment : BaseFragment() {
             val userData = Gson().fromJson(jsonObj, UserData::class.java)
             store.saveUserData(Const.USER_DATA, userData)
             (baseActivity as MainActivity).setupHeaderView()
+        }else if (phoneCall != null && phoneCall === call) {
+            val jsonObj = payload as JsonObject
+            val userData = Gson().fromJson(jsonObj, UserData::class.java)
+            mobileET.setText(userData.mobileNumber)
+            store.saveUserData(Const.USER_DATA, userData)
+            showToast("Details updated successfully")
+        } else if (otpCall != null && otpCall === call) {
+            val jsonObj = payload as JsonObject
+
+            val userObj = jsonObj.getAsJsonObject("user")
+            val userData = Gson().fromJson(userObj, UserData::class.java)
+            store.saveUserData(Const.USER_DATA, userData)
+            showToast("OTP has been resent")
         }
     }
 }

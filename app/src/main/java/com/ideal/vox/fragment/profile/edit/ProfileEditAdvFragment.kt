@@ -28,10 +28,12 @@ class ProfileEditAdvFragment : BaseFragment() {
         val adapter = PageAdapter(childFragmentManager)
         val frag = ProfileEditBasicFragment()
         val frag1 = ProfileEditPhotographerFragment()
-        val frag2 = ProfileEditBankDetailsFragment()
+        val frag2 = ProfileEditPriceDetailsFragment()
+        val frag3 = ProfileEditBankDetailsFragment()
         adapter.addFragment(frag, "Basic Details")
         adapter.addFragment(frag1, "Professional")
-        adapter.addFragment(frag2, "Bank Details")
+        adapter.addFragment(frag2, "Price")
+        adapter.addFragment(frag3, "Bank Details")
         pager.adapter = adapter
         pager.currentItem = 1
 

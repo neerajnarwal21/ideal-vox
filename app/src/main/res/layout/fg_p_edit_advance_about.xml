@@ -29,13 +29,14 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/mobileTIL"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="16dp"
         android:focusableInTouchMode="false"
         android:theme="@style/TextLabelProfile"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/mobileIV"
         app:layout_constraintTop_toBottomOf="@id/nameTIL">
 
         <com.ideal.vox.customViews.MyEditText
@@ -49,6 +50,18 @@
             android:textColor="@color/WhiteSmoke" />
     </android.support.design.widget.TextInputLayout>
 
+    <ImageView
+        android:id="@+id/mobileIV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_edit"
+        app:layout_constraintBottom_toBottomOf="@+id/mobileTIL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mobileTIL"
+        app:layout_constraintTop_toTopOf="@id/mobileTIL" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/emailTIL"

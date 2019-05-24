@@ -62,6 +62,7 @@ class ProfileEditPhotographerFragment : BaseFragment() {
         dobCal.time = getDateFromStringDate(data?.photoProfile?.dob, "yyyy-MM-dd")
         dobET.setText(SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH).format(dobCal.time))
         if (data?.photoProfile?.gender == "M") maleRB.isChecked = true else femaleRB.isChecked = true
+        ytET.setText(data?.photoProfile?.youtube)
         addressET.setText(data?.photoProfile?.address)
         pinET.setText(data?.photoProfile?.pinCode)
         locTV.setText("Update Location pin")
@@ -119,7 +120,8 @@ class ProfileEditPhotographerFragment : BaseFragment() {
         val pin = RequestBody.create(MediaType.parse("text/plain"), getText(pinET))
         val lat = RequestBody.create(MediaType.parse("text/plain"), latLng?.latitude.toString())
         val lng = RequestBody.create(MediaType.parse("text/plain"), latLng?.longitude.toString())
-        confirmCall = apiInterface.becomePhotographer(expertise, expYear, expMonth, dob, gender, address, pin, lat, lng)
+        val yt = RequestBody.create(MediaType.parse("text/plain"), getText(ytET))
+        confirmCall = apiInterface.becomePhotographer(null,expertise, expYear, expMonth, dob, gender, address, pin, lat, lng, yt)
         apiManager.makeApiCall(confirmCall!!, this)
     }
 

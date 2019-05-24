@@ -6,6 +6,7 @@ import com.ideal.vox.R
 import com.ideal.vox.activity.BaseActivity
 import com.ideal.vox.fragment.loginSignup.login.LoginFragment
 import com.ideal.vox.fragment.profile.ProfileFragment
+import com.ideal.vox.utils.Const
 import kotlinx.android.synthetic.main.toolbar_custom.*
 
 
@@ -19,6 +20,8 @@ class LoginSignupActivity : BaseActivity() {
     }
 
     private fun initUI() {
+        store.saveString(Const.SESSION_KEY,null)
+        store.saveUserData(Const.USER_DATA, null)
         jumpToLogin()
     }
 

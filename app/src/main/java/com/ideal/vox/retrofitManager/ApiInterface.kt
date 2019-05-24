@@ -42,7 +42,7 @@ interface ApiInterface {
     @Multipart
     @POST("resend_otp")
     fun resendOTP(@Part("user_id") userId: RequestBody,
-                  @Part("mobile_number") mobile: RequestBody)
+                  @Part("email") email: RequestBody)
             : Call<JsonObject>
 
     @Multipart
@@ -58,6 +58,17 @@ interface ApiInterface {
             : Call<JsonObject>
 
     @Multipart
+    @POST("send_otp_to_login_user")
+    fun resendOTPToPhone(@Part("mobile_number") phone: RequestBody)
+            : Call<JsonObject>
+
+    @Multipart
+    @POST("update_phone_number")
+    fun updatePhone(@Part("otp") otp: RequestBody,
+                    @Part("mobile_number") mobile: RequestBody)
+            : Call<JsonObject>
+
+    @Multipart
     @POST("update_avatar")
     fun updateDP(@Part fileDP: MultipartBody.Part?)
             : Call<JsonObject>
@@ -67,7 +78,8 @@ interface ApiInterface {
 
     @Multipart
     @POST("become_photographer")
-    fun becomePhotographer(@Part("expertise") expertise: RequestBody,
+    fun becomePhotographer(@Part("otp") otp: RequestBody?,
+                           @Part("expertise") expertise: RequestBody,
                            @Part("experience_in_year") year: RequestBody,
                            @Part("experience_in_months") month: RequestBody,
                            @Part("dob") dob: RequestBody,
@@ -75,7 +87,8 @@ interface ApiInterface {
                            @Part("address") password: RequestBody,
                            @Part("pin") pinCode: RequestBody,
                            @Part("lat") lat: RequestBody,
-                           @Part("lng") lng: RequestBody)
+                           @Part("lng") lng: RequestBody,
+                           @Part("youtube_link") youtube: RequestBody?)
             : Call<JsonObject>
 
     @Multipart
@@ -84,6 +97,13 @@ interface ApiInterface {
                           @Part("account_number") accNo: RequestBody,
                           @Part("ifsc_code") ifsc: RequestBody,
                           @Part pic: MultipartBody.Part?)
+            : Call<JsonObject>
+
+    @Multipart
+    @POST("update_price")
+    fun updatePrice(@Part("day_price") day: RequestBody,
+                    @Part("night_price") night: RequestBody,
+                    @Part("full_day_price") fullDay: RequestBody)
             : Call<JsonObject>
 
     @Multipart
@@ -122,6 +142,9 @@ interface ApiInterface {
     @GET("get_album_pics/{album_id} ")
     fun allAlbumPics(@Path("album_id") albumId: Int): Call<JsonObject>
 
+    @GET("get_schedules/{user_id} ")
+    fun getSchedule(@Path("user_id") userId: Int): Call<JsonObject>
+
     @Multipart
     @POST("add_album_picture")
     fun addPic(@Part("album_id") albumId: RequestBody,
@@ -131,7 +154,16 @@ interface ApiInterface {
     @GET("delete_album_picture/{pic_id}")
     fun deletePicture(@Path("pic_id") picId: Int): Call<JsonObject>
 
+    @GET("get_photographers_near/{lat}/{lng}/{distance}")
+    fun mapPhotographers(@Path("lat") lat: Double,
+                         @Path("lng") lng: Double,
+                         @Path("distance") distance: Int): Call<JsonObject>
+
     @GET("get_photographers")
-    fun allPhotographers(): Call<JsonObject>
+    fun allPhotographers(@Query("page") page: Int,
+                         @Query("q") query: String?,
+                         @Query("expertise") exp: String?,
+                         @Query("min_price") minPrice: Int?,
+                         @Query("max_price") maxPrice: Int?): Call<JsonObject>
 
 }

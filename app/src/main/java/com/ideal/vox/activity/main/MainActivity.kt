@@ -17,6 +17,8 @@ import com.ideal.vox.data.UserType
 import com.ideal.vox.fragment.AddLocationPinFragment
 import com.ideal.vox.fragment.home.BecomePhotographerFragment
 import com.ideal.vox.fragment.home.HomeFragment
+import com.ideal.vox.fragment.home.HomeMapFragment
+import com.ideal.vox.fragment.home.ScheduleFragment
 import com.ideal.vox.fragment.profile.ProfileBasicFragment
 import com.ideal.vox.fragment.profile.ProfileFragment
 import com.ideal.vox.fragment.profile.edit.ProfileEditAdvFragment
@@ -48,6 +50,7 @@ class MainActivity : BaseActivity() {
 
     fun jumpToHome() {
         drawer.closeDrawer(Gravity.START)
+        navigationView.menu.getItem(0).isChecked = true
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.fc_home, HomeFragment())
@@ -70,10 +73,8 @@ class MainActivity : BaseActivity() {
             drawer.closeDrawers()
             var fragment: Fragment? = null
             when (menuItem.itemId) {
-                R.id.home -> {
-                    fragment = HomeFragment()
-                    menuItem.isChecked = true
-                }
+                R.id.home -> jumpToHome()
+                R.id.schedule -> fragment = ScheduleFragment()
                 R.id.become_photographer -> showPhotographerDialog()
                 R.id.logout -> {
                     apiClient.clearCache()
@@ -132,17 +133,24 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun setToolbar(showDrawer: Boolean, text: String, showEdit: Boolean, showToolbar: Boolean) {
+    fun setToolbar(showDrawer: Boolean, text: String, showEdit: Boolean, showMap: Boolean, showToolbar: Boolean) {
         titleTBTV.text = text
         menuTBIV.visibility = if (showDrawer) View.VISIBLE else View.GONE
         menuTBIV.setOnClickListener { drawer.openDrawer(Gravity.START) }
         backTBIV.visibility = if (showDrawer) View.GONE else View.VISIBLE
         editTBIV.visibility = if (showEdit) View.VISIBLE else View.GONE
+        mapTBIV.visibility = if (showMap) View.VISIBLE else View.GONE
         toolbar.visibility = if (showToolbar) View.VISIBLE else View.GONE
         backTBIV.setOnClickListener { onBackPressed() }
         editTBIV.setOnClickListener {
             supportFragmentManager.beginTransaction()
                     .replace(R.id.fc_home, ProfileEditAdvFragment())
+                    .addToBackStack(null)
+                    .commit()
+        }
+        mapTBIV.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.fc_home, HomeMapFragment())
                     .addToBackStack(null)
                     .commit()
         }
@@ -168,6 +176,21 @@ class MainActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         val fragment = supportFragmentManager.findFragmentById(R.id.fc_home)
         if (fragment is AddLocationPinFragment) {
+            when (requestCode) {
+                LocationManager.REQUEST_LOCATION ->
+                    when (resultCode) {
+                        Activity.RESULT_OK -> {
+                            fragment.onGPSEnable()
+                        }
+                        Activity.RESULT_CANCELED -> {
+                            fragment.onGPSEnableDenied()
+                        }
+                        else -> {
+                            fragment.onGPSEnableDenied()
+                        }
+                    }
+            }
+        }else if (fragment is HomeMapFragment) {
             when (requestCode) {
                 LocationManager.REQUEST_LOCATION ->
                     when (resultCode) {

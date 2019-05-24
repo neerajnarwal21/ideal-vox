@@ -20,6 +20,12 @@ import com.ideal.vox.utils.Const
 import com.ideal.vox.utils.getAge
 import kotlinx.android.synthetic.main.fg_p_about.*
 import retrofit2.Call
+import android.R.attr.label
+import android.content.ClipData
+import android.content.Context.CLIPBOARD_SERVICE
+import android.support.v4.content.ContextCompat.getSystemService
+import android.content.ClipboardManager
+import android.content.Context
 
 
 /**
@@ -44,20 +50,36 @@ class ProfileAboutFragment : BaseFragment() {
     private fun initUI() {
         userData = store.getUserData(Const.USER_DATA, UserData::class.java)
         if (userData != null) {
-            expTV.text = userData!!.photoProfile.expertise
-            experTV.text = "${userData!!.photoProfile.experienceInYear} years, ${userData!!.photoProfile.experienceInMonths}"
-            ageTV.text = "${getAge(userData!!.photoProfile.dob)}, ${userData!!.photoProfile.gender}"
+            expTV.text = userData!!.photoProfile?.expertise
+            experTV.text = "${userData!!.photoProfile?.experienceInYear} years, ${userData!!.photoProfile?.experienceInMonths}"
+            ageTV.text = "${getAge(userData!!.photoProfile!!.dob)}, ${userData!!.photoProfile?.gender}"
             mobileTV.text = userData!!.mobileNumber
             emailTV.text = userData!!.email
-            addressTV.text = "${userData!!.photoProfile.address}\n${userData!!.photoProfile.pinCode}"
+            addressTV.text = "${userData!!.photoProfile?.address}\n${userData!!.photoProfile?.pinCode}"
+            if(userData!!.photoProfile?.youtube==null || userData!!.photoProfile?.youtube!!.isEmpty()){
+                ytTVV.visibility  =View.GONE
+                ytTV.visibility  =View.GONE
+                copyIV.visibility  =View.GONE
+            }
+            ytTV.text = Html.fromHtml("<u>${userData!!.photoProfile?.youtube}</u>")
+            ytTV.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(userData!!.photoProfile?.youtube))
+                baseActivity.startActivity(Intent.createChooser(intent, "Open with"))
+            }
+            copyIV.setOnClickListener {
+                val clipboard = baseActivity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+                val clip = ClipData.newPlainText("ytLink", userData!!.photoProfile?.youtube)
+                clipboard!!.setPrimaryClip(clip)
+                showToast("Link copied to clipboard")
+            }
             callIV.setOnClickListener {
                 val call = Uri.parse("tel:${userData!!.mobileNumber}")
                 val callIntent = Intent(Intent.ACTION_DIAL, call)
                 baseActivity.startActivity(Intent.createChooser(callIntent, "Call with"))
             }
             mapIV.setOnClickListener {
-                val gmmIntentUri = Uri.parse("geo:${userData!!.photoProfile.lat},${userData!!.photoProfile.lng}" +
-                        "?q=${userData!!.photoProfile.lat},${userData!!.photoProfile.lng}")
+                val gmmIntentUri = Uri.parse("geo:${userData!!.photoProfile?.lat},${userData!!.photoProfile?.lng}" +
+                        "?q=${userData!!.photoProfile?.lat},${userData!!.photoProfile?.lng}")
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
                 if (mapIntent.resolveActivity(baseActivity.getPackageManager()) != null) {
