@@ -142,8 +142,6 @@ interface ApiInterface {
     @GET("get_album_pics/{album_id} ")
     fun allAlbumPics(@Path("album_id") albumId: Int): Call<JsonObject>
 
-    @GET("get_schedules/{user_id} ")
-    fun getSchedule(@Path("user_id") userId: Int): Call<JsonObject>
 
     @Multipart
     @POST("add_album_picture")
@@ -165,5 +163,16 @@ interface ApiInterface {
                          @Query("expertise") exp: String?,
                          @Query("min_price") minPrice: Int?,
                          @Query("max_price") maxPrice: Int?): Call<JsonObject>
+
+    @Multipart
+    @POST("get_schedules/{user_id}")
+    fun getSchedule(@Path("user_id") userId: Int,
+                    @Part("from_date") fromDate: RequestBody,
+                    @Part("to_date") toDate: RequestBody): Call<JsonObject>
+
+    @Multipart
+    @POST("update_schedules")
+    fun updateSchedule(@Part("user_id") userId: RequestBody,
+                       @Part("schedule") schedule: RequestBody): Call<JsonObject>
 
 }

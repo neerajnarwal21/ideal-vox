@@ -64,12 +64,12 @@ class HomeFilterFragment : BaseFragment() {
             Filters.updateFilters(null)
             baseActivity.onBackPressed()
         }
+        rangeSB.setMinStartValue(filterData!!.min.toFloat())
+                .setMaxStartValue(filterData!!.max.toFloat()).apply()
         rangeSB.setOnRangeSeekbarChangeListener { minValue, maxValue ->
             minTV.setText(minValue.toString())
             maxTV.setText(maxValue.toString())
         }
-        rangeSB.setMinStartValue(filterData!!.min.toFloat())
-                .setMaxStartValue(filterData!!.max.toFloat()).apply()
     }
 
     override fun onDestroy() {
@@ -97,7 +97,7 @@ class HomeFilterFragment : BaseFragment() {
 
     private fun loadSpinner(array: Array<String?>) {
         val spinnerArrayAdapter = ArrayAdapter<String>(baseActivity, R.layout.adapter_simple_item_dark, array)
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.adapter_simple_item_list)
         expSP.adapter = spinnerArrayAdapter
         for ((i, data) in list.withIndex()) {
             if (data.name == filterData?.category) {

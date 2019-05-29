@@ -150,43 +150,45 @@
             android:drawableStart="@drawable/ic_info_white"
             android:drawablePadding="8dp"
             android:gravity="start|center"
-            android:text="Set your availability schedule for next 4 weeks. An occupied booking can not be changed."
+            android:text="Set your availability schedule. An occupied booking can not be changed."
             android:textColor="@color/WhiteSmoke"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/unavailableCL" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/listRV"
+        <com.pugtools.fcalendar.widget.FlexibleCalendar
+            android:id="@+id/flexCal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:overScrollMode="never"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/infoTV" />
+            app:layout_constraintTop_toBottomOf="@id/infoTV"
+            app:state="expanded"
+            app:style="light" />
 
         <com.ideal.vox.customViews.MyButton
             android:id="@+id/submitBT"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginStart="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
             android:background="@drawable/btn_yellow"
             android:text="Save Changes"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/listRV" />
+            app:layout_constraintTop_toBottomOf="@id/flexCal" />
 
         <ProgressBar
             android:id="@+id/loadingPB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
             android:theme="@style/RadioTheme"
+            app:layout_constraintBottom_toTopOf="@id/submitBT"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/infoTV" />

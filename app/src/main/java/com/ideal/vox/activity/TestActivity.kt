@@ -1,38 +1,80 @@
 package com.ideal.vox.activity
 
 import android.os.Bundle
+import android.util.SparseArray
+import android.view.View
 import com.ideal.vox.R
+import com.pugtools.fcalendar.data.CalendarAdapter
+import com.pugtools.fcalendar.data.DayStatus
+import com.pugtools.fcalendar.widget.DayClose
+import com.pugtools.fcalendar.widget.DayTypeGet
+import com.pugtools.fcalendar.widget.FlexibleCalendar
+import kotlinx.android.synthetic.main.activity_test.*
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class TestActivity : BaseActivity() {
 
+    private var cal = Calendar.getInstance()
+    val dayTypeHashMap = SparseArray<DayStatus>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.fg_h_map_view)
-//        val list = ArrayList<DayData>()
-//        val cal = Calendar.getInstance()
-//        for (i in 0..13) {
-////            val status:Boolean
-////            status = if (i % 2 == 0) dayStatus.isDayShift = true
-////            if (i % 3 == 0) dayStatus.isDayShift = false
-////            if (i % 5 == 0) dayStatus.isNightShift = true
-////            if (i % 7 == 0) dayStatus.isNightShift = false
-//
-//            val dayStatus = DayData(true, false, cal[Calendar.DAY_OF_MONTH].toString()
-//                    + SimpleDateFormat(" MMM\n(EEE)", Locale.ENGLISH).format(cal.time))
-//            cal.roll(Calendar.DAY_OF_YEAR, 1)
-//            list.add(dayStatus)
-//        }
-//        listRV.layoutManager = GridLayoutManager(this, 7)
-//        listRV.adapter = ScheduleSetAdapter(this, list)
-//
-//        bt.setOnClickListener {
-//            val intent = Intent()
-//            intent.type = "image/*"
-//            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-//            intent.action = Intent.ACTION_GET_CONTENT
-//            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1)
-//        }
+        setContentView(R.layout.activity_test)
+
+        val firstDayCal = cal.getActualMinimum(Calendar.DAY_OF_MONTH)
+        val lastDayCal = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
+
+        for (i in firstDayCal..lastDayCal) {
+            val dayStatus = DayStatus()
+            dayStatus.day = DayStatus.DayEnum.UNAVAILABLE
+            dayStatus.night = DayStatus.NightEnum.BOOKED
+            dayTypeHashMap.put(i, dayStatus)
+        }
+
+        val adapter = CalendarAdapter(this, cal, dayTypeHashMap)
+        flexCal.setAdapter(adapter, dayTypeHashMap)
+        flexCal.setCalendarListener(object : FlexibleCalendar.CalendarListener {
+            override fun onDaySelect() {
+            }
+
+            override fun onDayClick(v: View?, day: Int, dayClose: DayClose?) {
+                dayTypeHashMap[day]?.day = if (dayTypeHashMap[day]?.day == DayStatus.DayEnum.AVAILABLE) DayStatus.DayEnum.UNAVAILABLE else DayStatus.DayEnum.AVAILABLE
+                adapter.refresh(dayTypeHashMap)
+                flexCal.reload()
+
+                showToast("Day click", false)
+                log("Day click")
+            }
+
+            override fun onNightClick(v: View?, day: Int, dayClose: DayClose?) {
+                showToast("Night click", false)
+                log("Night click")
+            }
+
+            override fun onDataUpdate() {
+            }
+
+            override fun onMonthChange(currentCal: Calendar, dayTypeGet: DayTypeGet?) {
+                resetHashMap(currentCal, dayTypeGet)
+            }
+
+            override fun onWeekChange(position: Int) {
+            }
+
+        })
+    }
+
+    private fun resetHashMap(currentCal: Calendar, dayTypeGet: DayTypeGet?) {
+        dayTypeHashMap.clear()
+        val firstDayCal = currentCal.getActualMinimum(Calendar.DAY_OF_MONTH)
+        val lastDayCal = currentCal.getActualMaximum(Calendar.DAY_OF_MONTH)
+
+        for (i in firstDayCal..lastDayCal) {
+            dayTypeHashMap.put(i, DayStatus())
+        }
+        dayTypeGet?.onDayMapFilled(dayTypeHashMap)
     }
 }

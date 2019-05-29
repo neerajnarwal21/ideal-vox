@@ -134,6 +134,7 @@ class ApiManager(val context: Context, val progressDialog: ProgressDialog) {
                 val mJson = parser.parse(response.errorBody()!!.string())
                 val gson = Gson()
                 val errorData = gson.fromJson(mJson, ErrorData::class.java)
+                if (errorData.message == null) errorData.message = "System error"
                 log(errorData.message + "")
                 responseListener?.onError(call, response.code(), errorData.message.toString(), responseListener)
             }

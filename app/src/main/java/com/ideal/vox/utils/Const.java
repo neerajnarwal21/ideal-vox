@@ -10,6 +10,7 @@ public class Const {
     public static final String DISPLAY_MESSAGE_ACTION = "com.packagename.DISPLAY_MESSAGE";
     public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 1234;
     public static final String NOTI_CHANNEL_ID = "my_custom_channel";
+    public static final int REQUEST_CODE_CHOOSE = 1313;
     /**
      * ******************************* App buy or Purchase Key *************************************
      */

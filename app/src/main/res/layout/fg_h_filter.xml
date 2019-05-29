@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="50dp"
+            android:checked="true"
             android:layout_marginBottom="5dp"
             android:theme="@style/CheckTheme"
             app:layout_constraintStart_toEndOf="@+id/priceTV"
@@ -64,17 +65,16 @@
             app:bar_highlight_color="@color/WhiteSmokeDark"
             app:corner_radius="10"
             app:data_type="_integer"
-            app:gap="100"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/priceCB"
             app:left_thumb_color="@color/colorSecondaryPressed"
             app:left_thumb_color_pressed="@color/colorSecondaryDark"
-            app:max_value="5000"
-            app:min_value="100"
+            app:max_value="50000"
+            app:min_value="500"
             app:right_thumb_color="@color/colorSecondaryPressed"
             app:right_thumb_color_pressed="@color/colorSecondaryDark"
-            app:steps="100" />
+            app:steps="500" />
 
         <com.ideal.vox.customViews.MyTextView
             android:id="@+id/minTV"
@@ -99,6 +99,7 @@
             android:id="@+id/transFL"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:visibility="gone"
             android:background="@color/colorPrimaryTrans"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

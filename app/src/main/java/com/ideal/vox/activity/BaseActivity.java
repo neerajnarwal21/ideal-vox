@@ -3,6 +3,7 @@ package com.ideal.vox.activity;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -31,18 +32,21 @@ import com.ideal.vox.retrofitManager.ApiManager;
 import com.ideal.vox.retrofitManager.ResponseListener;
 import com.ideal.vox.utils.Const;
 import com.ideal.vox.utils.ImageUtils;
+import com.ideal.vox.utils.MatisseList;
 import com.ideal.vox.utils.PermissionsManager;
 import com.ideal.vox.utils.PrefStore;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
+import com.zhihu.matisse.Matisse;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -194,7 +198,11 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        ImageUtils.Companion.activityResult(requestCode, resultCode, data);
+        if (requestCode == Const.REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
+            List<Uri> mSelected = Matisse.obtainResult(data);
+            MatisseList.INSTANCE.sendList(mSelected);
+        } else
+            ImageUtils.Companion.activityResult(requestCode, resultCode, data);
     }
 
     public void exitFromApp() {

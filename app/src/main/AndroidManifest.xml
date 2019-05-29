@@ -27,8 +27,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.main.PicGalleryActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".activity.main.PicGalleryActivity"
+            android:launchMode="singleTop" />
         <activity
             android:name="com.ideal.vox.activity.main.MainActivity"
             android:screenOrientation="portrait"

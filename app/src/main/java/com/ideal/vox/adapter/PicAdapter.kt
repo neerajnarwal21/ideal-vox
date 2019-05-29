@@ -42,7 +42,7 @@ class PicAdapter(private val activity: BaseActivity, private val datas: ArrayLis
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is AddViewHolder) {
             holder.picIV.setOnClickListener {
-                frag?.addPicDialog()
+                frag?.selectImage()
             }
         } else if (holder is MyViewHolder) {
             val data = datas[holder.adapterPosition]

@@ -183,7 +183,7 @@ class BecomePhotographerFragment : BaseFragment() {
 
     private fun loadSpinner(array: Array<String?>) {
         val spinnerArrayAdapter = ArrayAdapter<String>(baseActivity, R.layout.adapter_simple_item_dark, array)
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.adapter_simple_item_list)
         expSP.adapter = spinnerArrayAdapter
     }
 }

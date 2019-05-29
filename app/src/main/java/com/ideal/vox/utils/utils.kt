@@ -32,6 +32,7 @@ import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
+import com.google.firebase.iid.FirebaseInstanceId
 import com.ideal.vox.BuildConfig
 import com.ideal.vox.R
 import com.ideal.vox.activity.splash.SplashActivity
@@ -39,6 +40,7 @@ import com.ideal.vox.customViews.MyTextView
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.RequestCreator
 import com.squareup.picasso.Target
+import io.reactivex.Observable
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.text.ParseException
@@ -286,6 +288,7 @@ fun RequestCreator.intoMyTarget(activity: Activity, imageView: ImageView) {
 fun logout(context: Context, store: PrefStore) {
     store.saveString(Const.SESSION_KEY, null)
     store.saveUserData(Const.USER_DATA, null)
+    Observable.fromCallable { FirebaseInstanceId.getInstance().deleteInstanceId() }
     val intent = Intent(context, SplashActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TOP }
     context.startActivity(intent)
 }

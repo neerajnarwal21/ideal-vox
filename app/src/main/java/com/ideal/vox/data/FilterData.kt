@@ -7,7 +7,7 @@ data class FilterData(
         var category: String = "",
         var priceDisable: Boolean = false,
         var min: Int = 500,
-        var max: Int = 4000
+        var max: Int = 50000
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readString(),

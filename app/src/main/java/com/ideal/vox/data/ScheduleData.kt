@@ -6,8 +6,8 @@ import com.google.gson.annotations.SerializedName
 
 data class ScheduleData(
         @SerializedName("id") var id: Int = 0,
-        @SerializedName("day") var day: DayType,
-        @SerializedName("night") var night: NightType,
+        @SerializedName("day") var day: DayType = DayType.AVAILABLE,
+        @SerializedName("night") var night: NightType = NightType.AVAILABLE,
         @SerializedName("schedule_date") var scheduleDate: String = "",
         @SerializedName("user_id") var userId: String = ""
 ) : Parcelable {
