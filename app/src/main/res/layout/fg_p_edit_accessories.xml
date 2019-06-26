@@ -17,21 +17,25 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/yellow_circle"
             android:padding="10dp"
+            android:visibility="invisible"
             android:src="@drawable/ic_add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <include
+            android:id="@+id/reviewCL"
+            android:visibility="invisible"
+            layout="@layout/adapter_reviews"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/listRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             android:overScrollMode="never"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addIV" />
+            app:layout_constraintTop_toBottomOf="@+id/reviewCL" />
 
         <com.ideal.vox.customViews.MyTextView
             android:id="@+id/emptyTV"

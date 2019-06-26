@@ -49,7 +49,10 @@ class SplashActivity : BaseActivity() {
         model.getStatus().observe(this, Observer {
             when (it) {
                 SplashStatus.LOGIN -> gotoLSActivity()
-                SplashStatus.SKIP -> gotoMainActivity()
+                SplashStatus.SKIP -> {
+                    store.setBoolean(Const.GUEST_DIRECT, true)
+                    gotoMainActivity()
+                }
             }
         })
 
@@ -57,21 +60,20 @@ class SplashActivity : BaseActivity() {
         log("Token >>>> onCreate checking token :-- ${store.getString(Const.DEVICE_TOKEN)}")
         createNotificationChannel()
         setStatusBarTranslucent(this, true)
-//        if (initFCM())
-        handler.postDelayed({
-            log("Token >>>> After 1 sec checking token :-- ${store.getString(Const.DEVICE_TOKEN)}")
-//                if (!isFinishing && store.getString(Const.DEVICE_TOKEN) != null)
-//                    startAnimations()
-//                else {
-//                    registerForTokenCallback()
-//                    waitFor10SecMore()
-//                }
-            if (!isFinishing && store.getString(Const.SESSION_KEY, null) != null) {
-                gotoMainActivity()
-            } else {
-                startAnimations()
-            }
-        }, 1000)
+        if (initFCM())
+            handler.postDelayed({
+                log("Token >>>> After 1 sec checking token :-- ${store.getString(Const.DEVICE_TOKEN)}")
+                if (!isFinishing && store.getString(Const.DEVICE_TOKEN) != null) {
+                    if (store.getString(Const.SESSION_KEY, null) != null)
+                        gotoMainActivity()
+                    else if (store.getBoolean(Const.GUEST_DIRECT, false))
+                        gotoMainActivity()
+                    else
+                        startAnimations()
+                } else {
+                    registerForTokenCallback()
+                }
+            }, 1000)
         val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         mNotificationManager.cancel(0)
     }
@@ -88,12 +90,6 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    private fun gotoLoginAct(s: String) {
-//        val intent = Intent(this, LoginSignUpActivity::class.java)
-//        intent.putExtra("goto", s)
-//        startActivity(intent)
-    }
-
     private fun showDialogNoServices() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Alert !")
@@ -106,16 +102,14 @@ class SplashActivity : BaseActivity() {
         builder.show()
     }
 
-    private fun waitFor10SecMore() {
+    private fun registerForTokenCallback() {
         log("Token >>>> Waiting for token to come")
         handler.postDelayed(waitingRunnable, 10000)
-    }
 
-    private fun registerForTokenCallback() {
         TokenRefresh.setTokenListener {
             log("Token >>>> Token is here")
             handler.removeCallbacks(waitingRunnable)
-            gotoMainActivity()
+            startAnimations()
         }
     }
 

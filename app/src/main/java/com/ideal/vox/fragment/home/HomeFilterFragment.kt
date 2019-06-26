@@ -10,7 +10,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.ideal.vox.R
 import com.ideal.vox.data.ExpertiseData
-import com.ideal.vox.data.FilterData
+import com.ideal.vox.data.schedule.FilterData
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.utils.Filters
 import kotlinx.android.synthetic.main.fg_h_filter.*

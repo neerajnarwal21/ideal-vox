@@ -6,5 +6,7 @@ enum class UserType {
     @SerializedName("user")
     USER,
     @SerializedName("photographer")
-    PHOTOGRAPHER
+    PHOTOGRAPHER,
+    @SerializedName("helper")
+    HELPER
 }

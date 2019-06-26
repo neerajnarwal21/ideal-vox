@@ -16,6 +16,7 @@ import com.ideal.vox.R
 import com.ideal.vox.activity.main.MainActivity
 import com.ideal.vox.adapter.PageAdapter
 import com.ideal.vox.data.UserData
+import com.ideal.vox.data.UserType
 import com.ideal.vox.databinding.FgProfileBinding
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.fragment.profile.about.ProfileAboutFragment
@@ -51,6 +52,8 @@ class ProfileFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setToolbar("Profile", showEdit = true)
+        val data = store.getUserData(Const.USER_DATA, UserData::class.java)
+        if (data?.userType == UserType.HELPER) topCL.visibility = View.GONE
         model.getStatus().observe(this, Observer {
             when (it) {
                 ProfileStatus.ABOUT, ProfileStatus.ABOUT_PAGER -> {
@@ -78,9 +81,11 @@ class ProfileFragment : BaseFragment() {
 
         val adapter = PageAdapter(childFragmentManager)
         val frag = ProfileAboutFragment()
-        val frag1 = ProfileAlbumsFragment()
         adapter.addFragment(frag)
-        adapter.addFragment(frag1)
+        if (data?.userType == UserType.PHOTOGRAPHER) {
+            val frag1 = ProfileAlbumsFragment()
+            adapter.addFragment(frag1)
+        }
         pager.adapter = adapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -105,7 +110,7 @@ class ProfileFragment : BaseFragment() {
         val userData = store.getUserData(Const.USER_DATA, UserData::class.java)
         if (userData != null) {
             nameTV.setText(userData.name)
-            if (userData.avatar != null && userData.avatar.isNotEmpty()) {
+            if (userData.avatar.isNotNullAndEmpty()) {
                 baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData.avatar).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
             }
         }

@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/expTVV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="Expert in"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/expTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:textAllCaps="true"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/experTVV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="Experience"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/expTV" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/experTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/expTV" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/ageTVV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="Age"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/experTV" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/ageTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/experTV" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/mobileTVV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="Mobile"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ageTV" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/mobileTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/ageTV" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/emailTVV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="Email"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mobileTV" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/emailTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/mobileTV" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/addressTVV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="Address"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emailTV" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/addressTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:lines="2"
+        android:maxLines="2"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/emailTV" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/aboutTVV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="About"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addressTV" />
+
+    <com.ideal.vox.customViews.MyTextView
+        android:id="@+id/aboutTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:textColor="@color/WhiteSmoke"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/addressTV" />
+    <ImageView
+        android:id="@+id/scheduleIV"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/yellow_circle"
+        android:padding="5dp"
+        android:src="@drawable/ic_schedule_black"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/callIV"
+        app:layout_constraintTop_toBottomOf="@+id/aboutTV" />
+
+    <ImageView
+        android:id="@+id/callIV"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/yellow_circle"
+        android:padding="5dp"
+        android:src="@drawable/ic_call_black"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/mapIV"
+        app:layout_constraintTop_toBottomOf="@+id/aboutTV" />
+
+
+    <!--<ImageView-->
+    <!--android:id="@+id/bookIV"-->
+    <!--android:layout_width="45dp"-->
+    <!--android:layout_height="45dp"-->
+    <!--android:layout_marginEnd="10dp"-->
+    <!--android:layout_marginBottom="15dp"-->
+    <!--android:background="@drawable/yellow_circle"-->
+    <!--android:padding="7dp"-->
+    <!--android:src="@drawable/ic_schedule_black"-->
+    <!--android:visibility="gone"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/mapIV"-->
+    <!--app:layout_constraintEnd_toEndOf="parent" />-->
+
+    <ImageView
+        android:id="@+id/mapIV"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/yellow_circle"
+        android:padding="5dp"
+        android:src="@drawable/ic_place_black"
+        app:layout_constraintEnd_toStartOf="@+id/ytIV"
+        app:layout_constraintTop_toBottomOf="@+id/aboutTV" />
+
+    <ImageView
+        android:id="@+id/ytIV"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:src="@mipmap/ic_yt"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/instaIV"
+        app:layout_constraintTop_toBottomOf="@+id/aboutTV" />
+
+    <ImageView
+        android:id="@+id/instaIV"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:src="@mipmap/ic_insta"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/fbIV"
+        app:layout_constraintTop_toBottomOf="@+id/aboutTV" />
+
+    <ImageView
+        android:id="@+id/fbIV"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:src="@mipmap/ic_fb"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aboutTV" />
+</android.support.constraint.ConstraintLayout>

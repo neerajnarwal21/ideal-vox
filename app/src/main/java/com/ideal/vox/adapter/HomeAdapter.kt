@@ -12,10 +12,12 @@ import com.ideal.vox.activity.BaseActivity
 import com.ideal.vox.activity.main.MainActivity
 import com.ideal.vox.customViews.MyTextView
 import com.ideal.vox.data.UserData
+import com.ideal.vox.data.UserType
 import com.ideal.vox.fragment.home.HomeFragment
 import com.ideal.vox.fragment.home.detail.UserDetailFragment
 import com.ideal.vox.utils.CircleTransform
 import com.ideal.vox.utils.Const
+import com.ideal.vox.utils.isNotNullAndEmpty
 
 
 class HomeAdapter(private val activity: BaseActivity, private val datas: ArrayList<UserData>)
@@ -38,13 +40,22 @@ class HomeAdapter(private val activity: BaseActivity, private val datas: ArrayLi
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MyViewHolder) {
             val data = datas[holder.adapterPosition]
-            if (data.avatar != null && data.avatar.isNotEmpty())
+            if (data.avatar.isNotNullAndEmpty())
                 activity.picasso.load(Const.IMAGE_BASE_URL + "/${data.avatar}")
                         .transform(CircleTransform()).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera)
                         .into(holder.picIV)
             holder.nameTV.text = "Name: ${data.name}"
+            holder.ratingTV.text = data.rating.toString()
             holder.expTV.text = "Experience: ${data.photoProfile?.experienceInYear} years, ${data.photoProfile?.experienceInMonths} months"
-            holder.expertTV.text = "Expert in: ${data.photoProfile?.expertise}"
+            holder.typeTV.text = data.userType.name
+            if (data.userType == UserType.HELPER) {
+                holder.expertTVV.visibility = View.GONE
+                holder.expertTV.visibility = View.GONE
+            } else {
+                holder.expertTVV.visibility = View.VISIBLE
+                holder.expertTV.visibility = View.VISIBLE
+            }
+            holder.expertTV.text = data.photoProfile?.expertise
             holder.parentCL.setOnClickListener {
                 (activity as MainActivity).userData = data
                 val bndl = Bundle()
@@ -83,7 +94,10 @@ class HomeAdapter(private val activity: BaseActivity, private val datas: ArrayLi
         var parentCL: ConstraintLayout = view.findViewById(R.id.parentCL)
         var picIV: ImageView = view.findViewById(R.id.picIV)
         var nameTV: MyTextView = view.findViewById(R.id.nameTV)
+        var ratingTV: MyTextView = view.findViewById(R.id.ratingTV)
         var expTV: MyTextView = view.findViewById(R.id.expTV)
+        var typeTV: MyTextView = view.findViewById(R.id.typeTV)
+        var expertTVV: MyTextView = view.findViewById(R.id.expertTVV)
         var expertTV: MyTextView = view.findViewById(R.id.expertTV)
     }
 

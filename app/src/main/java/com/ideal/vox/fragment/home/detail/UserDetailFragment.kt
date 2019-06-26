@@ -14,10 +14,13 @@ import android.view.ViewGroup
 import com.ideal.vox.R
 import com.ideal.vox.activity.main.MainActivity
 import com.ideal.vox.adapter.PageAdapter
+import com.ideal.vox.data.UserData
+import com.ideal.vox.data.UserType
 import com.ideal.vox.databinding.FgUserDetailBinding
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.utils.Const
 import com.ideal.vox.utils.doColorChange
+import com.ideal.vox.utils.isNotNullAndEmpty
 import com.ideal.vox.utils.showFullScreenImage
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
@@ -29,13 +32,13 @@ import kotlinx.android.synthetic.main.fg_user_detail.*
  */
 class UserDetailFragment : BaseFragment() {
 
-    lateinit var model: HomeViewModel
+    lateinit var model: UserViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val binding: FgUserDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fg_user_detail, container, false)
 
-        model = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        model = ViewModelProviders.of(this).get(UserViewModel::class.java)
         binding.model = model
         binding.setLifecycleOwner(this)
         val view = binding.getRoot()
@@ -45,9 +48,11 @@ class UserDetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setToolbar("", showToolbar = false)
+        val data = (baseActivity as MainActivity).userData
+        if (data?.userType == UserType.HELPER) topCL.visibility = View.GONE
         model.getStatus().observe(this, Observer {
             when (it) {
-                HomeStatus.ABOUT, HomeStatus.ABOUT_PAGER -> {
+                UserStatus.ABOUT, UserStatus.ABOUT_PAGER -> {
                     aboutTV.doColorChange(false)
                     albumsTV.doColorChange(true)
                     aboutCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary2))
@@ -55,7 +60,7 @@ class UserDetailFragment : BaseFragment() {
                     aboutIV.isSelected = true
                     albumsIV.isSelected = false
                 }
-                HomeStatus.ALBUMS, HomeStatus.ALBUMS_PAGER -> {
+                UserStatus.ALBUMS, UserStatus.ALBUMS_PAGER -> {
                     aboutTV.doColorChange(true)
                     albumsTV.doColorChange(false)
                     aboutCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary))
@@ -65,16 +70,19 @@ class UserDetailFragment : BaseFragment() {
                 }
             }
             when (it) {
-                HomeStatus.ABOUT -> pager.currentItem = 0
-                HomeStatus.ALBUMS -> pager.currentItem = 1
+                UserStatus.ABOUT -> pager.currentItem = 0
+                UserStatus.ALBUMS -> pager.currentItem = 1
             }
         })
 
         val adapter = PageAdapter(childFragmentManager)
-        val frag = HomeAboutFragment()
-        val frag1 = HomeAlbumsFragment()
+        val frag = UserAboutFragment()
         adapter.addFragment(frag)
-        adapter.addFragment(frag1)
+
+        if (data?.userType == UserType.PHOTOGRAPHER) {
+            val frag1 = UserAlbumsFragment()
+            adapter.addFragment(frag1)
+        }
         pager.adapter = adapter
         pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -95,17 +103,24 @@ class UserDetailFragment : BaseFragment() {
         updateUI()
     }
 
+    private var tgt: MyTarget? = null
+
     private fun updateUI() {
         val userData = (baseActivity as MainActivity).userData
         if (userData != null) {
             collapseTL.title = userData.name
-            if (userData.avatar != null && userData.avatar.isNotEmpty()) {
-                val tgt = MyTarget()
+            if (userData.avatar.isNotNullAndEmpty()) {
+                tgt = MyTarget()
                 baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData.avatar).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).into(tgt)
                 picIV.tag = tgt
             }
         }
         backIV.setOnClickListener { baseActivity.onBackPressed() }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        baseActivity.picasso.cancelRequest(tgt)
     }
 
     inner class MyTarget : Target {
@@ -116,9 +131,9 @@ class UserDetailFragment : BaseFragment() {
         }
 
         override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-            picIV.setImageBitmap(bitmap)
-            picIV.setOnClickListener {
-                if (bitmap != null) showFullScreenImage(baseActivity, bitmap)
+            if (bitmap != null) {
+                picIV.setImageBitmap(bitmap)
+                picIV.setOnClickListener { showFullScreenImage(baseActivity, bitmap) }
             }
         }
     }

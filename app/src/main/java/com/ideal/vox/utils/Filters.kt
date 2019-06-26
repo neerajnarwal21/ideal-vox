@@ -1,6 +1,6 @@
 package com.ideal.vox.utils
 
-import com.ideal.vox.data.FilterData
+import com.ideal.vox.data.schedule.FilterData
 
 object Filters {
 

@@ -70,6 +70,10 @@ fun View.showKeyboard() {
     }
 }
 
+fun CharSequence?.isNotNullAndEmpty(): Boolean {
+    return !this.isNullOrEmpty()
+}
+
 fun getAge(age: String): String {
     val cal = Calendar.getInstance()
     val calNow = Calendar.getInstance()
@@ -88,6 +92,16 @@ fun Spinner.mySpinnerCallback(callBack: (Int) -> Unit) {
             callBack.invoke(position)
         }
     }
+}
+
+fun animateImage(view: View, backRotate: Boolean) {
+    val anim = RotateAnimation(if (backRotate) 0.0f else 180.0f,
+            if (backRotate) 180.0f else 0.0f,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f)
+    anim.fillAfter = true
+    anim.duration = 500
+    view.startAnimation(anim)
 }
 
 fun changeDateFormat(dateString: String?, sourceDateFormat: String, targetDateFormat: String): String {
@@ -287,7 +301,9 @@ fun RequestCreator.intoMyTarget(activity: Activity, imageView: ImageView) {
 
 fun logout(context: Context, store: PrefStore) {
     store.saveString(Const.SESSION_KEY, null)
+    store.setBoolean(Const.GUEST_DIRECT, false)
     store.saveUserData(Const.USER_DATA, null)
+    store.saveString(Const.DEVICE_TOKEN, null)
     Observable.fromCallable { FirebaseInstanceId.getInstance().deleteInstanceId() }
     val intent = Intent(context, SplashActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TOP }
     context.startActivity(intent)

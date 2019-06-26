@@ -11,8 +11,8 @@ import com.google.gson.reflect.TypeToken
 import com.ideal.vox.R
 import com.ideal.vox.activity.main.MainActivity
 import com.ideal.vox.adapter.PicAdapter
-import com.ideal.vox.data.AlbumData
-import com.ideal.vox.data.PicData
+import com.ideal.vox.data.profile.AlbumData
+import com.ideal.vox.data.profile.PicData
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.retrofitManager.ResponseListener
 import kotlinx.android.synthetic.main.fg_p_albums.*
@@ -22,7 +22,7 @@ import retrofit2.Call
 /**
  * Created by Neeraj Narwal on 5/5/17.
  */
-class HomeAlbumDetailFragment : BaseFragment() {
+class UserAlbumDetailFragment : BaseFragment() {
 
     private var listCall: Call<JsonObject>? = null
     private var adapter: PicAdapter? = null

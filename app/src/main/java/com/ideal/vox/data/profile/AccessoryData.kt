@@ -1,4 +1,4 @@
-package com.ideal.vox.data
+package com.ideal.vox.data.profile
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -9,6 +9,7 @@ data class AccessoryData(
         @SerializedName("model") var model: String = "",
         @SerializedName("name") var name: String = "",
         @SerializedName("picture") var picture: String = "",
+        @SerializedName("category") var category: String = "",
         @SerializedName("user_id") var userId: String = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -16,14 +17,15 @@ data class AccessoryData(
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readString()) {
-    }
+            parcel.readString(),
+            parcel.readString())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeString(model)
         parcel.writeString(name)
         parcel.writeString(picture)
+        parcel.writeString(category)
         parcel.writeString(userId)
     }
 

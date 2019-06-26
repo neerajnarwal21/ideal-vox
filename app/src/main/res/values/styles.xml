@@ -23,9 +23,23 @@
         <item name="colorControlActivated">@color/colorSecondary</item>
     </style>
 
+    <style name="RatingTheme" parent="Widget.AppCompat.RatingBar.Small">
+        <!-- Customize your theme here. -->
+        <item name="colorControlNormal">@color/colorSecondaryDark</item>
+        <item name="colorControlActivated">@color/colorSecondary</item>
+    </style>
+
+    <style name="SwitchTheme" parent="Widget.AppCompat.CompoundButton.Switch">
+        <!-- Customize your theme here. -->
+        <item name="colorControlHighlight">@color/colorSecondaryDark</item>
+        <!--<item name="android:thumb">@drawable/bg_toggle</item>-->
+        <item name="trackTint">@color/WhiteSmoke</item>
+        <item name="colorControlActivated">@color/colorSecondary</item>
+    </style>
+
     <style name="CheckTheme" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <!-- Customize your theme here. -->
-        <item name="android:colorPrimary">@color/colorSecondaryDark</item>
+        <item name="colorPrimary">@color/colorSecondaryDark</item>
         <item name="colorControlNormal">@color/colorSecondaryDark</item>
         <item name="colorControlActivated">@color/colorSecondary</item>
     </style>
@@ -39,6 +53,7 @@
         <!-- Hint color and label color in FALSE state -->
         <item name="android:textColorHint">@color/DarkGray</item>
         <item name="android:textColor">@color/WhiteSmoke</item>
+        <item name="android:textColorHighlight">@color/colorSecondaryDark</item>
         <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
         <item name="colorControlNormal">@color/colorSecondary</item>
         <item name="colorControlActivated">@color/colorSecondary</item>

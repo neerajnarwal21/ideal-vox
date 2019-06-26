@@ -1,5 +1,6 @@
 package com.ideal.vox.fragment.profile.albums
 
+import android.Manifest
 import android.content.DialogInterface
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -16,16 +17,13 @@ import com.google.gson.reflect.TypeToken
 import com.ideal.vox.R
 import com.ideal.vox.adapter.PicAdapter
 import com.ideal.vox.customViews.MyTextView
-import com.ideal.vox.data.AlbumData
-import com.ideal.vox.data.PicData
+import com.ideal.vox.data.profile.AlbumData
+import com.ideal.vox.data.profile.PicData
 import com.ideal.vox.data.UserData
 import com.ideal.vox.di.MyGlideEngine
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.retrofitManager.ResponseListener
-import com.ideal.vox.utils.Const
-import com.ideal.vox.utils.MatisseList
-import com.ideal.vox.utils.bitmapToFile
-import com.ideal.vox.utils.getRealPath
+import com.ideal.vox.utils.*
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import id.zelory.compressor.Compressor
@@ -112,27 +110,30 @@ class ProfileAlbumDetailFragment : BaseFragment() {
     }
 
     fun selectImage() {
-        list.clear()
-        Matisse.from(baseActivity)
-                .choose(MimeType.ofImage())
-                .showSingleMediaType(true)
-                .countable(true)
-                .maxSelectable(MAX_ITEMS - datas.size + 1)
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                .thumbnailScale(0.85f)
-                .imageEngine(MyGlideEngine())
-                .theme(R.style.Matisse_Dracula)
-                .forResult(Const.REQUEST_CODE_CHOOSE)
-        MatisseList.setListener { uriList ->
-            if (uriList != null) {
-                for (data in uriList) {
-                    val path = getRealPath(baseActivity, data)
-                    log("Size before >>>>" + File(path).length())
-                    val bitmap = Compressor(baseActivity).setMaxHeight(1000).setMaxWidth(1000).compressToBitmap(File(path))
-                    list.add(bitmapToFile(bitmap, baseActivity))
-                    log("Size>>>>" + list[list.size - 1]?.length())
+        if (PermissionsManager.checkPermissions(baseActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA), 12,
+                        PermissionsManager.PCallback({ selectImage() }))) {
+            list.clear()
+            Matisse.from(baseActivity)
+                    .choose(MimeType.ofImage())
+                    .showSingleMediaType(true)
+                    .countable(true)
+                    .maxSelectable(MAX_ITEMS - datas.size + 1)
+                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                    .thumbnailScale(0.85f)
+                    .imageEngine(MyGlideEngine())
+                    .theme(R.style.Matisse_Dracula)
+                    .forResult(Const.REQUEST_CODE_CHOOSE)
+            MatisseList.setListener { uriList ->
+                if (uriList != null) {
+                    for (data in uriList) {
+                        val path = getRealPath(baseActivity, data)
+                        log("Size before >>>>" + File(path).length())
+                        val bitmap = Compressor(baseActivity).setMaxHeight(1000).setMaxWidth(1000).compressToBitmap(File(path))
+                        list.add(bitmapToFile(bitmap, baseActivity))
+                        log("Size>>>>" + list[list.size - 1]?.length())
+                    }
+                    showPicUploadDialog()
                 }
-                showPicUploadDialog()
             }
         }
     }

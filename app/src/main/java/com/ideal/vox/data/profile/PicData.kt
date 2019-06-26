@@ -1,6 +1,5 @@
-package com.ideal.vox.data
+package com.ideal.vox.data.profile
 
-import android.graphics.Bitmap
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

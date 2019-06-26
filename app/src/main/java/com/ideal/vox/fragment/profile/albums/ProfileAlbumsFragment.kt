@@ -15,7 +15,7 @@ import com.ideal.vox.R
 import com.ideal.vox.adapter.AlbumsAdapter
 import com.ideal.vox.customViews.MyEditText
 import com.ideal.vox.customViews.MyTextView
-import com.ideal.vox.data.AlbumData
+import com.ideal.vox.data.profile.AlbumData
 import com.ideal.vox.data.UserData
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.retrofitManager.ResponseListener

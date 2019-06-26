@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.ideal.vox.R
-import com.ideal.vox.data.BankData
+import com.ideal.vox.data.profile.BankData
 import com.ideal.vox.data.UserData
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.utils.*

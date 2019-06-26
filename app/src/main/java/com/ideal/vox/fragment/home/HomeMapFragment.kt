@@ -8,6 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -18,12 +21,10 @@ import com.google.gson.reflect.TypeToken
 import com.ideal.vox.R
 import com.ideal.vox.activity.main.MainActivity
 import com.ideal.vox.data.UserData
+import com.ideal.vox.di.GlideApp
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.fragment.home.detail.UserDetailFragment
-import com.ideal.vox.utils.CircleTransform
-import com.ideal.vox.utils.Const
-import com.ideal.vox.utils.LocationManager
-import com.ideal.vox.utils.createDrawableFromView
+import com.ideal.vox.utils.*
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import com.warkiz.widget.IndicatorSeekBar
@@ -44,7 +45,6 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
     private var locationManager = LocationManager()
     private var goBack: Boolean = false
     private var vieww: View? = null
-    private var latlng: LatLng? = null
     private var listCall: Call<JsonObject>? = null
     private val markerHashMap = HashMap<Marker, UserData>()
 
@@ -70,9 +70,7 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
 
     override fun onResume() {
         super.onResume()
-        if (goBack)
-            baseActivity.onBackPressed()
-
+        if (goBack) baseActivity.onBackPressed()
     }
 
     private fun initUI() {
@@ -81,18 +79,11 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
         }
     }
 
-    private fun setVisibility(isSearchUI: Boolean) {
-        searchPinIV.visibility = if (isSearchUI) View.GONE else View.VISIBLE
-        pin.visibility = if (isSearchUI) View.VISIBLE else View.GONE
-        distanceCV.visibility = if (isSearchUI) View.GONE else View.VISIBLE
-        pinCV.visibility = if (isSearchUI) View.VISIBLE else View.GONE
-    }
-
     fun getList() {
-        log("LatLng>>> ${latlng?.latitude}, ${latlng?.longitude}")
-        if (latlng != null) {
+        log("LatLng>>> ${myCurrentLocation?.latitude}, ${myCurrentLocation?.longitude}")
+        if (myCurrentLocation != null) {
             apiClient.clearCache()
-            listCall = apiInterface.mapPhotographers(latlng!!.latitude, latlng!!.longitude, distanceSB.progress)
+            listCall = apiInterface.mapPhotographers(myCurrentLocation!!.latitude, myCurrentLocation!!.longitude, distanceSB.progress)
             apiManager.makeApiCall(listCall!!, this)
         }
     }
@@ -107,7 +98,6 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
                 googleMap = it
                 getAndSetCurrentLocation()
 
-                latlng = googleMap?.cameraPosition?.target
                 distanceSB.onSeekChangeListener = object : OnSeekChangeListener {
                     override fun onSeeking(seekParams: SeekParams?) {
                     }
@@ -116,17 +106,9 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
                     }
 
                     override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
+                        if (seekBar != null && seekBar.progress < 10) distanceSB.setProgress(10.0f)
                         getList()
                     }
-                }
-                searchPinIV.setOnClickListener {
-                    setVisibility(true)
-                    googleMap!!.clear()
-                }
-                doneBT.setOnClickListener {
-                    latlng = googleMap!!.cameraPosition.target
-                    getList()
-                    setVisibility(false)
                 }
                 getList()
             }
@@ -136,12 +118,8 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
 
     private fun showInfoDialog(data: UserData) {
         (activity as MainActivity).userData = data
-        val bndl = Bundle()
-        bndl.putParcelable("data", data)
-        val frag = UserDetailFragment()
-        frag.arguments = bndl
         baseActivity.supportFragmentManager.beginTransaction()
-                .replace(R.id.fc_home, frag)
+                .replace(R.id.fc_home, UserDetailFragment())
                 .addToBackStack(null)
                 .commit()
     }
@@ -182,7 +160,7 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
             val list = Gson().fromJson<ArrayList<UserData>>(actualData, objectType)
 
             val circle = googleMap!!.addCircle(CircleOptions()
-                    .center(googleMap!!.cameraPosition.target)
+                    .center(LatLng(myCurrentLocation!!.latitude, myCurrentLocation!!.longitude))
                     .radius(distanceSB.progress * 1000.toDouble())
                     .fillColor(R.color.colorPrimaryTrans))
 
@@ -198,33 +176,32 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
         markerHashMap.clear()
         for (data in list) {
             val view = View.inflate(baseActivity, R.layout.inc_marker_icon, null)
-            baseActivity.picasso.load(Const.IMAGE_BASE_URL + "/${data.avatar}")
-                    .transform(CircleTransform())
-                    .into(MyTarget(data, view))
+
+            val tgt = GlideTgt(data, view)
+            GlideApp.with(baseActivity).load(Const.IMAGE_BASE_URL + "/${data.avatar}")
+                    .circleCrop().listener(tgt).into(view.findViewById(R.id.markerIV))
         }
     }
 
-    inner class MyTarget(val data: UserData, val view: View) : Target {
-        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+    inner class GlideTgt(val data: UserData, val view: View) : RequestListener<Drawable> {
+        override fun onLoadFailed(e: GlideException?, model: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, isFirstResource: Boolean): Boolean {
+            return false
         }
 
-        override fun onBitmapFailed(errorDrawable: Drawable?) {
-        }
-
-        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+        override fun onResourceReady(resource: Drawable?, model: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
             val imageView = view.findViewById<ImageView>(R.id.markerIV)
-            imageView.setImageBitmap(bitmap)
+            imageView.setImageBitmap(resource!!.toBitmap())
             val marker = googleMap!!.addMarker(MarkerOptions()
                     .position(LatLng(data.photoProfile!!.lat, data.photoProfile!!.lng))
                     .draggable(false)
                     .title(data.name)
-                    .snippet(data.photoProfile!!.expertise)
+                    .snippet(data.photoProfile!!.expertise.toUpperCase())
                     .icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(baseActivity, view))))
 
             markerHashMap.put(marker, data)
+            return true
         }
     }
-
 
     fun onGPSEnable() {
         locationManager.onGPSEnable()
@@ -235,7 +212,7 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
         goBack = true
     }
 
-    fun getZoomLevel(circle: Circle?): Int {
+    private fun getZoomLevel(circle: Circle?): Int {
         var zoomLevel = 11
         if (circle != null) {
             val radius = circle.radius + circle.radius / 2

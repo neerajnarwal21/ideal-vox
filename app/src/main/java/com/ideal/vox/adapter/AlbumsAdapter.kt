@@ -1,6 +1,5 @@
 package com.ideal.vox.adapter
 
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
@@ -14,16 +13,14 @@ import com.bumptech.glide.request.RequestListener
 import com.ideal.vox.R
 import com.ideal.vox.activity.BaseActivity
 import com.ideal.vox.customViews.MyTextView
-import com.ideal.vox.data.AlbumData
+import com.ideal.vox.data.profile.AlbumData
 import com.ideal.vox.di.GlideApp
-import com.ideal.vox.fragment.home.detail.HomeAlbumDetailFragment
+import com.ideal.vox.fragment.home.detail.UserAlbumDetailFragment
 import com.ideal.vox.fragment.profile.albums.ProfileAlbumDetailFragment
 import com.ideal.vox.fragment.profile.albums.ProfileAlbumsFragment
 import com.ideal.vox.utils.Const
 import com.ideal.vox.utils.blur
 import com.ideal.vox.utils.toBitmap
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
 
 
 class AlbumsAdapter(private val activity: BaseActivity, private val datas: ArrayList<AlbumData>, private val userId: Int, private val frag: ProfileAlbumsFragment?)
@@ -59,7 +56,7 @@ class AlbumsAdapter(private val activity: BaseActivity, private val datas: Array
                 val bndl = Bundle()
                 bndl.putParcelable("data", data)
 
-                val fragg = if (frag != null) ProfileAlbumDetailFragment() else HomeAlbumDetailFragment()
+                val fragg = if (frag != null) ProfileAlbumDetailFragment() else UserAlbumDetailFragment()
                 fragg.arguments = bndl
                 activity.supportFragmentManager.beginTransaction()
                         .replace(R.id.fc_home, fragg)

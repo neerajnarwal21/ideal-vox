@@ -1,4 +1,4 @@
-package com.ideal.vox.data
+package com.ideal.vox.data.schedule
 
 import android.os.Parcel
 import android.os.Parcelable

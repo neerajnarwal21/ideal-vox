@@ -1,6 +1,6 @@
 package com.ideal.vox.fragment.home.detail
 
-enum class HomeStatus {
+enum class UserStatus {
     ABOUT,
     ABOUT_PAGER,
     ALBUMS,

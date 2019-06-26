@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.ideal.vox.R
 import com.ideal.vox.adapter.PicPagerAdapter
-import com.ideal.vox.data.PicData
+import com.ideal.vox.data.profile.PicData
 import kotlinx.android.synthetic.main.fg_user_detail.*
 
 

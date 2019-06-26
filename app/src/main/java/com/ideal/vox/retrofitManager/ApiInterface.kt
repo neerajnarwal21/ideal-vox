@@ -27,6 +27,9 @@ interface ApiInterface {
               @Part("password") password: RequestBody)
             : Call<JsonObject>
 
+    @POST("profile")
+    fun getProfile(): Call<JsonObject>
+
     @Multipart
     @POST("social_login")
     fun socialLogin(@Part("name") name: RequestBody,
@@ -76,10 +79,10 @@ interface ApiInterface {
     @GET("get_expertises")
     fun getExpertise(): Call<JsonObject>
 
+
     @Multipart
     @POST("become_photographer")
-    fun becomePhotographer(@Part("otp") otp: RequestBody?,
-                           @Part("expertise") expertise: RequestBody,
+    fun becomePhotographer(@Part("expertise") expertise: RequestBody?,
                            @Part("experience_in_year") year: RequestBody,
                            @Part("experience_in_months") month: RequestBody,
                            @Part("dob") dob: RequestBody,
@@ -88,7 +91,12 @@ interface ApiInterface {
                            @Part("pin") pinCode: RequestBody,
                            @Part("lat") lat: RequestBody,
                            @Part("lng") lng: RequestBody,
-                           @Part("youtube_link") youtube: RequestBody?)
+                           @Part("otp") otp: RequestBody?,
+                           @Part("about") about: RequestBody?,
+                           @Part("user_type") userType: RequestBody? = null,
+                           @Part("youtube_link") youtube: RequestBody? = null,
+                           @Part("instagram_link") instagramLink: RequestBody? = null,
+                           @Part("facebook_link") facebookLink: RequestBody? = null)
             : Call<JsonObject>
 
     @Multipart
@@ -111,17 +119,62 @@ interface ApiInterface {
     fun updateProfile(@Part("name") name: RequestBody)
             : Call<JsonObject>
 
-
-    @GET("get_accessories/{user_id} ")
+    @GET("get_accessories/{user_id}")
     fun allAccessories(@Path("user_id") userId: Int): Call<JsonObject>
 
-    @GET("delete_accessories/{acc_id} ")
+    @GET("deactivate_user")
+    fun deactivateAccount(): Call<JsonObject>
+
+    @Multipart
+    @POST("activate_user")
+    fun reactivateAccount(@Part("email") email: RequestBody): Call<JsonObject>
+
+    @GET("get_categories")
+    fun allCategories(): Call<JsonObject>
+
+    @Headers("Cache-Control: no-cache")
+    @GET("get_user_categories/{user_id}")
+    fun userCategories(@Path("user_id") userId: Int): Call<JsonObject>
+
+    @Multipart
+    @POST("add_user_category")
+    fun addCategory(@Part("category") category: RequestBody,
+                    @Part("price") price: RequestBody)
+            : Call<JsonObject>
+
+    @GET("delete_user_category/{id}")
+    fun deleteCategory(@Path("id") accId: Int): Call<JsonObject>
+
+    @Headers("Cache-Control: no-cache")
+    @GET("get_views_count/{user_id}")
+    fun viewsCount(@Path("user_id") userId: Int): Call<JsonObject>
+
+    @Headers("Cache-Control: no-cache")
+    @GET("update_views_count/{user_id}")
+    fun updateViewsCount(@Path("user_id") userId: Int): Call<JsonObject>
+
+    @Headers("Cache-Control: no-cache")
+    @GET("get_reviews/{user_id}")
+    fun reviewsList(@Path("user_id") userId: Int): Call<JsonObject>
+
+    @Multipart
+    @POST("add_review")
+    fun addReview(@Part("user_id") userId: RequestBody,
+                  @Part("rating") rating: RequestBody,
+                  @Part("reviews") review: RequestBody?)
+            : Call<JsonObject>
+
+    @GET("delete_accessories/{acc_id}")
     fun deleteAccessory(@Path("acc_id") accId: Int): Call<JsonObject>
+
+    @GET("get_accessory_categories")
+    fun getAccessoryCategories(): Call<JsonObject>
 
     @Multipart
     @POST("add_accessories")
     fun updateAccessories(@Part("name") name: RequestBody,
                           @Part("model") make: RequestBody,
+                          @Part("category") category: RequestBody,
                           @Part pic: MultipartBody.Part?)
             : Call<JsonObject>
 
@@ -164,6 +217,9 @@ interface ApiInterface {
                          @Query("min_price") minPrice: Int?,
                          @Query("max_price") maxPrice: Int?): Call<JsonObject>
 
+    @GET("get_slider_pictures")
+    fun headerPics(@Query("device_token") token: String?): Call<JsonObject>
+
     @Multipart
     @POST("get_schedules/{user_id}")
     fun getSchedule(@Path("user_id") userId: Int,
@@ -174,5 +230,4 @@ interface ApiInterface {
     @POST("update_schedules")
     fun updateSchedule(@Part("user_id") userId: RequestBody,
                        @Part("schedule") schedule: RequestBody): Call<JsonObject>
-
 }

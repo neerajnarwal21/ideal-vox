@@ -12,7 +12,10 @@ data class PhotographicData(
         @SerializedName("experience_in_year") var experienceInYear: Int = 0,
         @SerializedName("expertise") var expertise: String = "",
         @SerializedName("gender") var gender: String = "",
-        @SerializedName("youtube_link") var youtube: String = "",
+        @SerializedName("about") var about: String? = null,
+        @SerializedName("youtube_link") var youtube: String? = null,
+        @SerializedName("instagram_link") var insta: String? = null,
+        @SerializedName("facebook_link") var fb: String? = null,
         @SerializedName("day_price") var dayPrice: String = "",
         @SerializedName("night_price") var nightPrice: String = "",
         @SerializedName("full_day_price") var fullDayPrice: String = "",
@@ -31,6 +34,9 @@ data class PhotographicData(
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
             parcel.readDouble(),
             parcel.readDouble()) {
     }
@@ -43,7 +49,10 @@ data class PhotographicData(
         parcel.writeInt(experienceInYear)
         parcel.writeString(expertise)
         parcel.writeString(gender)
+        parcel.writeString(about)
         parcel.writeString(youtube)
+        parcel.writeString(insta)
+        parcel.writeString(fb)
         parcel.writeString(dayPrice)
         parcel.writeString(nightPrice)
         parcel.writeString(fullDayPrice)

@@ -1,289 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.20" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/expTVV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="Expert in"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/expTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="10dp"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/callIV"
-        app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/experTVV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="Experience"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/expTV" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/experTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="10dp"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/callIV"
-        app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/expTV" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/ageTVV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="Age"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/experTV" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/ageTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="10dp"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/callIV"
-        app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/experTV" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/mobileTVV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="Mobile"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ageTV" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/mobileTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="10dp"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/callIV"
-        app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/ageTV" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/emailTVV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="Email"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mobileTV" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/emailTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="10dp"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/callIV"
-        app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/mobileTV" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/addressTVV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="Address"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/emailTV" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/addressTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="10dp"
-        android:lines="2"
-        android:maxLines="2"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/callIV"
-        app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/emailTV" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/ytTVV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="Youtube"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addressTV" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/ytTV"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:ellipsize="end"
-        android:textColor="@color/IndianRed"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/copyIV"
-        app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/addressTV" />
-
-    <ImageView
-        android:id="@+id/copyIV"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/ic_content_copy"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addressTV" />
-
-
-    <ImageView
-        android:id="@+id/callIV"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/yellow_circle"
-        android:padding="5dp"
-        android:src="@drawable/ic_call_black"
-        app:layout_constraintBottom_toTopOf="@+id/mapIV"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/mapIV"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/yellow_circle"
-        android:padding="5dp"
-        android:src="@drawable/ic_place_black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addressTV"
-        app:layout_constraintTop_toTopOf="@+id/addressTV" />
-
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/accTV"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="25dp"
-        android:padding="5dp"
-        android:text="Accessories"
-        android:textColor="@color/colorSecondary"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ytTV" />
-
-    <ImageView
-        android:id="@+id/editAccessoryIV"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/yellow_circle"
-        android:padding="4dp"
-        android:src="@drawable/ic_edit_black"
-        app:layout_constraintStart_toEndOf="@+id/accTV"
-        app:layout_constraintTop_toBottomOf="@+id/ytTV" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/accListRV"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/parentCL"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        android:overScrollMode="never"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accTV" />
+        android:layout_height="wrap_content">
 
-    <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/emptyTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="No Accessories added yet\nAdd accessories using edit section"
-        android:textColor="@color/WhiteSmoke"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accTV" />
+        <include
+            android:id="@+id/aboutL"
+            layout="@layout/inc_p_about" />
 
-    <ProgressBar
-        android:id="@+id/loadingPB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:theme="@style/RadioTheme"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accTV" />
-</android.support.constraint.ConstraintLayout>
+
+        <android.support.v7.widget.AppCompatRatingBar
+            android:id="@+id/ratingRB"
+            style="@style/Base.Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:numStars="5"
+            android:theme="@style/RatingTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aboutL" />
+
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/reviewTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="14dp"
+            android:textColor="@color/WhiteSmoke"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/ratingRB"
+            app:layout_constraintTop_toBottomOf="@+id/aboutL" />
+
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/viewCountTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/WhiteSmoke"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aboutL" />
+
+        <ProgressBar
+            android:id="@+id/viewLoadingPB"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="10dp"
+            android:theme="@style/RadioTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aboutL" />
+
+        <android.support.v7.widget.AppCompatRatingBar
+            android:id="@+id/myRatingRB"
+            style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/RatingTheme"
+            android:layout_marginTop="30dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reviewTV" />
+
+
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/myRatingTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLines="3"
+            android:visibility="gone"
+            android:padding="10dp"
+            android:text="Share your experience"
+            android:textColor="@color/WhiteSmoke"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/myRatingRB" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/catListRV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:overScrollMode="never"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/myRatingTV" />
+
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/accTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="20dp"
+            android:text="Accessories"
+            android:textColor="@color/colorSecondary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/catListRV" />
+
+        <ImageView
+            android:id="@+id/editAccessoryIV"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/yellow_circle"
+            android:padding="4dp"
+            android:src="@drawable/ic_edit_black"
+            app:layout_constraintBottom_toBottomOf="@+id/accTV"
+            app:layout_constraintStart_toEndOf="@+id/accTV"
+            app:layout_constraintTop_toTopOf="@+id/accTV" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/accListRV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:overScrollMode="never"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/accTV" />
+
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/emptyTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="No Accessories added yet\nAdd accessories using edit section"
+            android:textColor="@color/WhiteSmoke"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/accTV" />
+
+        <ProgressBar
+            android:id="@+id/loadingPB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:theme="@style/RadioTheme"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/accTV" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>

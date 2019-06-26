@@ -24,10 +24,10 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.ideal.vox.R
-import com.ideal.vox.activity.splash.SplashActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.ideal.vox.R
+import com.ideal.vox.activity.splash.SplashActivity
 
 
 class MyFcmListenerService : FirebaseMessagingService() {
@@ -36,6 +36,7 @@ class MyFcmListenerService : FirebaseMessagingService() {
 
     override fun onNewToken(s: String?) {
         super.onNewToken(s)
+        debugLog(TAG, "Token here")
         val store = PrefStore(this)
         store.saveString(Const.DEVICE_TOKEN, s)
         TokenRefresh.tokenRefreshComplete()

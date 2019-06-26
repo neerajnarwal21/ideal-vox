@@ -8,5 +8,12 @@
             android:checked="false"
             android:icon="@drawable/ic_home"
             android:title="Home" />
+
+        <item
+            android:id="@+id/help"
+            android:checked="false"
+            android:icon="@drawable/ic_help"
+            android:title="Help" />
+
     </group>
 </menu>

@@ -16,10 +16,12 @@ import com.ideal.vox.R
 import com.ideal.vox.activity.main.MainActivity
 import com.ideal.vox.data.ExpertiseData
 import com.ideal.vox.data.UserData
+import com.ideal.vox.data.UserType
 import com.ideal.vox.fragment.AddLocationPinFragment
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.utils.Const
 import com.ideal.vox.utils.PinAdd
+import com.ideal.vox.utils.isNotNullAndEmpty
 import kotlinx.android.synthetic.main.fg_form_photographer.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -48,17 +50,39 @@ class BecomePhotographerFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setToolbar("Details")
-        initUI()
+        showChooserDialog()
     }
 
-    private fun initUI() {
-        dobCal.roll(Calendar.YEAR, -20)
-        listCall = apiInterface.getExpertise()
-        apiManager.makeApiCall(listCall!!, this)
+    private fun showChooserDialog() {
+        val bldr = AlertDialog.Builder(baseActivity)
+        bldr.setTitle("Welcome")
+        bldr.setMessage("Before joining, Please tell you want to join us as a photographer or as a helper?")
+        bldr.setPositiveButton("Photographer") { dialogInterface, _ ->
+            initUI(UserType.PHOTOGRAPHER)
+            dialogInterface.dismiss()
+        }
+        bldr.setNegativeButton("Helper") { dialogInterface, _ ->
+            initUI(UserType.HELPER)
+            dialogInterface.dismiss()
+        }
+        bldr.setCancelable(false)
+        bldr.create().show()
+    }
+
+    private fun initUI(user: UserType) {
+        if (user == UserType.HELPER) {
+            expertiseTV.visibility = View.GONE
+            expSP.visibility = View.GONE
+        } else {
+            listCall = apiInterface.getExpertise()
+            apiManager.makeApiCall(listCall!!, this)
+        }
+        sendOTPtoUser()
+        dobCal.roll(Calendar.YEAR, -25)
         dobTIL.setOnClickListener { showDateDialog() }
         dobET.setOnClickListener { showDateDialog() }
         locTV.setOnClickListener { if (getText(addressET).isNotEmpty()) gotoAddPin() else showToast("Enter address first") }
-        submitBT.setOnClickListener { if (validate()) submit() }
+        submitBT.setOnClickListener { if (validate()) submit(user) }
     }
 
     private fun showDateDialog() {
@@ -95,8 +119,8 @@ class BecomePhotographerFragment : BaseFragment() {
                 .commitAllowingStateLoss()
     }
 
-    private fun submit() {
-        val expertise = RequestBody.create(MediaType.parse("text/plain"), list[expSP.selectedItemPosition].name)
+    private fun submit(user: UserType) {
+        val expertise = if (list.size > 0) RequestBody.create(MediaType.parse("text/plain"), list[expSP.selectedItemPosition].name) else null
         val expYear = RequestBody.create(MediaType.parse("text/plain"), if (getText(yearET).isEmpty()) "0" else getText(yearET))
         val expMonth = RequestBody.create(MediaType.parse("text/plain"), if (getText(monthET).isEmpty()) "0" else getText(monthET))
         val dob = RequestBody.create(MediaType.parse("text/plain"), SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dobCal.time))
@@ -106,7 +130,9 @@ class BecomePhotographerFragment : BaseFragment() {
         val lat = RequestBody.create(MediaType.parse("text/plain"), latLng?.latitude.toString())
         val lng = RequestBody.create(MediaType.parse("text/plain"), latLng?.longitude.toString())
         val otp = RequestBody.create(MediaType.parse("text/plain"), getText(otpET))
-        confirmCall = apiInterface.becomePhotographer(otp, expertise, expYear, expMonth, dob, gender, address, pin, lat, lng, null)
+        val about = RequestBody.create(MediaType.parse("text/plain"), getText(aboutET))
+        val userType = RequestBody.create(MediaType.parse("text/plain"), Gson().toJson(user).replace("\"", ""))
+        confirmCall = apiInterface.becomePhotographer(expertise, expYear, expMonth, dob, gender, address, pin, lat, lng, otp, about, userType)
         apiManager.makeApiCall(confirmCall!!, this)
     }
 
@@ -145,7 +171,6 @@ class BecomePhotographerFragment : BaseFragment() {
                 list.add(data)
             }
             loadSpinner(array)
-            sendOTPtoUser()
         } else if (otpCall != null && otpCall === call) {
             val jsonObj = payload as JsonObject
 
@@ -157,7 +182,7 @@ class BecomePhotographerFragment : BaseFragment() {
 
     private fun sendOTPtoUser() {
         val userData = store.getUserData(Const.USER_DATA, UserData::class.java)
-        if (userData != null && (userData.mobileNumber.isNotEmpty())) {
+        if (userData != null && userData.mobileNumber.isNotNullAndEmpty()) {
             val phone = RequestBody.create(MediaType.parse("text/plain"), userData.mobileNumber)
             otpCall = apiInterface.resendOTPToPhone(phone)
             apiManager.makeApiCall(otpCall!!, this, false)
@@ -170,10 +195,11 @@ class BecomePhotographerFragment : BaseFragment() {
     private fun showSuccessDialog() {
         val bldr = AlertDialog.Builder(baseActivity)
         bldr.setTitle("Registeration Success")
-        bldr.setMessage("You have successfully registered as photographer\n" +
-                "You should add price and payment details in profile section.")
+        bldr.setMessage("You have successfully registered with us\n" +
+                "It is recommended to add your remaining details and price details in profile section.")
         bldr.setCancelable(false)
-        bldr.setPositiveButton("Ok, Great") { _, _ ->
+        bldr.setPositiveButton("Ok, Great", null)
+        bldr.setOnDismissListener {
             val intent = Intent(baseActivity, MainActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TOP }
             startActivity(intent)
             baseActivity.finish()

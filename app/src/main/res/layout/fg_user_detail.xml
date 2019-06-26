@@ -11,7 +11,7 @@
 
         <variable
             name="model"
-            type="com.ideal.vox.fragment.home.detail.HomeViewModel" />
+            type="com.ideal.vox.fragment.home.detail.UserViewModel" />
 
     </data>
 

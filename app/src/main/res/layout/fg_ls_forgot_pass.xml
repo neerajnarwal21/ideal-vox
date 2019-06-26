@@ -19,7 +19,7 @@
             android:gravity="center"
             android:padding="@dimen/_30dp"
             android:textSize="16sp"
-            android:text="Enter your registered mobile number"
+            android:text="Enter your registered email"
             android:textColor="@color/White"
             app:layout_constraintBottom_toTopOf="@id/mobileTIL" />
 
@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:hint="MOBILE NO."
+                android:hint="EMAIL"
                 android:inputType="number"
                 android:textColor="@color/WhiteSmoke" />
         </android.support.design.widget.TextInputLayout>

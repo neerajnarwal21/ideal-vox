@@ -1,9 +1,12 @@
 package com.ideal.vox.utils;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Const {
 
     public static final String SERVER_REMOTE_URL = "http://idealvox.com/public/api/";
     public static final String IMAGE_BASE_URL = "http://idealvox.com/storage/app/public/avatars/";
+    public static final String IMAGE_SLIDER_BASE_URL = "http://idealvox.com/storage/app/public/slider_images/";
     public static final String IMAGE_BANK_BASE_URL = "http://idealvox.com/storage/app/public/passbook_pic/";
     public static final String IMAGE_ACC_BASE_URL = "http://idealvox.com/storage/app/public/accessorie_pic/";
     public static final String IMAGE_ALBUM_BASE_URL = "http://idealvox.com/storage/app/public/album_pic/";
@@ -18,6 +21,8 @@ public class Const {
     public static final String FOREGROUND = "forground_notification";
     public static final String SESSION_KEY = "session_key";
     public static final String USER_DATA = "user_data";
+    public static final String GUEST_DIRECT = "guest";
+    public static final String SHOW_HELP_DIALOG = "show_help_dialog";
 
 
     public static class ErrorCodes {
@@ -26,5 +31,4 @@ public class Const {
         public static final int SESSION_ERROR = 600;
         public static final int NO_INTERNET = 601;
     }
-
 }

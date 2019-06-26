@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.ideal.vox.R
 import com.ideal.vox.activity.BaseActivity
 import com.ideal.vox.adapter.PicPagerAdapter
-import com.ideal.vox.data.PicData
+import com.ideal.vox.data.profile.PicData
 import kotlinx.android.synthetic.main.fg_user_detail.*
 
 

@@ -9,43 +9,44 @@ import android.support.v7.app.AlertDialog
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.ideal.vox.R
 import com.ideal.vox.activity.BaseActivity
 import com.ideal.vox.customViews.MyTextView
 import com.ideal.vox.data.UserData
 import com.ideal.vox.data.UserType
 import com.ideal.vox.fragment.AddLocationPinFragment
-import com.ideal.vox.fragment.home.BecomePhotographerFragment
-import com.ideal.vox.fragment.home.HomeFragment
-import com.ideal.vox.fragment.home.HomeMapFragment
-import com.ideal.vox.fragment.home.ScheduleFragment
+import com.ideal.vox.fragment.home.*
 import com.ideal.vox.fragment.profile.ProfileBasicFragment
 import com.ideal.vox.fragment.profile.ProfileFragment
 import com.ideal.vox.fragment.profile.edit.ProfileEditAdvFragment
-import com.ideal.vox.utils.CircleTransform
-import com.ideal.vox.utils.Const
-import com.ideal.vox.utils.LocationManager
-import com.ideal.vox.utils.logout
+import com.ideal.vox.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_custom.*
+import retrofit2.Call
 
 
 class MainActivity : BaseActivity() {
 
     var userData: UserData? = null
+    private var userCall: Call<JsonObject>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+        apiClient.clearCache()
         initUI()
     }
 
     private fun initUI() {
         setDrawer()
-        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        navigationView.setCheckedItem(R.id.home)
         jumpToHome()
+        if (store.getString(Const.SESSION_KEY, null) != null) {
+            userCall = apiInterface.getProfile()
+            apiManager.makeApiCall(userCall!!, this, false)
+        }
     }
 
     fun jumpToHome() {
@@ -58,6 +59,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setDrawer() {
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         navigationView.menu.clear()
         if (store.getString(Const.SESSION_KEY, null) == null) {
             navigationView.inflateMenu(R.menu.drawer_guest)
@@ -76,6 +78,7 @@ class MainActivity : BaseActivity() {
                 R.id.home -> jumpToHome()
                 R.id.schedule -> fragment = ScheduleFragment()
                 R.id.become_photographer -> showPhotographerDialog()
+                R.id.help -> fragment = HelpFragment()
                 R.id.logout -> {
                     apiClient.clearCache()
                     logout(this, store)
@@ -89,14 +92,19 @@ class MainActivity : BaseActivity() {
                         .commit()
             true
         }
+        navigationView.setCheckedItem(R.id.home)
+    }
 
+    override fun onResume() {
+        super.onResume()
         setupHeaderView()
+        setDrawer()
     }
 
     private fun showPhotographerDialog() {
         val bldr = AlertDialog.Builder(this)
-        bldr.setTitle("Become a photographer")
-        bldr.setMessage("By continuing, you will be registered as a photographer with us\n\n" +
+        bldr.setTitle("Become a professional")
+        bldr.setMessage("By continuing, you will be registered as a professional with us\n\n" +
                 "You need to provide some more details about you.\n\n" +
                 "Are you good to go ?")
         bldr.setNegativeButton("No", null)
@@ -115,8 +123,8 @@ class MainActivity : BaseActivity() {
 
         val userData = store.getUserData(Const.USER_DATA, UserData::class.java)
         nameTV.setText("Hi, ${if (userData != null) userData.name else "SignIn"}")
-        if (userData?.avatar != null && userData.avatar.isNotEmpty()) {
-            picasso.load(Const.IMAGE_BASE_URL + userData.avatar).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
+        if (userData?.avatar.isNotNullAndEmpty()) {
+            picasso.load(Const.IMAGE_BASE_URL + userData?.avatar).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
         }
         view.setOnClickListener {
             drawer.closeDrawers()
@@ -175,36 +183,30 @@ class MainActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val fragment = supportFragmentManager.findFragmentById(R.id.fc_home)
-        if (fragment is AddLocationPinFragment) {
-            when (requestCode) {
-                LocationManager.REQUEST_LOCATION ->
-                    when (resultCode) {
-                        Activity.RESULT_OK -> {
-                            fragment.onGPSEnable()
-                        }
-                        Activity.RESULT_CANCELED -> {
-                            fragment.onGPSEnableDenied()
-                        }
-                        else -> {
-                            fragment.onGPSEnableDenied()
-                        }
+        when (requestCode) {
+            LocationManager.REQUEST_LOCATION ->
+                when (resultCode) {
+                    Activity.RESULT_OK -> when (fragment) {
+                        is AddLocationPinFragment -> fragment.onGPSEnable()
+                        is HomeMapFragment -> fragment.onGPSEnable()
+                        is HelpFragment -> fragment.onGPSEnable()
                     }
-            }
-        }else if (fragment is HomeMapFragment) {
-            when (requestCode) {
-                LocationManager.REQUEST_LOCATION ->
-                    when (resultCode) {
-                        Activity.RESULT_OK -> {
-                            fragment.onGPSEnable()
-                        }
-                        Activity.RESULT_CANCELED -> {
-                            fragment.onGPSEnableDenied()
-                        }
-                        else -> {
-                            fragment.onGPSEnableDenied()
-                        }
+                    else -> when (fragment) {
+                        is AddLocationPinFragment -> fragment.onGPSEnableDenied()
+                        is HomeMapFragment -> fragment.onGPSEnableDenied()
+                        is HelpFragment -> fragment.onGPSEnableDenied()
                     }
-            }
+                }
+        }
+    }
+
+    override fun onSuccess(call: Call<*>, payload: Any) {
+        super.onSuccess(call, payload)
+        if (userCall != null && userCall === call) {
+            val userObj = payload as JsonObject
+            val userData = Gson().fromJson(userObj, UserData::class.java)
+            store.saveUserData(Const.USER_DATA, userData)
+            setupHeaderView()
         }
     }
 }

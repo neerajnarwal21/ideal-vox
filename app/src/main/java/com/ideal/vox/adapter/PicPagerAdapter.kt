@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.ideal.vox.R
 import com.ideal.vox.activity.BaseActivity
-import com.ideal.vox.data.PicData
+import com.ideal.vox.data.profile.PicData
 import com.ideal.vox.utils.Const
 import java.io.File
 

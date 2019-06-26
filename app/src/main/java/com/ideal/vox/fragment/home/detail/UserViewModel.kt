@@ -4,27 +4,27 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import com.ideal.vox.utils.SingleLiveEvent
 
-class HomeViewModel : ViewModel() {
+class UserViewModel : ViewModel() {
 
-    private val status = SingleLiveEvent<HomeStatus>()
+    private val status = SingleLiveEvent<UserStatus>()
 
-    fun getStatus(): LiveData<HomeStatus> {
+    fun getStatus(): LiveData<UserStatus> {
         return status
     }
 
     fun onAboutClick() {
-        status.value = HomeStatus.ABOUT
+        status.value = UserStatus.ABOUT
     }
 
     fun onAboutPagerClick() {
-        status.value = HomeStatus.ABOUT_PAGER
+        status.value = UserStatus.ABOUT_PAGER
     }
 
     fun onAlbumsClick() {
-        status.value = HomeStatus.ALBUMS
+        status.value = UserStatus.ALBUMS
     }
 
     fun onAlbumsPagerClick() {
-        status.value = HomeStatus.ALBUMS_PAGER
+        status.value = UserStatus.ALBUMS_PAGER
     }
 }

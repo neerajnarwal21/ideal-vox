@@ -2,6 +2,7 @@ package com.ideal.vox.fragment.profile.edit
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.google.gson.JsonObject
 import com.ideal.vox.R
 import com.ideal.vox.data.ExpertiseData
 import com.ideal.vox.data.UserData
+import com.ideal.vox.data.UserType
 import com.ideal.vox.fragment.AddLocationPinFragment
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.utils.Const
@@ -46,16 +48,23 @@ class ProfileEditPhotographerFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         data = store.getUserData(Const.USER_DATA, UserData::class.java)
-        listCall = apiInterface.getExpertise()
-        apiManager.makeApiCall(listCall!!, this)
+        if (data?.userType == UserType.PHOTOGRAPHER) {
+            listCall = apiInterface.getExpertise()
+            apiManager.makeApiCall(listCall!!, this)
+        } else initUI()
     }
 
     private fun initUI() {
-        for ((i, item) in list.withIndex()) {
-            if (data?.photoProfile?.expertise == item.name) {
-                expSP.setSelection(i)
-                break
+        if (list.size > 0)
+            for ((i, item) in list.withIndex()) {
+                if (data?.photoProfile?.expertise == item.name) {
+                    expSP.setSelection(i)
+                    break
+                }
             }
+        else {
+            expertiseTV.visibility = View.GONE
+            expSP.visibility = View.GONE
         }
         yearET.setText(data?.photoProfile?.experienceInYear.toString())
         monthET.setText(data?.photoProfile?.experienceInMonths.toString())
@@ -63,15 +72,29 @@ class ProfileEditPhotographerFragment : BaseFragment() {
         dobET.setText(SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH).format(dobCal.time))
         if (data?.photoProfile?.gender == "M") maleRB.isChecked = true else femaleRB.isChecked = true
         ytET.setText(data?.photoProfile?.youtube)
+        instaET.setText(data?.photoProfile?.insta)
+        fbET.setText(data?.photoProfile?.fb)
         addressET.setText(data?.photoProfile?.address)
         pinET.setText(data?.photoProfile?.pinCode)
-        locTV.setText("Update Location pin")
+        aboutET.setText(data?.photoProfile?.about)
+        locTV.text = "Update Location pin"
         locTV.setOnClickListener { if (getText(addressET).isNotEmpty()) gotoAddPin() else showToast("Enter address first") }
         latLng = LatLng(data?.photoProfile?.lat!!, data?.photoProfile?.lng!!)
+
+        fbIV.setOnClickListener { showFBInfoDialog() }
 
         dobTIL.setOnClickListener { showDateDialog() }
         dobET.setOnClickListener { showDateDialog() }
         submitBT.setOnClickListener { if (validate()) submit() }
+    }
+
+    private fun showFBInfoDialog() {
+        val bldr = AlertDialog.Builder(baseActivity)
+        bldr.setTitle("Suggestion")
+        bldr.setMessage("In order to find how to put your profile here, goto Facebook app then goto your Profile\n" +
+                "Click on \"More\" then \"Copy link to Profile\" and paste that here")
+        bldr.setPositiveButton("Ok", null)
+        bldr.create().show()
     }
 
     private fun showDateDialog() {
@@ -92,7 +115,7 @@ class ProfileEditPhotographerFragment : BaseFragment() {
     private fun gotoAddPin() {
         PinAdd.setListener { address, latLng ->
             this.latLng = latLng
-            locTV.setText("Location pin set")
+            locTV.text = "Location pin set"
         }
 
         val bundle = Bundle()
@@ -111,7 +134,7 @@ class ProfileEditPhotographerFragment : BaseFragment() {
     }
 
     private fun submit() {
-        val expertise = RequestBody.create(MediaType.parse("text/plain"), list[expSP.selectedItemPosition].name)
+        val expertise = if (list.size > 0) RequestBody.create(MediaType.parse("text/plain"), list[expSP.selectedItemPosition].name) else null
         val expYear = RequestBody.create(MediaType.parse("text/plain"), if (getText(yearET).isEmpty()) "0" else getText(yearET))
         val expMonth = RequestBody.create(MediaType.parse("text/plain"), if (getText(monthET).isEmpty()) "0" else getText(monthET))
         val dob = RequestBody.create(MediaType.parse("text/plain"), SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dobCal.time))
@@ -120,8 +143,12 @@ class ProfileEditPhotographerFragment : BaseFragment() {
         val pin = RequestBody.create(MediaType.parse("text/plain"), getText(pinET))
         val lat = RequestBody.create(MediaType.parse("text/plain"), latLng?.latitude.toString())
         val lng = RequestBody.create(MediaType.parse("text/plain"), latLng?.longitude.toString())
+        val about = RequestBody.create(MediaType.parse("text/plain"), getText(aboutET))
+        val userType = RequestBody.create(MediaType.parse("text/plain"), Gson().toJson(data?.userType).replace("\"", ""))
         val yt = RequestBody.create(MediaType.parse("text/plain"), getText(ytET))
-        confirmCall = apiInterface.becomePhotographer(null,expertise, expYear, expMonth, dob, gender, address, pin, lat, lng, yt)
+        val insta = RequestBody.create(MediaType.parse("text/plain"), getText(instaET))
+        val fb = RequestBody.create(MediaType.parse("text/plain"), getText(fbET))
+        confirmCall = apiInterface.becomePhotographer(expertise, expYear, expMonth, dob, gender, address, pin, lat, lng, null, about, userType, yt, insta, fb)
         apiManager.makeApiCall(confirmCall!!, this)
     }
 

@@ -43,15 +43,12 @@ class OTPFragment : BaseFragment() {
 
     private fun initUI() {
         data = store.getUserData(Const.USER_DATA, UserData::class.java)
-        otpTV.setText("An OTP has been sent to\n\n${data?.email}")
+        otpTV.text = "An OTP has been sent to\n\n${data?.mobileNumber}\n${data?.email}"
         submitBT.setOnClickListener { if (validate()) confirmOTP() }
         resendTV.setOnClickListener { showResendDialog() }
-        //Just in case auto API to be hit
-//        otpET.setOtpCompletionListener {  }
     }
 
     private fun showResendDialog() {
-
         val bldr = AlertDialog.Builder(baseActivity)
         val dialog: AlertDialog
         bldr.setTitle("Resend OTP")
@@ -105,8 +102,12 @@ class OTPFragment : BaseFragment() {
             store.saveString(Const.SESSION_KEY, token)
             store.saveUserData(Const.USER_DATA, userData)
 
+//            if ((baseActivity as LoginSignupActivity).forLogin) {
+//                baseActivity.finish()
+//            } else {
             val intent = Intent(baseActivity, MainActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_CLEAR_TOP }
             startActivity(intent)
+//            }
         } else if (resendCall != null && call === resendCall) {
             val jsonObj = payload as JsonObject
             val userObj = jsonObj.getAsJsonObject("user")

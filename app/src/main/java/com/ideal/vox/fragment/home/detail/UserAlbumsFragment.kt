@@ -11,7 +11,7 @@ import com.google.gson.reflect.TypeToken
 import com.ideal.vox.R
 import com.ideal.vox.activity.main.MainActivity
 import com.ideal.vox.adapter.AlbumsAdapter
-import com.ideal.vox.data.AlbumData
+import com.ideal.vox.data.profile.AlbumData
 import com.ideal.vox.data.UserData
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.retrofitManager.ResponseListener
@@ -22,7 +22,7 @@ import retrofit2.Call
 /**
  * Created by Neeraj Narwal on 5/5/17.
  */
-class HomeAlbumsFragment : BaseFragment() {
+class UserAlbumsFragment : BaseFragment() {
 
     private var listCall: Call<JsonObject>? = null
     private var adapter: AlbumsAdapter? = null

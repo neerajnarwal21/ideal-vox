@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:hint="USERNAME"
+                android:hint="EMAIL or PHONE"
                 android:inputType="text"
                 android:textColor="@color/WhiteSmoke" />
         </android.support.design.widget.TextInputLayout>
@@ -133,9 +133,9 @@
             android:textColor="@color/WhiteSmoke"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

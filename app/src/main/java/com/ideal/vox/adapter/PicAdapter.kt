@@ -3,7 +3,6 @@ package com.ideal.vox.adapter
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +11,7 @@ import android.widget.ImageView
 import com.ideal.vox.R
 import com.ideal.vox.activity.BaseActivity
 import com.ideal.vox.activity.main.PicGalleryActivity
-import com.ideal.vox.data.PicData
-import com.ideal.vox.fragment.AlbumPicGalleryFragment
+import com.ideal.vox.data.profile.PicData
 import com.ideal.vox.fragment.profile.albums.ProfileAlbumDetailFragment
 import com.ideal.vox.utils.Const
 import com.ideal.vox.utils.bitmapToFile

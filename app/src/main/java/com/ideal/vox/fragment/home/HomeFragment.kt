@@ -8,17 +8,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.ideal.vox.R
+import com.ideal.vox.adapter.HomeAdPagerAdapter
 import com.ideal.vox.adapter.HomeAdapter
-import com.ideal.vox.data.FilterData
+import com.ideal.vox.data.PagerPicData
 import com.ideal.vox.data.UserData
+import com.ideal.vox.data.schedule.FilterData
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.retrofitManager.ResponseListener
+import com.ideal.vox.utils.Const
 import com.ideal.vox.utils.Filters
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fg_home.*
 import retrofit2.Call
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -28,6 +36,7 @@ import retrofit2.Call
 class HomeFragment : BaseFragment() {
 
     private var listCall: Call<JsonObject>? = null
+    private var headerCall: Call<JsonObject>? = null
     private var datas = ArrayList<UserData>()
     private var adapter: HomeAdapter? = null
     private lateinit var linearManager: LinearLayoutManager
@@ -36,9 +45,14 @@ class HomeFragment : BaseFragment() {
     private var totalPages = 1
     private var filterData: FilterData? = null
 
+    private var NUM_PAGES: Int = 0
+    private var currentPage: Int = 0
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fg_home, container, false)
     }
+
+    private var obj: Disposable? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,6 +70,17 @@ class HomeFragment : BaseFragment() {
             initUI()
         }
         initUI()
+        getHeaderPics()
+    }
+
+    private fun getHeaderPics() {
+        headerCall = apiInterface.headerPics(store.getString(Const.DEVICE_TOKEN, null))
+        apiManager.makeApiCall(headerCall!!, this, false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        obj?.dispose()
     }
 
     private fun searchQuery() {
@@ -123,9 +148,12 @@ class HomeFragment : BaseFragment() {
 
     override fun onSuccess(call: Call<*>, payload: Any) {
         super.onSuccess(call, payload)
-        loadingPB.visibility = View.GONE
-        swipeRL.isRefreshing = false
         if (listCall != null && listCall === call) {
+
+            loadingPB.visibility = View.GONE
+            searchCL.visibility = View.VISIBLE
+            swipeRL.isRefreshing = false
+
             loading = false
             adapter?.updateLoadMoreView(loading)
 
@@ -144,14 +172,41 @@ class HomeFragment : BaseFragment() {
             }
             emptyTV.visibility = if (adapter?.itemCount == 0) View.VISIBLE else View.GONE
             pageNo++
+        } else if (headerCall != null && headerCall === call) {
+            headLoadingPB.visibility = View.GONE
+//            collapseABL.setExpanded(true, true)
+            val listArr = payload as JsonArray
+            val objectType = object : TypeToken<ArrayList<PagerPicData>>() {}.type
+            val datas = Gson().fromJson<ArrayList<PagerPicData>>(listArr, objectType)
+
+            pager.adapter = HomeAdPagerAdapter(baseActivity, datas)
+            indicator.setViewPager(pager)
+
+            val density = baseActivity.resources.displayMetrics.density
+            indicator.radius = 5 * density
+
+            NUM_PAGES = datas.size
+            obj = Observable.interval(4, TimeUnit.SECONDS)
+                    .timeInterval()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        if (currentPage == NUM_PAGES) {
+                            currentPage = 0
+                        }
+                        pager.setCurrentItem(currentPage++, true)
+                    }
         }
     }
 
     override fun onError(call: Call<*>, statusCode: Int, errorMessage: String, responseListener: ResponseListener) {
         super.onError(call, statusCode, errorMessage, responseListener)
-        loadingPB.visibility = View.GONE
-        loading = false
-        adapter?.updateLoadMoreView(loading)
+        if (listCall != null && listCall === call) {
+            loadingPB.visibility = View.GONE
+            loading = false
+            adapter?.updateLoadMoreView(loading)
+        } else if (headerCall != null && headerCall == call) {
+            headLoadingPB.visibility = View.GONE
+        }
     }
 
     fun resetEdittext() {

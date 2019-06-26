@@ -35,6 +35,7 @@ class ProfileBasicFragment : BaseFragment() {
     private var updateCall: Call<JsonObject>? = null
     private var phoneCall: Call<JsonObject>? = null
     private var otpCall: Call<JsonObject>? = null
+    private var deleteCall: Call<JsonObject>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fg_p_basic, container, false)
@@ -42,7 +43,7 @@ class ProfileBasicFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar( "Profile")
+        setToolbar("Profile")
         initUI()
     }
 
@@ -54,7 +55,7 @@ class ProfileBasicFragment : BaseFragment() {
             emailET.setText(userData.email)
             mobileET.setText(userData.mobileNumber)
             mobileIV.setOnClickListener { showChangePhoneNumberDialog() }
-            if (userData.avatar!=null && userData.avatar.isNotEmpty()) {
+            if (userData.avatar.isNotNullAndEmpty()) {
                 baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData.avatar).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
             }
         }
@@ -76,6 +77,20 @@ class ProfileBasicFragment : BaseFragment() {
                 }
             }
         }
+        deleteBT.setOnClickListener { showDeleteConfirmDialog() }
+    }
+
+    private fun showDeleteConfirmDialog() {
+        val bldr = AlertDialog.Builder(baseActivity)
+        bldr.setTitle("Confirm !")
+        bldr.setMessage("Are you sure you want to delete your user account?")
+        bldr.setPositiveButton("Yes") { dialogInterface, i ->
+            deleteCall = apiInterface.deactivateAccount()
+            apiManager.makeApiCall(deleteCall!!, this)
+            dialogInterface.dismiss()
+        }
+        bldr.setNegativeButton("No", null)
+        bldr.create().show()
     }
 
     private fun showChangePhoneNumberDialog() {
@@ -100,6 +115,7 @@ class ProfileBasicFragment : BaseFragment() {
             }
         }
     }
+
     private fun validatePhone(text: String, text1: String): Boolean {
         when {
             text.isEmpty() -> showToast("Please enter Phone number")
@@ -162,7 +178,7 @@ class ProfileBasicFragment : BaseFragment() {
             val userData = Gson().fromJson(jsonObj, UserData::class.java)
             store.saveUserData(Const.USER_DATA, userData)
             (baseActivity as MainActivity).setupHeaderView()
-        }else if (phoneCall != null && phoneCall === call) {
+        } else if (phoneCall != null && phoneCall === call) {
             val jsonObj = payload as JsonObject
             val userData = Gson().fromJson(jsonObj, UserData::class.java)
             mobileET.setText(userData.mobileNumber)
@@ -175,6 +191,17 @@ class ProfileBasicFragment : BaseFragment() {
             val userData = Gson().fromJson(userObj, UserData::class.java)
             store.saveUserData(Const.USER_DATA, userData)
             showToast("OTP has been resent")
+        } else if (deleteCall != null && deleteCall === call) {
+            showDeleteDialog()
         }
+    }
+
+    private fun showDeleteDialog() {
+        val bldr = AlertDialog.Builder(baseActivity)
+        bldr.setTitle("Account Deleted !")
+        bldr.setMessage("Your user account has been deleted successfully")
+        bldr.setPositiveButton("Ok", null)
+        bldr.setOnDismissListener { logout(baseActivity, store) }
+        bldr.create().show()
     }
 }

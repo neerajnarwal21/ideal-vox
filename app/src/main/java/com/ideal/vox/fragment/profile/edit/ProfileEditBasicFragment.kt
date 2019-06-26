@@ -15,6 +15,7 @@ import com.ideal.vox.customViews.MyTextView
 import com.ideal.vox.data.UserData
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.utils.Const
+import com.ideal.vox.utils.logout
 import com.mukesh.OtpView
 import kotlinx.android.synthetic.main.fg_p_edit_advance_about.*
 import okhttp3.MediaType
@@ -29,6 +30,7 @@ class ProfileEditBasicFragment : BaseFragment() {
 
     private var updateCall: Call<JsonObject>? = null
     private var phoneCall: Call<JsonObject>? = null
+    private var deleteCall: Call<JsonObject>? = null
     private var otpCall: Call<JsonObject>? = null
     private var data: UserData? = null
 
@@ -48,6 +50,20 @@ class ProfileEditBasicFragment : BaseFragment() {
         mobileET.setText(data?.mobileNumber)
         mobileIV.setOnClickListener { showChangePhoneNumberDialog() }
         submitBT.setOnClickListener { if (validate()) submit() }
+        deleteBT.setOnClickListener { showDeleteConfirmDialog() }
+    }
+
+    private fun showDeleteConfirmDialog() {
+        val bldr = AlertDialog.Builder(baseActivity)
+        bldr.setTitle("Confirm !")
+        bldr.setMessage("Are you sure you want to delete your user account?")
+        bldr.setPositiveButton("Yes") { dialogInterface, i ->
+            deleteCall = apiInterface.deactivateAccount()
+            apiManager.makeApiCall(deleteCall!!, this)
+            dialogInterface.dismiss()
+        }
+        bldr.setNegativeButton("No", null)
+        bldr.create().show()
     }
 
     private fun showChangePhoneNumberDialog() {
@@ -130,6 +146,17 @@ class ProfileEditBasicFragment : BaseFragment() {
             val userData = Gson().fromJson(userObj, UserData::class.java)
             store.saveUserData(Const.USER_DATA, userData)
             showToast("OTP has been sent")
+        } else if (deleteCall != null && deleteCall === call) {
+            showDeleteDialog()
         }
+    }
+
+    private fun showDeleteDialog() {
+        val bldr = AlertDialog.Builder(baseActivity)
+        bldr.setTitle("Account Deleted !")
+        bldr.setMessage("Your user account has been deleted successfully")
+        bldr.setPositiveButton("Ok", null)
+        bldr.setOnDismissListener { logout(baseActivity, store) }
+        bldr.create().show()
     }
 }

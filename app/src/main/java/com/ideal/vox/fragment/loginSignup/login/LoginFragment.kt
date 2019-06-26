@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.fragment.loginSignup.ForgotPasswordFragment
 import com.ideal.vox.fragment.loginSignup.OTPFragment
 import com.ideal.vox.fragment.loginSignup.signup.SignupFragment
+import com.ideal.vox.retrofitManager.ResponseListener
 import com.ideal.vox.utils.Const
 import com.ideal.vox.utils.FacebookLogin
 import com.ideal.vox.utils.GPlusLoginActivity
@@ -37,6 +39,8 @@ class LoginFragment : BaseFragment() {
     lateinit var model: LoginFragViewModel
     private var loginCall: Call<JsonObject>? = null
     private var socailLoginCall: Call<JsonObject>? = null
+    private var reactivateCall: Call<JsonObject>? = null
+    private var socialEmail: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -74,6 +78,7 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun doSocialLogin(name: String, email: String) {
+        socialEmail = email
         val namee = RequestBody.create(MediaType.parse("text/plain"), name)
         val emaill = RequestBody.create(MediaType.parse("text/plain"), email)
         socailLoginCall = apiInterface.socialLogin(namee, emaill)
@@ -123,26 +128,55 @@ class LoginFragment : BaseFragment() {
 
     override fun onSuccess(call: Call<*>, payload: Any) {
         super.onSuccess(call, payload)
-        val jsonObj = payload as JsonObject
-
-        val userObj = jsonObj.getAsJsonObject("user")
-        val userData = Gson().fromJson(userObj, UserData::class.java)
-        store.saveUserData(Const.USER_DATA, userData)
-        if (userData.is_active == 1) {
-            val token = jsonObj.get("token").asString
-            store.saveString(Const.SESSION_KEY, token)
-
-            val intent = Intent(baseActivity, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent)
+        if (reactivateCall != null && reactivateCall === call) {
+            showToast("Account successfully recovered, Login now")
         } else {
-            baseActivity.supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fc_ls, OTPFragment())
-                    .addToBackStack(null)
-                    .commit()
+            val jsonObj = payload as JsonObject
+
+            val userObj = jsonObj.getAsJsonObject("user")
+            val userData = Gson().fromJson(userObj, UserData::class.java)
+            store.saveUserData(Const.USER_DATA, userData)
+            if (userData.is_active == 1) {
+                val token = jsonObj.get("token").asString
+                store.saveString(Const.SESSION_KEY, token)
+
+//            if ((baseActivity as LoginSignupActivity).forLogin) {
+//                baseActivity.finish()
+//            } else {
+                val intent = Intent(baseActivity, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                startActivity(intent)
+//            }
+            } else {
+                baseActivity.supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fc_ls, OTPFragment())
+                        .addToBackStack(null)
+                        .commit()
+            }
         }
+    }
+
+    override fun onError(call: Call<*>, statusCode: Int, errorMessage: String, responseListener: ResponseListener) {
+        if (errorMessage == "inactive_user") {
+            showReactivateDialog()
+        } else
+            super.onError(call, statusCode, errorMessage, responseListener)
+    }
+
+    private fun showReactivateDialog() {
+        val bldr = AlertDialog.Builder(baseActivity)
+        bldr.setTitle("Account recover !")
+        bldr.setMessage("Do you want us to restore your user account ?")
+        bldr.setPositiveButton("Yes") { _, _ ->
+            val email = RequestBody.create(MediaType.parse("text/plain"), socialEmail
+                    ?: getText(emailET))
+            reactivateCall = apiInterface.reactivateAccount(email)
+            apiManager.makeApiCall(reactivateCall!!, this)
+        }
+        bldr.setNegativeButton("No", null)
+        bldr.create().show()
     }
 }

@@ -9,10 +9,10 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.ideal.vox.R
-import com.ideal.vox.data.DayType
-import com.ideal.vox.data.NightType
-import com.ideal.vox.data.ScheduleData
 import com.ideal.vox.data.UserData
+import com.ideal.vox.data.schedule.DayType
+import com.ideal.vox.data.schedule.NightType
+import com.ideal.vox.data.schedule.ScheduleData
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.retrofitManager.ResponseListener
 import com.ideal.vox.utils.Const
@@ -51,6 +51,7 @@ class ScheduleFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setToolbar("My Schedule", showDrawer = false)
+//        submitBT.text = "Submit"
         userData = store.getUserData(Const.USER_DATA, UserData::class.java)
         getSchedule(currentCal, null)
         submitBT.setOnClickListener {
@@ -64,18 +65,34 @@ class ScheduleFragment : BaseFragment() {
         flexCal.setCalendarListener(object : FlexibleCalendar.CalendarListener {
 
             override fun onDayClick(v: View?, day: Int) {
-                dayTypeHashMap[day]?.day = if (dayTypeHashMap[day]?.day == DayStatus.DayEnum.AVAILABLE) DayStatus.DayEnum.UNAVAILABLE else DayStatus.DayEnum.AVAILABLE
+                dayTypeHashMap[day]?.day = when (dayTypeHashMap[day]?.day) {
+                    DayStatus.DayEnum.AVAILABLE -> if (unavailableRB.isChecked) DayStatus.DayEnum.UNAVAILABLE else DayStatus.DayEnum.BOOKED
+                    DayStatus.DayEnum.UNAVAILABLE,
+                    DayStatus.DayEnum.BOOKED -> DayStatus.DayEnum.AVAILABLE
+                    else -> dayTypeHashMap[day]?.day
+                }
                 adapter?.refresh(dayTypeHashMap)
                 flexCal.reload()
-                updateHashMap.remove(day)
+//                if (dayTypeHashMap[day].day == DayStatus.DayEnum.AVAILABLE && dayTypeHashMap[day].night == DayStatus.NightEnum.AVAILABLE) {
+//                    updateHashMap.remove(day)
+//                    return
+//                }
                 updateHashMap.put(day, dayTypeHashMap[day])
             }
 
             override fun onNightClick(v: View?, day: Int) {
-                dayTypeHashMap[day]?.night = if (dayTypeHashMap[day]?.night == DayStatus.NightEnum.AVAILABLE) DayStatus.NightEnum.UNAVAILABLE else DayStatus.NightEnum.AVAILABLE
+                dayTypeHashMap[day]?.night = when (dayTypeHashMap[day]?.night) {
+                    DayStatus.NightEnum.AVAILABLE -> if (unavailableRB.isChecked) DayStatus.NightEnum.UNAVAILABLE else DayStatus.NightEnum.BOOKED
+                    DayStatus.NightEnum.UNAVAILABLE,
+                    DayStatus.NightEnum.BOOKED -> DayStatus.NightEnum.AVAILABLE
+                    else -> dayTypeHashMap[day]?.night
+                }
                 adapter?.refresh(dayTypeHashMap)
                 flexCal.reload()
-                updateHashMap.remove(day)
+//                if (dayTypeHashMap[day].day == DayStatus.DayEnum.AVAILABLE && dayTypeHashMap[day].night == DayStatus.NightEnum.AVAILABLE) {
+//                    updateHashMap.remove(day)
+//                    return
+//                }
                 updateHashMap.put(day, dayTypeHashMap[day])
             }
 
@@ -89,26 +106,33 @@ class ScheduleFragment : BaseFragment() {
     private fun updateData() {
         val tempCal = currentCal.clone() as Calendar
         val list = ArrayList<ScheduleData>()
-        for (i in 0..updateHashMap.size() - 1) {
+        for (i in 0 until updateHashMap.size()) {
             tempCal.set(Calendar.DAY_OF_MONTH, updateHashMap.keyAt(i))
-            val shcData = ScheduleData()
-            shcData.scheduleDate = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(tempCal.time)
-            shcData.day = when (updateHashMap.valueAt(i).day) {
-                DayStatus.DayEnum.AVAILABLE -> DayType.AVAILABLE
+            val schData = ScheduleData()
+            schData.scheduleDate = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(tempCal.time)
+            schData.day = when (updateHashMap.valueAt(i).day) {
+                DayStatus.DayEnum.BOOKED -> DayType.BOOKED
                 DayStatus.DayEnum.UNAVAILABLE -> DayType.UNAVAILABLE
-                else -> DayType.BOOKED
+                DayStatus.DayEnum.PENDING -> DayType.PENDING
+                DayStatus.DayEnum.CONFIRMED -> DayType.CONFIRMED
+                DayStatus.DayEnum.REJECT -> DayType.REJECT
+                else -> DayType.AVAILABLE
             }
-            shcData.night = when (updateHashMap.valueAt(i).night) {
-                DayStatus.NightEnum.AVAILABLE -> NightType.AVAILABLE
+            schData.night = when (updateHashMap.valueAt(i).night) {
+                DayStatus.NightEnum.BOOKED -> NightType.BOOKED
                 DayStatus.NightEnum.UNAVAILABLE -> NightType.UNAVAILABLE
-                else -> NightType.BOOKED
+                DayStatus.NightEnum.PENDING -> NightType.PENDING
+                DayStatus.NightEnum.CONFIRMED -> NightType.CONFIRMED
+                DayStatus.NightEnum.REJECT -> NightType.REJECT
+                else -> NightType.AVAILABLE
             }
-            list.add(shcData)
+            list.add(schData)
         }
         val userId = RequestBody.create(MediaType.parse("text/plain"), userData!!.id.toString())
         val schedule = RequestBody.create(MediaType.parse("application/json"), Gson().toJson(list))
         updateCall = apiInterface.updateSchedule(userId, schedule)
         apiManager.makeApiCall(updateCall!!, this)
+//        log("Size: ${list.size}")
     }
 
     private fun getSchedule(cal: Calendar, dayTypeGet: DayTypeGet?) {
@@ -155,14 +179,20 @@ class ScheduleFragment : BaseFragment() {
                 val scheduleData = serverDataIntMap[i, ScheduleData()]
 
                 dayStatus.day = when (scheduleData.day) {
-                    DayType.AVAILABLE -> DayStatus.DayEnum.AVAILABLE
+                    DayType.BOOKED -> DayStatus.DayEnum.BOOKED
                     DayType.UNAVAILABLE -> DayStatus.DayEnum.UNAVAILABLE
-                    else -> DayStatus.DayEnum.BOOKED
+                    DayType.PENDING -> DayStatus.DayEnum.PENDING
+                    DayType.CONFIRMED -> DayStatus.DayEnum.CONFIRMED
+                    DayType.REJECT -> DayStatus.DayEnum.REJECT
+                    else -> DayStatus.DayEnum.AVAILABLE
                 }
                 dayStatus.night = when (scheduleData.night) {
-                    NightType.AVAILABLE -> DayStatus.NightEnum.AVAILABLE
+                    NightType.BOOKED -> DayStatus.NightEnum.BOOKED
                     NightType.UNAVAILABLE -> DayStatus.NightEnum.UNAVAILABLE
-                    else -> DayStatus.NightEnum.BOOKED
+                    NightType.PENDING -> DayStatus.NightEnum.PENDING
+                    NightType.CONFIRMED -> DayStatus.NightEnum.CONFIRMED
+                    NightType.REJECT -> DayStatus.NightEnum.REJECT
+                    else -> DayStatus.NightEnum.AVAILABLE
                 }
                 dayTypeHashMap.put(i, dayStatus)
             }

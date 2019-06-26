@@ -33,14 +33,41 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="5dp"
             android:gravity="start"
             android:lines="1"
+            android:ellipsize="end"
             android:textColor="@color/WhiteSmoke"
             android:textSize="16sp"
             app:layout_constraintLeft_toRightOf="@+id/picIV"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/ratingRB"
             app:layout_constraintTop_toTopOf="parent"
             tool:text="NAME" />
+
+        <android.support.v7.widget.AppCompatRatingBar
+            android:id="@+id/ratingRB"
+            style="@style/Base.Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="1dp"
+            android:layout_marginTop="4dp"
+            android:numStars="1"
+            android:rating="1"
+            android:theme="@style/RatingTheme"
+            app:layout_constraintEnd_toStartOf="@id/ratingTV"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/ratingTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:gravity="start"
+            android:lines="1"
+            android:textColor="@color/colorSecondary"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tool:text="4.3" />
 
         <com.ideal.vox.customViews.MyTextView
             android:id="@+id/expTV"
@@ -48,25 +75,53 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="2dp"
+            android:layout_marginEnd="10dp"
             android:gravity="start"
             android:lines="1"
             android:textColor="@color/WhiteSmoke"
             android:textSize="12sp"
             app:layout_constraintLeft_toRightOf="@+id/picIV"
+            app:layout_constraintRight_toLeftOf="@id/typeTV"
+            app:layout_constraintTop_toBottomOf="@id/nameTV"
+            tool:text="Experience" />
+
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/typeTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="2dp"
+            android:gravity="start"
+            android:lines="1"
+            android:textColor="@color/WhiteSmoke"
+            android:textSize="12sp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/nameTV"
             tool:text="Experience" />
 
         <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/expertTV"
+            android:id="@+id/expertTVV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="5dp"
             android:gravity="start"
+            android:text="Expert in: "
             android:textColor="@color/WhiteSmoke"
             android:textSize="12sp"
             app:layout_constraintLeft_toRightOf="@+id/picIV"
+            app:layout_constraintTop_toBottomOf="@id/expTV" />
+
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/expertTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="start"
+            android:textAllCaps="true"
+            android:textColor="@color/WhiteSmoke"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toRightOf="@id/expertTVV"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/expTV"
             tool:text="Address" />
