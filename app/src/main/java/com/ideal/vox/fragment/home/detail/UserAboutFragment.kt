@@ -29,6 +29,7 @@ import com.ideal.vox.data.profile.CategoryPriceData
 import com.ideal.vox.data.profile.KeyData
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.retrofitManager.ResponseListener
+import com.ideal.vox.utils.Const
 import com.ideal.vox.utils.getAge
 import com.ideal.vox.utils.isNotNullAndEmpty
 import io.reactivex.Completable
@@ -53,6 +54,7 @@ class UserAboutFragment : BaseFragment() {
     private var addCall: Call<JsonObject>? = null
     private var catListCall: Call<JsonObject>? = null
     private var viewCall: Call<JsonObject>? = null
+    private var callLogCall: Call<JsonObject>? = null
     private var userData: UserData? = null
     private var obj: Disposable? = null
 
@@ -137,11 +139,7 @@ class UserAboutFragment : BaseFragment() {
                     startActivity(Intent.createChooser(browserIntent, "Open with"))
                 }
             }
-            callIV.setOnClickListener {
-                val call = Uri.parse("tel:${userData!!.mobileNumber}")
-                val callIntent = Intent(Intent.ACTION_DIAL, call)
-                baseActivity.startActivity(Intent.createChooser(callIntent, "Call with"))
-            }
+            callIV.setOnClickListener { showCallDialog() }
             mapIV.setOnClickListener {
                 val gmmIntentUri = Uri.parse("geo:${userData!!.photoProfile?.lat},${userData!!.photoProfile?.lng}" +
                         "?q=${userData!!.photoProfile?.lat},${userData!!.photoProfile?.lng}")
@@ -168,9 +166,25 @@ class UserAboutFragment : BaseFragment() {
         editAccessoryIV.visibility = View.INVISIBLE
     }
 
+    private fun showCallDialog() {
+        val bldr = AlertDialog.Builder(baseActivity)
+        bldr.setTitle("Confirm !")
+        bldr.setMessage("Make a phone call to ${userData?.name}?")
+        bldr.setPositiveButton("Yes") { dialogInterface, i ->
+            val userId = RequestBody.create(MediaType.parse("text/plain"), userData!!.id.toString())
+            callLogCall = apiInterface.addCalllog(userId)
+            apiManager.makeApiCall(callLogCall!!, this)
+            dialogInterface.dismiss()
+        }
+        bldr.setNegativeButton("No", null)
+        bldr.create().show()
+    }
+
     private fun checkMyRating() {
-        reviewsCall = apiInterface.reviewsList(userData!!.id)
-        apiManager.makeApiCall(reviewsCall!!, this, false)
+        if (store.getString(Const.SESSION_KEY, null) != null) {
+            reviewsCall = apiInterface.reviewsList(userData!!.id)
+            apiManager.makeApiCall(reviewsCall!!, this, false)
+        }
     }
 
     override fun onPause() {
@@ -248,6 +262,10 @@ class UserAboutFragment : BaseFragment() {
             myRatingRB.visibility = View.GONE
             myRatingTV.visibility = View.GONE
             checkMyRating()
+        } else if (callLogCall != null && callLogCall == call) {
+            val callInt = Uri.parse("tel:${userData!!.mobileNumber}")
+            val callIntent = Intent(Intent.ACTION_DIAL, callInt)
+            baseActivity.startActivity(Intent.createChooser(callIntent, "Call with"))
         }
     }
 

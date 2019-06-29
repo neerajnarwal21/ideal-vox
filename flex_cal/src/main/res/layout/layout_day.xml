@@ -8,9 +8,9 @@
     <ImageView
         android:id="@+id/dayV"
         android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_height="30dp"
         android:background="@drawable/day_view_available"
-        android:padding="8dp"
+        android:padding="7dp"
         android:src="@drawable/ic_sun"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,9 +32,9 @@
     <ImageView
         android:id="@+id/nightV"
         android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_height="30dp"
         android:background="@drawable/night_view_available"
-        android:padding="8dp"
+        android:padding="7dp"
         android:src="@drawable/ic_moon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -50,6 +51,7 @@ public abstract class UICalendar extends LinearLayout {
     protected TableLayout mTableHead;
     protected LockScrollView mScrollViewBody;
     protected TableLayout mTableBody;
+    protected ScrollView scrollSV;
     protected RelativeLayout mLayoutBtnGroupMonth;
     protected RelativeLayout mLayoutBtnGroupWeek;
     protected ImageButton mBtnPrevMonth;
@@ -114,6 +116,7 @@ public abstract class UICalendar extends LinearLayout {
         mTableHead           = (TableLayout)    rootView.findViewById(R.id.table_head);
         mScrollViewBody      = (LockScrollView) rootView.findViewById(R.id.scroll_view_body);
         mTableBody           = (TableLayout)    rootView.findViewById(R.id.table_body);
+        scrollSV           = (ScrollView)    rootView.findViewById(R.id.scrollSV);
         mLayoutBtnGroupMonth = (RelativeLayout) rootView.findViewById(R.id.layout_btn_group_month);
         mLayoutBtnGroupWeek  = (RelativeLayout) rootView.findViewById(R.id.layout_btn_group_week);
         mBtnPrevMonth        = (ImageButton)    rootView.findViewById(R.id.btn_prev_month);

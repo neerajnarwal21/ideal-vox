@@ -19,10 +19,10 @@
             <ImageButton
                 android:id="@+id/btn_prev_month"
                 style="@style/TitleBarButton"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginLeft="20dp"
+                android:layout_alignParentLeft="true"
                 android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
                 android:src="@drawable/ic_navigate_before_black" />
 
             <ImageButton
@@ -44,10 +44,10 @@
             <ImageButton
                 android:id="@+id/btn_prev_week"
                 style="@style/TitleBarButton"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginLeft="20dp"
+                android:layout_alignParentLeft="true"
                 android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
                 android:src="@drawable/ic_navigate_before_black" />
 
             <ImageButton
@@ -75,24 +75,34 @@
     <TableLayout
         android:id="@+id/table_head"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </TableLayout>
-
-    <com.pugtools.fcalendar.view.LockScrollView
-        android:id="@+id/scroll_view_body"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none">
 
-        <TableLayout
-            android:id="@+id/table_body"
+    </TableLayout>
+
+    <ScrollView
+        android:id="@+id/scrollSV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:overScrollMode="never">
+
+        <com.pugtools.fcalendar.view.LockScrollView
+            android:id="@+id/scroll_view_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp">
+            android:scrollbars="none">
 
-        </TableLayout>
+            <TableLayout
+                android:id="@+id/table_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:paddingBottom="8dp">
 
-    </com.pugtools.fcalendar.view.LockScrollView>
+            </TableLayout>
+
+        </com.pugtools.fcalendar.view.LockScrollView>
+    </ScrollView>
 
 </LinearLayout>

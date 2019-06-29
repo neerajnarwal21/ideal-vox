@@ -19,6 +19,8 @@ data class PhotographicData(
         @SerializedName("day_price") var dayPrice: String = "",
         @SerializedName("night_price") var nightPrice: String = "",
         @SerializedName("full_day_price") var fullDayPrice: String = "",
+        @SerializedName("state") var state: String? = null,
+        @SerializedName("city") var city: String? = null,
         @SerializedName("lat") var lat: Double = 0.0,
         @SerializedName("lng") var lng: Double = 0.0
 ) : Parcelable {
@@ -28,6 +30,8 @@ data class PhotographicData(
             parcel.readString(),
             parcel.readInt(),
             parcel.readInt(),
+            parcel.readString(),
+            parcel.readString(),
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
@@ -56,6 +60,8 @@ data class PhotographicData(
         parcel.writeString(dayPrice)
         parcel.writeString(nightPrice)
         parcel.writeString(fullDayPrice)
+        parcel.writeString(state)
+        parcel.writeString(city)
         parcel.writeDouble(lat)
         parcel.writeDouble(lng)
     }

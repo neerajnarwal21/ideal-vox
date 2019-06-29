@@ -21,7 +21,6 @@ import com.pugtools.fcalendar.data.DayStatus;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 
 /**
  * Created by azurechen on 7/29/15.
@@ -113,6 +112,15 @@ public class FlexibleCalendar extends UICalendar implements DayTypeGet, DayClose
                         case UNAVAILABLE:
                             dayV.setBackgroundResource(R.drawable.day_view_unavailable);
                             break;
+                        case PENDING:
+                            dayV.setBackgroundResource(R.drawable.day_view_pending);
+                            break;
+                        case CONFIRMED:
+                            dayV.setBackgroundResource(R.drawable.day_view_confirmed);
+                            break;
+                        case REJECT:
+                            dayV.setBackgroundResource(R.drawable.day_view_reject);
+                            break;
                         case BOOKED:
                             dayV.setBackgroundResource(R.drawable.day_view_booked);
                             break;
@@ -125,6 +133,15 @@ public class FlexibleCalendar extends UICalendar implements DayTypeGet, DayClose
                             break;
                         case UNAVAILABLE:
                             nightV.setBackgroundResource(R.drawable.night_view_unavailable);
+                            break;
+                        case PENDING:
+                            nightV.setBackgroundResource(R.drawable.night_view_pending);
+                            break;
+                        case CONFIRMED:
+                            nightV.setBackgroundResource(R.drawable.night_view_confirmed);
+                            break;
+                        case REJECT:
+                            nightV.setBackgroundResource(R.drawable.night_view_reject);
                             break;
                         case BOOKED:
                             nightV.setBackgroundResource(R.drawable.night_view_booked);
@@ -158,7 +175,6 @@ public class FlexibleCalendar extends UICalendar implements DayTypeGet, DayClose
             mTxtTitle.setText(dateFormat.format(mAdapter.getCalendar().getTime()));
             mTableHead.removeAllViews();
             mTableBody.removeAllViews();
-
             TableRow rowCurrent;
 
             // set day of week
@@ -311,6 +327,7 @@ public class FlexibleCalendar extends UICalendar implements DayTypeGet, DayClose
         } else {
             cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) - 1);
         }
+        scrollSV.smoothScrollTo(0,0);
         reload();
         if (mListener != null) {
             mListener.onMonthChange(cal, this);
@@ -324,11 +341,11 @@ public class FlexibleCalendar extends UICalendar implements DayTypeGet, DayClose
         } else {
             cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
         }
+        scrollSV.smoothScrollTo(0,0);
         reload();
         if (mListener != null) {
             mListener.onMonthChange(cal, this);
         }
-
     }
 
     public void prevWeek() {

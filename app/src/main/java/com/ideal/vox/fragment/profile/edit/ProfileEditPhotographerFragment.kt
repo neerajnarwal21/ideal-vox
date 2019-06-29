@@ -11,21 +11,22 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
 import com.ideal.vox.R
+import com.ideal.vox.data.CityData
 import com.ideal.vox.data.ExpertiseData
 import com.ideal.vox.data.UserData
 import com.ideal.vox.data.UserType
 import com.ideal.vox.fragment.AddLocationPinFragment
 import com.ideal.vox.fragment.BaseFragment
-import com.ideal.vox.utils.Const
-import com.ideal.vox.utils.PinAdd
-import com.ideal.vox.utils.getDateFromStringDate
+import com.ideal.vox.utils.*
 import kotlinx.android.synthetic.main.fg_p_edit_advance_photographer.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -35,6 +36,7 @@ class ProfileEditPhotographerFragment : BaseFragment() {
 
     private var confirmCall: Call<JsonObject>? = null
     private var listCall: Call<JsonObject>? = null
+    private var cityCall: Call<JsonObject>? = null
     private var data: UserData? = null
     private var list = ArrayList<ExpertiseData>()
     private var currentCal: Calendar = Calendar.getInstance()
@@ -52,6 +54,9 @@ class ProfileEditPhotographerFragment : BaseFragment() {
             listCall = apiInterface.getExpertise()
             apiManager.makeApiCall(listCall!!, this)
         } else initUI()
+
+        cityCall = apiInterface.getCities()
+        apiManager.makeApiCall(cityCall!!, this, false)
     }
 
     private fun initUI() {
@@ -140,6 +145,8 @@ class ProfileEditPhotographerFragment : BaseFragment() {
         val dob = RequestBody.create(MediaType.parse("text/plain"), SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dobCal.time))
         val gender = RequestBody.create(MediaType.parse("text/plain"), if (maleRB.isChecked) "M" else "F")
         val address = RequestBody.create(MediaType.parse("text/plain"), getText(addressET))
+        val state = RequestBody.create(MediaType.parse("text/plain"), stateSP.selectedItem.toString())
+        val city = RequestBody.create(MediaType.parse("text/plain"), citySP.selectedItem.toString())
         val pin = RequestBody.create(MediaType.parse("text/plain"), getText(pinET))
         val lat = RequestBody.create(MediaType.parse("text/plain"), latLng?.latitude.toString())
         val lng = RequestBody.create(MediaType.parse("text/plain"), latLng?.longitude.toString())
@@ -148,7 +155,7 @@ class ProfileEditPhotographerFragment : BaseFragment() {
         val yt = RequestBody.create(MediaType.parse("text/plain"), getText(ytET))
         val insta = RequestBody.create(MediaType.parse("text/plain"), getText(instaET))
         val fb = RequestBody.create(MediaType.parse("text/plain"), getText(fbET))
-        confirmCall = apiInterface.becomePhotographer(expertise, expYear, expMonth, dob, gender, address, pin, lat, lng, null, about, userType, yt, insta, fb)
+        confirmCall = apiInterface.becomePhotographer(expertise, expYear, expMonth, dob, gender, address, state, city, pin, lat, lng, null, about, userType, yt, insta, fb)
         apiManager.makeApiCall(confirmCall!!, this)
     }
 
@@ -189,6 +196,46 @@ class ProfileEditPhotographerFragment : BaseFragment() {
             }
             loadSpinner(array)
             initUI()
+        } else if (cityCall != null && cityCall === call) {
+            val jsonArr = payload as JsonArray
+            val objectType = object : TypeToken<ArrayList<CityData>>() {}.type
+            val datas = Gson().fromJson<ArrayList<CityData>>(jsonArr, objectType)
+            val stateMap = TreeMap<String, ArrayList<String>>(kotlin.Comparator { t1, t2 -> t1.compareTo(t2) })
+            log("Total cities ${datas.size}")
+            for (data in datas) {
+                if (stateMap.containsKey(data.state)) {
+                    stateMap.get(data.state)?.add(data.city!!)
+                } else
+                    stateMap.put(data.state!!, arrayListOf(data.city!!))
+            }
+            val spinnerArrayAdapter = ArrayAdapter<String>(baseActivity, R.layout.adapter_simple_item_dark, stateMap.keys.toMutableList())
+            spinnerArrayAdapter.setDropDownViewResource(R.layout.adapter_simple_item_list)
+            stateSP.adapter = spinnerArrayAdapter
+
+            var firstRun = true
+
+            stateSP.mySpinnerCallback {
+                val arrayAdapter = ArrayAdapter<String>(baseActivity, R.layout.adapter_simple_item_dark, stateMap.get(it)!!.toMutableList())
+                arrayAdapter.setDropDownViewResource(R.layout.adapter_simple_item_list)
+                citySP.adapter = arrayAdapter
+
+                if (firstRun && this.data?.photoProfile?.state.isNotNullAndEmpty() && this.data?.photoProfile?.city.isNotNullAndEmpty()) {
+                    firstRun = false
+                    for ((i, value) in stateMap.get(data?.photoProfile?.state)!!.withIndex()) {
+                        if (value == this.data?.photoProfile?.city) {
+                            citySP.setSelection(i)
+                            break
+                        }
+                    }
+                }
+            }
+            if (this.data?.photoProfile?.state.isNotNullAndEmpty())
+                for ((i, key) in stateMap.keys.withIndex()) {
+                    if (key == this.data?.photoProfile?.state) {
+                        stateSP.setSelection(i)
+                        break
+                    }
+                }
         }
     }
 

@@ -1,12 +1,14 @@
 package com.ideal.vox.fragment.home
 
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
+import android.support.transition.TransitionManager
+import android.support.v4.widget.NestedScrollView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -16,22 +18,25 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.ideal.vox.R
 import com.ideal.vox.activity.main.MainActivity
+import com.ideal.vox.data.CityData
 import com.ideal.vox.data.UserData
 import com.ideal.vox.di.GlideApp
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.fragment.home.detail.UserDetailFragment
 import com.ideal.vox.utils.*
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
 import com.warkiz.widget.IndicatorSeekBar
 import com.warkiz.widget.OnSeekChangeListener
 import com.warkiz.widget.SeekParams
 import kotlinx.android.synthetic.main.fg_h_map_view.*
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import retrofit2.Call
+import java.util.*
 
 
 /**
@@ -46,7 +51,12 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
     private var goBack: Boolean = false
     private var vieww: View? = null
     private var listCall: Call<JsonObject>? = null
+    private var searchCityCall: Call<JsonObject>? = null
+    private var cityCall: Call<JsonObject>? = null
     private val markerHashMap = HashMap<Marker, UserData>()
+
+    private var isCitiesShowing = false
+    private var behavior: TopSheetBehavior<NestedScrollView>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         try {
@@ -77,9 +87,43 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
         if (myCurrentLocation == null) {
             locationManager.startLocationManager(baseActivity, LocationManager.Accuracy.HIGH, this)
         }
+
+        topSheetNSV.visibility = View.VISIBLE
+        cityCall = apiInterface.getCities()
+        apiManager.makeApiCall(cityCall!!, this, false)
+
+        behavior = TopSheetBehavior.from(topSheetNSV)
+        searchTV.setOnClickListener {
+            TransitionManager.beginDelayedTransition(parentRL)
+            if (behavior?.state == TopSheetBehavior.STATE_COLLAPSED) {
+                behavior?.state = TopSheetBehavior.STATE_EXPANDED
+            } else {
+                behavior?.state = TopSheetBehavior.STATE_COLLAPSED
+            }
+            behavior?.setTopSheetCallback(object : TopSheetBehavior.TopSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if (newState == TopSheetBehavior.STATE_COLLAPSED) {
+                        if (!isCitiesShowing) distanceCV.visibility = View.VISIBLE
+                        searchTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_expand, 0)
+                    } else if (newState == TopSheetBehavior.STATE_EXPANDED) {
+                        distanceCV.visibility = View.GONE
+                        searchTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_collapse, 0)
+                    }
+                }
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float, isOpening: Boolean?) {
+                }
+
+            })
+        }
+        doneIV.setOnClickListener {
+            val city = RequestBody.create(MediaType.parse("text/plain"), citySP.selectedItem.toString())
+            searchCityCall = apiInterface.citywisePhotographers(city)
+            apiManager.makeApiCall(searchCityCall!!, this)
+        }
     }
 
-    fun getList() {
+    private fun getList() {
         log("LatLng>>> ${myCurrentLocation?.latitude}, ${myCurrentLocation?.longitude}")
         if (myCurrentLocation != null) {
             apiClient.clearCache()
@@ -95,6 +139,7 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
                 it.setOnInfoWindowClickListener {
                     showInfoDialog(markerHashMap[it]!!)
                 }
+                it.uiSettings.isMapToolbarEnabled = false
                 googleMap = it
                 getAndSetCurrentLocation()
 
@@ -169,6 +214,52 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
             if (list.size > 0)
                 setupMapUI(list)
             emptyTV.visibility = if (list.size == 0) View.VISIBLE else View.GONE
+        } else if (searchCityCall != null && searchCityCall === call) {
+            googleMap?.clear()
+            isCitiesShowing = true
+            behavior?.state = TopSheetBehavior.STATE_COLLAPSED
+
+            val jsonObject = payload as JsonArray
+            val objectType = object : TypeToken<ArrayList<UserData>>() {}.type
+            val list = Gson().fromJson<ArrayList<UserData>>(jsonObject, objectType)
+
+            if (list.size > 0) {
+                setupMapUI(list)
+
+                if (list.size == 1) {
+                    googleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(list[0].photoProfile!!.lat, list[0].photoProfile!!.lng), 15.0f))
+                } else {
+                    val builder = LatLngBounds.Builder()
+                    for (data in list) {
+                        builder.include(LatLng(data.photoProfile!!.lat, data.photoProfile!!.lng))
+                    }
+                    googleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 40))
+                }
+            }
+
+            emptyTV.visibility = if (list.size == 0) View.VISIBLE else View.GONE
+
+        } else if (cityCall != null && cityCall === call) {
+            val jsonArr = payload as JsonArray
+            val objectType = object : TypeToken<ArrayList<CityData>>() {}.type
+            val datas = Gson().fromJson<ArrayList<CityData>>(jsonArr, objectType)
+            val stateMap = TreeMap<String, ArrayList<String>>(Comparator { t1, t2 -> t1.compareTo(t2) })
+            log("Total cities ${datas.size}")
+            for (data in datas) {
+                if (stateMap.containsKey(data.state)) {
+                    stateMap.get(data.state)?.add(data.city!!)
+                } else
+                    stateMap.put(data.state!!, arrayListOf(data.city!!))
+            }
+            val spinnerArrayAdapter = ArrayAdapter<String>(baseActivity, R.layout.adapter_simple_item_dark, stateMap.keys.toMutableList())
+            spinnerArrayAdapter.setDropDownViewResource(R.layout.adapter_simple_item_list)
+            stateSP.adapter = spinnerArrayAdapter
+
+            stateSP.mySpinnerCallback {
+                val arrayAdapter = ArrayAdapter<String>(baseActivity, R.layout.adapter_simple_item_dark, stateMap.get(it)!!.toMutableList())
+                arrayAdapter.setDropDownViewResource(R.layout.adapter_simple_item_list)
+                citySP.adapter = arrayAdapter
+            }
         }
     }
 

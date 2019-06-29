@@ -24,12 +24,18 @@ public class DayStatus {
     public enum DayEnum {
         AVAILABLE,
         UNAVAILABLE,
-        BOOKED
+        PENDING,
+        CONFIRMED,
+        BOOKED,
+        REJECT
     }
 
     public enum NightEnum {
         AVAILABLE,
         UNAVAILABLE,
-        BOOKED
+        PENDING,
+        CONFIRMED,
+        BOOKED,
+        REJECT
     }
 }

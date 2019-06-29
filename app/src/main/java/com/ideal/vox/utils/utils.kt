@@ -83,13 +83,13 @@ fun getAge(age: String): String {
     return ageInt.toString()
 }
 
-fun Spinner.mySpinnerCallback(callBack: (Int) -> Unit) {
+fun Spinner.mySpinnerCallback(callBack: (String) -> Unit) {
     this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(parent: AdapterView<*>?) {
         }
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            callBack.invoke(position)
+            callBack.invoke(parent?.selectedItem.toString())
         }
     }
 }

@@ -79,6 +79,9 @@ interface ApiInterface {
     @GET("get_expertises")
     fun getExpertise(): Call<JsonObject>
 
+    @GET("get_cities")
+    fun getCities(): Call<JsonObject>
+
 
     @Multipart
     @POST("become_photographer")
@@ -88,6 +91,8 @@ interface ApiInterface {
                            @Part("dob") dob: RequestBody,
                            @Part("gender") gender: RequestBody,
                            @Part("address") password: RequestBody,
+                           @Part("state") state: RequestBody,
+                           @Part("city") city: RequestBody,
                            @Part("pin") pinCode: RequestBody,
                            @Part("lat") lat: RequestBody,
                            @Part("lng") lng: RequestBody,
@@ -158,6 +163,11 @@ interface ApiInterface {
     fun reviewsList(@Path("user_id") userId: Int): Call<JsonObject>
 
     @Multipart
+    @POST("add_call_log")
+    fun addCalllog(@Part("user_id") userId: RequestBody)
+            : Call<JsonObject>
+
+    @Multipart
     @POST("add_review")
     fun addReview(@Part("user_id") userId: RequestBody,
                   @Part("rating") rating: RequestBody,
@@ -209,6 +219,10 @@ interface ApiInterface {
     fun mapPhotographers(@Path("lat") lat: Double,
                          @Path("lng") lng: Double,
                          @Path("distance") distance: Int): Call<JsonObject>
+
+    @Multipart
+    @POST("get_photographers_by_cities")
+    fun citywisePhotographers(@Part("city") city: RequestBody): Call<JsonObject>
 
     @GET("get_photographers")
     fun allPhotographers(@Query("page") page: Int,
