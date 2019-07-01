@@ -137,6 +137,9 @@ interface ApiInterface {
     @GET("get_categories")
     fun allCategories(): Call<JsonObject>
 
+    @GET("demo")
+    fun ytDemoLink(): Call<JsonObject>
+
     @Headers("Cache-Control: no-cache")
     @GET("get_user_categories/{user_id}")
     fun userCategories(@Path("user_id") userId: Int): Call<JsonObject>

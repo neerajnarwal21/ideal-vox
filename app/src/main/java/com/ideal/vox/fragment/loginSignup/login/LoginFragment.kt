@@ -150,9 +150,13 @@ class LoginFragment : BaseFragment() {
                 startActivity(intent)
 //            }
             } else {
+                val bndl = Bundle()
+                bndl.putBoolean("isFromLogin",true)
+                val frag = OTPFragment()
+                frag.arguments = bndl
                 baseActivity.supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.fc_ls, OTPFragment())
+                        .replace(R.id.fc_ls, frag)
                         .addToBackStack(null)
                         .commit()
             }

@@ -29,6 +29,13 @@ class OTPFragment : BaseFragment() {
     private var confirmCall: Call<JsonObject>? = null
     private var resendCall: Call<JsonObject>? = null
     private var data: UserData? = null
+    private var isFromLogin = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if(arguments!=null && arguments!!.containsKey("isFromLogin"))
+            isFromLogin = arguments!!.getBoolean("isFromLogin")
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fg_ls_confirm_otp, container, false)
@@ -37,8 +44,23 @@ class OTPFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setLoginTimeToolbar("Confirm OTP")
+        if(isFromLogin){
+            showChooseDialog()
+        }
         initUI()
 //        resendOTP(data?.mobileNumber!!)
+    }
+
+    private fun showChooseDialog() {
+        data = store.getUserData(Const.USER_DATA, UserData::class.java)
+        val bldr = AlertDialog.Builder(baseActivity)
+        bldr.setTitle("Resend OTP !")
+        bldr.setMessage("Do you want to send OTP again to you ?")
+        bldr.setPositiveButton("I have OTP",null)
+        bldr.setNegativeButton("Resend"){ dialogInterface, i ->
+            resendOTP(data?.email!!)
+        }
+        bldr.create().show()
     }
 
     private fun initUI() {

@@ -13,6 +13,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.ideal.vox.R
 import com.ideal.vox.activity.BaseActivity
+import com.ideal.vox.activity.YtDemoActivity
 import com.ideal.vox.customViews.MyTextView
 import com.ideal.vox.data.UserData
 import com.ideal.vox.data.UserType
@@ -25,6 +26,10 @@ import com.ideal.vox.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_custom.*
 import retrofit2.Call
+import android.content.ActivityNotFoundException
+import android.net.Uri
+
+
 
 
 class MainActivity : BaseActivity() {
@@ -37,7 +42,16 @@ class MainActivity : BaseActivity() {
 
         setContentView(R.layout.activity_main)
         apiClient.clearCache()
+
+        if (store.getBoolean(Const.IS_FIRST_RUN, true)) {
+            store.setBoolean(Const.IS_FIRST_RUN, false)
+            showDemoVideo()
+        }
         initUI()
+    }
+
+    private fun showDemoVideo() {
+        startActivity(Intent(this, YtDemoActivity::class.java))
     }
 
     private fun initUI() {
@@ -49,7 +63,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun jumpToHome() {
+    private fun jumpToHome() {
         drawer.closeDrawer(Gravity.START)
         navigationView.menu.getItem(0).isChecked = true
         supportFragmentManager
@@ -78,6 +92,9 @@ class MainActivity : BaseActivity() {
                 R.id.home -> jumpToHome()
                 R.id.schedule -> fragment = ScheduleFragment()
                 R.id.become_photographer -> showPhotographerDialog()
+                R.id.how_to -> showDemoVideo()
+                R.id.rate_us -> rateOnGooglePlay()
+                R.id.share -> shareApp()
                 R.id.help -> fragment = HelpFragment()
                 R.id.logout -> {
                     apiClient.clearCache()
@@ -93,6 +110,29 @@ class MainActivity : BaseActivity() {
             true
         }
         navigationView.setCheckedItem(R.id.home)
+    }
+
+    private fun shareApp() {
+        val sendIntent = Intent()
+        sendIntent.action = Intent.ACTION_SEND
+        sendIntent.putExtra(Intent.EXTRA_TEXT,
+                "Hey I found an awesome app for finding photographers and helpers nearby. " +
+                        "Check out app at: https://play.google.com/store/apps/details?id=${Const.getPackageName(this)}")
+        sendIntent.type = "text/plain"
+        startActivity(sendIntent)
+    }
+
+    private fun rateOnGooglePlay() {
+        val uri = Uri.parse("market://details?id=${Const.getPackageName(this)}")
+        val goToMarket = Intent(Intent.ACTION_VIEW, uri)
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+        try {
+            startActivity(goToMarket)
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=${Const.getPackageName(this)}")))
+        }
     }
 
     override fun onResume() {

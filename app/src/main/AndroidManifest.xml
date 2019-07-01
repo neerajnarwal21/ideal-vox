@@ -45,6 +45,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name="com.ideal.vox.activity.YtDemoActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name="com.ideal.vox.utils.FacebookLogin"
             android:screenOrientation="portrait" />
 

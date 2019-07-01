@@ -13,11 +13,31 @@
             android:checked="false"
             android:icon="@drawable/ic_camera_yellow"
             android:title="Work with us" />
+
         <item
             android:id="@+id/help"
             android:checked="false"
             android:icon="@drawable/ic_help"
             android:title="Help" />
+
+        <item
+            android:id="@+id/how_to"
+            android:checked="false"
+            android:icon="@drawable/ic_how_to_use"
+            android:title="Ideal Vox Tour" />
+
+        <item
+            android:id="@+id/rate_us"
+            android:checked="false"
+            android:icon="@drawable/ic_rate_us"
+            android:title="Rate us" />
+
+        <item
+            android:id="@+id/share"
+            android:checked="false"
+            android:icon="@drawable/ic_share"
+            android:title="Share app" />
+
         <item
             android:id="@+id/logout"
             android:checked="false"
