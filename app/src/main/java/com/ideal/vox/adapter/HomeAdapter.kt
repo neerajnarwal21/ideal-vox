@@ -42,20 +42,21 @@ class HomeAdapter(private val activity: BaseActivity, private val datas: ArrayLi
             val data = datas[holder.adapterPosition]
             if (data.avatar.isNotNullAndEmpty())
                 activity.picasso.load(Const.IMAGE_BASE_URL + "/${data.avatar}")
+                        .resize(80,80)
                         .transform(CircleTransform()).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera)
                         .into(holder.picIV)
-            holder.nameTV.text = "Name: ${data.name}"
+            holder.nameTV.text = data.name
             holder.ratingTV.text = data.rating.toString()
             holder.expTV.text = "Experience: ${data.photoProfile?.experienceInYear} years, ${data.photoProfile?.experienceInMonths} months"
+            holder.typeTV.visibility = View.GONE
             holder.typeTV.text = data.userType.name
             if (data.userType == UserType.HELPER) {
-                holder.expertTVV.visibility = View.GONE
-                holder.expertTV.visibility = View.GONE
+                holder.expertTVV.visibility = View.INVISIBLE
+                holder.expertTV.text="Helper"
             } else {
                 holder.expertTVV.visibility = View.VISIBLE
-                holder.expertTV.visibility = View.VISIBLE
+                holder.expertTV.text = data.photoProfile?.expertise
             }
-            holder.expertTV.text = data.photoProfile?.expertise
             holder.parentCL.setOnClickListener {
                 (activity as MainActivity).userData = data
                 val bndl = Bundle()

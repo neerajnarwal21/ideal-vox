@@ -185,7 +185,7 @@ class BecomePhotographerFragment : BaseFragment() {
 
             val userObj = jsonObj.getAsJsonObject("user")
             val userData = Gson().fromJson(userObj, UserData::class.java)
-            otpTV.setText("An OTP has been sent to ${userData.mobileNumber} kindly enter that here")
+            otpTV.text = "An OTP has been sent to ${userData.mobileNumber} kindly enter that here"
         } else if (cityCall != null && cityCall === call) {
             val jsonArr = payload as JsonArray
             val objectType = object : TypeToken<ArrayList<CityData>>() {}.type

@@ -1,9 +1,12 @@
 package com.ideal.vox.fragment.profile.edit
 
+import android.graphics.Typeface
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.ideal.vox.R
 import com.ideal.vox.adapter.PageAdapter
 import com.ideal.vox.fragment.BaseFragment
@@ -39,5 +42,21 @@ class ProfileEditAdvFragment : BaseFragment() {
 
         pager.offscreenPageLimit = 2
         tabs.setupWithViewPager(pager)
+        tabs.setFont()
+    }
+
+    private fun TabLayout.setFont() {
+        val vg = this.getChildAt(0) as ViewGroup
+        for (i: Int in 0..vg.childCount) {
+            val vgTab = vg.getChildAt(i) as ViewGroup?
+            vgTab?.let {
+                for (j: Int in 0..vgTab.childCount) {
+                    val tab = vgTab.getChildAt(j)
+                    if (tab is TextView) {
+                        tab.typeface = Typeface.createFromAsset(baseActivity.assets, "fonts/myriad.ttf")
+                    }
+                }
+            }
+        }
     }
 }

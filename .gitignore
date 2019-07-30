@@ -1,0 +1,7 @@
+/app/build
+/app/*.iml
+/app/release
+/app/*.apk
+/gradlew
+/gradlew.bat
+/*.iml

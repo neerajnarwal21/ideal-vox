@@ -6,8 +6,6 @@
     <dimen name="title_bar_button_height">36dp</dimen>
 
     <!-- day -->
-    <dimen name="day_circle_width">32dp</dimen>
-    <dimen name="day_circle_height">64dp</dimen>
     <dimen name="day_circle_radius">120dp</dimen>
     <dimen name="day_circle_stroke_width">1dp</dimen>
 

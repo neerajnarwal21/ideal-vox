@@ -2,8 +2,7 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/parentCL"
@@ -14,50 +13,68 @@
             android:id="@+id/aboutL"
             layout="@layout/inc_p_about" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primary_blue"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@id/ratingRB"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <android.support.v7.widget.AppCompatRatingBar
             android:id="@+id/ratingRB"
             style="@style/Base.Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="20dp"
             android:numStars="5"
             android:theme="@style/RatingTheme"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/aboutL" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/aboutL" />
 
         <com.ideal.vox.customViews.MyTextView
             android:id="@+id/reviewTV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="14dp"
-            android:textColor="@color/WhiteSmoke"
+            android:layout_marginEnd="5dp"
+            android:textColor="@color/Black"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/ratingRB"
-            app:layout_constraintTop_toBottomOf="@+id/aboutL" />
+            app:layout_constraintEnd_toStartOf="@id/ratingRB"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingRB"
+            app:layout_constraintTop_toTopOf="@+id/ratingRB" />
 
         <com.ideal.vox.customViews.MyTextView
             android:id="@+id/viewCountTV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="10dp"
-            android:textColor="@color/WhiteSmoke"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/Black"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/aboutL" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ratingRB"
+            app:layout_constraintBottom_toBottomOf="@id/ratingRB"/>
 
         <ProgressBar
             android:id="@+id/viewLoadingPB"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
             android:theme="@style/RadioTheme"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/aboutL" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ratingRB"
+            app:layout_constraintBottom_toBottomOf="@id/ratingRB"/>
+
+        <View
+            android:id="@+id/v2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primary_blue"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/ratingRB"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <android.support.v7.widget.AppCompatRatingBar
             android:id="@+id/myRatingRB"
@@ -69,8 +86,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reviewTV" />
-
+            app:layout_constraintTop_toBottomOf="@+id/v2" />
 
         <com.ideal.vox.customViews.MyTextView
             android:id="@+id/myRatingTV"
@@ -81,22 +97,33 @@
             android:visibility="gone"
             android:padding="10dp"
             android:text="Share your experience"
-            android:textColor="@color/WhiteSmoke"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/myRatingRB" />
-
+        <com.ideal.vox.customViews.MyTextView
+            android:id="@+id/prTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="20dp"
+            android:text="Price"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/myRatingTV" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/catListRV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:overScrollMode="never"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/myRatingTV" />
+            app:layout_constraintTop_toBottomOf="@+id/prTV" />
 
         <com.ideal.vox.customViews.MyTextView
             android:id="@+id/accTV"
@@ -105,7 +132,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="20dp"
             android:text="Accessories"
-            android:textColor="@color/colorSecondary"
+            android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -116,9 +143,8 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginStart="10dp"
-            android:background="@drawable/yellow_circle"
             android:padding="4dp"
-            android:src="@drawable/ic_edit_black"
+            android:src="@drawable/ic_edit"
             app:layout_constraintBottom_toBottomOf="@+id/accTV"
             app:layout_constraintStart_toEndOf="@+id/accTV"
             app:layout_constraintTop_toTopOf="@+id/accTV" />
@@ -140,7 +166,7 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="No Accessories added yet\nAdd accessories using edit section"
-            android:textColor="@color/WhiteSmoke"
+            android:textColor="@color/Black"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

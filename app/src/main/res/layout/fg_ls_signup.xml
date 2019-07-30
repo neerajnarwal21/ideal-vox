@@ -2,8 +2,21 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:layout_height="match_parent">
+    <android.support.v7.widget.CardView
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/White">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="30dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,7 +27,6 @@
             android:id="@+id/nameTIL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:theme="@style/TextLabel"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -27,7 +39,7 @@
                 android:gravity="start"
                 android:hint="FULL NAME"
                 android:inputType="textCapWords"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -48,7 +60,7 @@
                 android:gravity="start"
                 android:hint="MOBILE NO."
                 android:inputType="number"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -68,7 +80,7 @@
                 android:gravity="start"
                 android:hint="EMAIL"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -89,7 +101,7 @@
                 android:hint="PASSWORD"
                 android:inputType="textPassword"
                 android:longClickable="false"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -110,7 +122,7 @@
                 android:hint="CONFIRM PASSWORD"
                 android:inputType="textPassword"
                 android:longClickable="false"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -122,7 +134,8 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"
-            android:background="@drawable/btn_yellow"
+            android:background="@drawable/btn_skyblue"
+            android:textColor="@color/White"
             android:text="Sign Up"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -132,4 +145,6 @@
             app:layout_constraintTop_toBottomOf="@id/confPassTIL" />
 
     </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 </android.support.v4.widget.NestedScrollView>

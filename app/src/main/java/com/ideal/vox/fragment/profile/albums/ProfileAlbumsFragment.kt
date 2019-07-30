@@ -62,7 +62,7 @@ class ProfileAlbumsFragment : BaseFragment() {
         val titleTV = view.findViewById<MyTextView>(R.id.titleTV)
         val nameET = view.findViewById<MyEditText>(R.id.nameET)
         if (data != null) nameET.setText(data.name)
-        titleTV.setText(if (data != null) "Update album name" else "Add album")
+        titleTV.text = if (data != null) "Update album name" else "Add album"
         bldr.setPositiveButton("Submit") { _, _ -> }
         bldr.setNegativeButton("Cancel", null)
         dialog = bldr.create()

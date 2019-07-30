@@ -3,8 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parentCL"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        app:cardBackgroundColor="@color/White"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="30dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,8 +34,8 @@
             android:gravity="center"
             android:padding="@dimen/_30dp"
             android:textSize="16sp"
-            android:text="Enter your registered email"
-            android:textColor="@color/White"
+            android:text="Enter your registered Mobile No."
+            android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@id/mobileTIL" />
 
         <android.support.design.widget.TextInputLayout
@@ -39,9 +54,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:hint="EMAIL"
+                android:hint="Mobile No."
                 android:inputType="number"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <com.ideal.vox.customViews.MyButton
@@ -51,7 +66,8 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/btn_yellow"
+            android:background="@drawable/btn_skyblue"
+            android:textColor="@color/White"
             android:text="Submit"
             android:textAllCaps="false"
             android:textStyle="bold"
@@ -60,4 +76,6 @@
             app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

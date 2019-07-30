@@ -54,7 +54,6 @@ class UserAboutFragment : BaseFragment() {
     private var addCall: Call<JsonObject>? = null
     private var catListCall: Call<JsonObject>? = null
     private var viewCall: Call<JsonObject>? = null
-    private var callLogCall: Call<JsonObject>? = null
     private var userData: UserData? = null
     private var obj: Disposable? = null
 
@@ -93,7 +92,6 @@ class UserAboutFragment : BaseFragment() {
             expTV.text = userData!!.photoProfile?.expertise
             experTV.text = "${userData!!.photoProfile?.experienceInYear} years, ${userData!!.photoProfile?.experienceInMonths} months"
             ageTV.text = "${getAge(userData!!.photoProfile!!.dob)}, ${userData!!.photoProfile?.gender}"
-            mobileTV.text = userData!!.mobileNumber
             emailTV.text = userData!!.email
             addressTV.text = "${userData!!.photoProfile?.address}\n${userData!!.photoProfile?.pinCode}"
             if (userData!!.photoProfile?.about.isNotNullAndEmpty()) {
@@ -106,7 +104,7 @@ class UserAboutFragment : BaseFragment() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
                         ratingRB.rating = userData!!.rating
-                        reviewTV.text = "${userData!!.reviews} Reviews"
+                        reviewTV.text = "(${userData!!.reviews})"
                     }
 
             ratingRB.setOnClickListener {
@@ -118,45 +116,6 @@ class UserAboutFragment : BaseFragment() {
             }
             reviewTV.setOnClickListener { ratingRB.callOnClick() }
 
-            if (userData!!.photoProfile?.youtube.isNotNullAndEmpty()) {
-                ytIV.visibility = View.VISIBLE
-                ytIV.setOnClickListener {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(userData!!.photoProfile!!.youtube))
-                    startActivity(Intent.createChooser(browserIntent, "Open with"))
-                }
-            }
-            if (userData!!.photoProfile?.insta.isNotNullAndEmpty()) {
-                instaIV.visibility = View.VISIBLE
-                instaIV.setOnClickListener {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/${userData!!.photoProfile!!.insta}"))
-                    startActivity(Intent.createChooser(browserIntent, "Open with"))
-                }
-            }
-            if (userData!!.photoProfile?.fb.isNotNullAndEmpty()) {
-                fbIV.visibility = View.VISIBLE
-                fbIV.setOnClickListener {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(userData!!.photoProfile!!.fb))
-                    startActivity(Intent.createChooser(browserIntent, "Open with"))
-                }
-            }
-            callIV.setOnClickListener { showCallDialog() }
-            mapIV.setOnClickListener {
-                val gmmIntentUri = Uri.parse("geo:${userData!!.photoProfile?.lat},${userData!!.photoProfile?.lng}" +
-                        "?q=${userData!!.photoProfile?.lat},${userData!!.photoProfile?.lng}")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
-                if (mapIntent.resolveActivity(baseActivity.packageManager) != null) {
-                    startActivity(Intent.createChooser(mapIntent, "Open with"))
-                }
-            }
-            scheduleIV.visibility = View.VISIBLE
-            scheduleIV.setOnClickListener {
-                baseActivity.supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fc_home, UserScheduleFragment())
-                        .addToBackStack(null)
-                        .commit()
-            }
             if (userData?.userType == UserType.PHOTOGRAPHER) getList()
             else {
                 accTV.visibility = View.GONE
@@ -164,20 +123,6 @@ class UserAboutFragment : BaseFragment() {
             }
         }
         editAccessoryIV.visibility = View.INVISIBLE
-    }
-
-    private fun showCallDialog() {
-        val bldr = AlertDialog.Builder(baseActivity)
-        bldr.setTitle("Confirm !")
-        bldr.setMessage("Make a phone call to ${userData?.name}?")
-        bldr.setPositiveButton("Yes") { dialogInterface, i ->
-            val userId = RequestBody.create(MediaType.parse("text/plain"), userData!!.id.toString())
-            callLogCall = apiInterface.addCalllog(userId)
-            apiManager.makeApiCall(callLogCall!!, this)
-            dialogInterface.dismiss()
-        }
-        bldr.setNegativeButton("No", null)
-        bldr.create().show()
     }
 
     private fun checkMyRating() {
@@ -258,14 +203,10 @@ class UserAboutFragment : BaseFragment() {
             this.userData = userData
             (baseActivity as MainActivity).userData = userData
             ratingRB.rating = userData!!.rating
-            reviewTV.text = "${userData!!.reviews} Reviews"
+            reviewTV.text = "${userData.reviews} Reviews"
             myRatingRB.visibility = View.GONE
             myRatingTV.visibility = View.GONE
             checkMyRating()
-        } else if (callLogCall != null && callLogCall == call) {
-            val callInt = Uri.parse("tel:${userData!!.mobileNumber}")
-            val callIntent = Intent(Intent.ACTION_DIAL, callInt)
-            baseActivity.startActivity(Intent.createChooser(callIntent, "Call with"))
         }
     }
 

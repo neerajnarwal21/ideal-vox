@@ -15,8 +15,7 @@ data class AlbumData(
             parcel.readInt(),
             parcel.readString(),
             parcel.readInt(),
-            parcel.createTypedArrayList(PicData)) {
-    }
+            parcel.createTypedArrayList(PicData))
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)

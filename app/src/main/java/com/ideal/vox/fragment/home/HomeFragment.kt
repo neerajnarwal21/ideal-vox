@@ -12,6 +12,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import com.ideal.vox.R
+import com.ideal.vox.activity.main.MainActivity
 import com.ideal.vox.adapter.HomeAdPagerAdapter
 import com.ideal.vox.adapter.HomeAdapter
 import com.ideal.vox.data.PagerPicData
@@ -56,12 +57,19 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar("Home", true, showMap = true)
+        setToolbar("Home", true, showMap = true, showToolbar = false)
         searchET.setOnEditorActionListener { textView, i, keyEvent ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
                 searchQuery()
             }
             i == EditorInfo.IME_ACTION_SEARCH
+        }
+        menuTBIV.setOnClickListener { (baseActivity as MainActivity).openDrawer() }
+        mapTBIV.setOnClickListener {
+            baseActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fc_home, HomeMapFragment())
+                    .addToBackStack(null)
+                    .commit()
         }
         searchIV.setOnClickListener { searchQuery() }
         swipeRL.setOnRefreshListener {
@@ -193,6 +201,7 @@ class HomeFragment : BaseFragment() {
                         if (currentPage == NUM_PAGES) {
                             currentPage = 0
                         }
+                        if(isVisible)
                         pager.setCurrentItem(currentPage++, true)
                     }
         }

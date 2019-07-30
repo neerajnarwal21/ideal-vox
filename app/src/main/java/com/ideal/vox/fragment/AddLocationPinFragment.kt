@@ -53,7 +53,7 @@ class AddLocationPinFragment : BaseFragment(), LocationManager.LocationUpdates {
             val parent = vieww?.parent as ViewGroup
             parent.removeView(vieww)
         }
-        setToolbar( "Add Address")
+        setToolbar("Add Address")
         try {
             vieww = inflater.inflate(R.layout.fg_ls_add_pin, container, false)
         } catch (e: InflateException) {
@@ -121,7 +121,12 @@ class AddLocationPinFragment : BaseFragment(), LocationManager.LocationUpdates {
                 getAndSetCurrentLocation()
                 if (!isPin) it.setOnCameraIdleListener { updateText() }
             }
-            childFragmentManager.beginTransaction().replace(R.id.map, mapFrag).commit();
+            try {
+                if (isVisible)
+                    childFragmentManager.beginTransaction().replace(R.id.map, mapFrag).commitAllowingStateLoss()
+            } catch (e: java.lang.Exception) {
+                baseActivity.onBackPressed()
+            }
         }
     }
 
@@ -134,7 +139,8 @@ class AddLocationPinFragment : BaseFragment(), LocationManager.LocationUpdates {
     private fun getAndSetCurrentLocation() {
         if (myCurrentLocation != null && googleMap != null) {
             val cameraPosition = CameraPosition.Builder()
-                    .target(latLng ?: LatLng(myCurrentLocation!!.latitude, myCurrentLocation!!.longitude)).zoom(15f).build()
+                    .target(latLng
+                            ?: LatLng(myCurrentLocation!!.latitude, myCurrentLocation!!.longitude)).zoom(15f).build()
             googleMap!!.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         }
     }

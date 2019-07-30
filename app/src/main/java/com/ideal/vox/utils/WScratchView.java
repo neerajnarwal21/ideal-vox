@@ -235,11 +235,7 @@ public class WScratchView extends SurfaceView implements IWScratchView, SurfaceH
 
     private boolean isScratch(float oldX, float x, float oldY, float y) {
         float distance = (float) Math.sqrt(Math.pow(oldX - x, 2) + Math.pow(oldY - y, 2));
-        if (distance > mRevealSize * 2) {
-            return true;
-        } else {
-            return false;
-        }
+        return distance > mRevealSize * 2;
     }
 
     @Override

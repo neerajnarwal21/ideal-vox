@@ -1,137 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/White">
 
-    <android.support.constraint.ConstraintLayout
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/_10dp">
+        android:layout_margin="20dp"
+        app:cardBackgroundColor="@color/White"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/expertiseTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Expertise"
-            android:textSize="12sp"
-            android:theme="@style/TextLabel"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Spinner
-            android:id="@+id/expSP"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:background="@color/transparent"
-            android:textAlignment="center"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/expertiseTV" />
+            android:layout_height="match_parent"
+            android:padding="30dp">
 
-        <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/priceTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Price Range"
-            android:textSize="12sp"
-            android:theme="@style/TextLabel"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@id/priceCB"
-            app:layout_constraintBottom_toBottomOf="@id/priceCB"/>
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_10dp">
 
-        <CheckBox
-            android:id="@+id/priceCB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="50dp"
-            android:checked="true"
-            android:layout_marginBottom="5dp"
-            android:theme="@style/CheckTheme"
-            app:layout_constraintStart_toEndOf="@+id/priceTV"
-            app:layout_constraintTop_toBottomOf="@+id/expSP" />
+                <com.ideal.vox.customViews.MyTextView
+                    android:id="@+id/expertiseTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="Expertise"
+                    android:textSize="12sp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <Spinner
+                    android:id="@+id/expSP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/transparent"
+                    android:textAlignment="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/expertiseTV" />
 
-        <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
-            android:id="@+id/rangeSB"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            app:bar_color="@color/WhiteSmoke"
-            android:layout_marginTop="5dp"
-            app:bar_highlight_color="@color/WhiteSmokeDark"
-            app:corner_radius="10"
-            app:data_type="_integer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/priceCB"
-            app:left_thumb_color="@color/colorSecondaryPressed"
-            app:left_thumb_color_pressed="@color/colorSecondaryDark"
-            app:max_value="50000"
-            app:min_value="500"
-            app:right_thumb_color="@color/colorSecondaryPressed"
-            app:right_thumb_color_pressed="@color/colorSecondaryDark"
-            app:steps="500" />
+                <com.ideal.vox.customViews.MyTextView
+                    android:id="@+id/priceTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Price Range"
+                    android:textSize="12sp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintBottom_toBottomOf="@id/priceCB"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/priceCB" />
 
-        <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/minTV"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="2000"
-            android:textColor="@color/WhiteSmoke"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rangeSB" />
-
-        <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/maxTV"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="2000"
-            android:textColor="@color/WhiteSmoke"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rangeSB" />
+                <CheckBox
+                    android:id="@+id/priceCB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:checked="true"
+                    android:theme="@style/CheckTheme"
+                    app:layout_constraintStart_toEndOf="@+id/priceTV"
+                    app:layout_constraintTop_toBottomOf="@+id/expSP" />
 
 
-        <FrameLayout
-            android:id="@+id/transFL"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:visibility="gone"
-            android:background="@color/colorPrimaryTrans"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/priceCB"
-            app:layout_constraintBottom_toTopOf="@id/submitBT"
-            android:layout_marginBottom="25dp"/>
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                    android:id="@+id/rangeSB"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    app:bar_color="@color/WhiteSmoke"
+                    app:bar_highlight_color="@color/WhiteSmokeDark"
+                    app:corner_radius="10"
+                    app:data_type="_integer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/priceCB"
+                    app:left_thumb_color="@color/colorSecondaryPressed"
+                    app:left_thumb_color_pressed="@color/colorSecondaryDark"
+                    app:max_value="50000"
+                    app:min_value="500"
+                    app:right_thumb_color="@color/colorSecondaryPressed"
+                    app:right_thumb_color_pressed="@color/colorSecondaryDark"
+                    app:steps="500" />
 
-        <com.ideal.vox.customViews.MyButton
-            android:id="@+id/submitBT"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/btn_yellow"
-            android:text="Apply filters"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/resetBT"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/minTV" />
+                <com.ideal.vox.customViews.MyTextView
+                    android:id="@+id/minTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="2000"
+                    android:textColor="@color/Brown"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rangeSB" />
 
-        <com.ideal.vox.customViews.MyButton
-            android:id="@+id/resetBT"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/btn_white"
-            android:text="Reset filters"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/submitBT"
-            app:layout_constraintTop_toBottomOf="@id/minTV" />
-    </android.support.constraint.ConstraintLayout>
-</android.support.v4.widget.NestedScrollView>
+                <com.ideal.vox.customViews.MyTextView
+                    android:id="@+id/maxTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="2000"
+                    android:textColor="@color/Brown"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rangeSB" />
+
+
+                <FrameLayout
+                    android:id="@+id/transFL"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="25dp"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@id/submitBT"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/priceCB" />
+
+                <com.ideal.vox.customViews.MyButton
+                    android:id="@+id/submitBT"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/btn_skyblue"
+                    android:text="Apply"
+                    android:textAllCaps="false"
+                    android:textColor="@color/White"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/resetBT"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/minTV" />
+
+                <com.ideal.vox.customViews.MyButton
+                    android:id="@+id/resetBT"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/btn_white"
+                    android:text="Reset filters"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/submitBT"
+                    app:layout_constraintTop_toBottomOf="@id/minTV" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</android.support.constraint.ConstraintLayout>

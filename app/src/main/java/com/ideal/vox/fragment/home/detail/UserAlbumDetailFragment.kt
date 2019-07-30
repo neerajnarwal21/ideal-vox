@@ -15,7 +15,7 @@ import com.ideal.vox.data.profile.AlbumData
 import com.ideal.vox.data.profile.PicData
 import com.ideal.vox.fragment.BaseFragment
 import com.ideal.vox.retrofitManager.ResponseListener
-import kotlinx.android.synthetic.main.fg_p_albums.*
+import kotlinx.android.synthetic.main.fg_p_albums_view.*
 import retrofit2.Call
 
 
@@ -36,7 +36,7 @@ class UserAlbumDetailFragment : BaseFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fg_p_albums, container, false)
+        return inflater.inflate(R.layout.fg_p_albums_view, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

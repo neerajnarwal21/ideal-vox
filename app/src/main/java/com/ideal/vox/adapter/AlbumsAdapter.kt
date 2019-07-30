@@ -65,7 +65,7 @@ class AlbumsAdapter(private val activity: BaseActivity, private val datas: Array
             }
             if (data.pictures.size > 0) {
                 GlideApp.with(activity).load("${Const.IMAGE_ALBUM_BASE_URL}/${userId}/${data.id}/${data.pictures[0].name}")
-                        .dontTransform().listener(GlideTgt(holder.picIV)).into(holder.picIV)
+                        .override(250,250).listener(GlideTgt(holder.picIV)).into(holder.picIV)
 
 //                activity.picasso.load("${Const.IMAGE_ALBUM_BASE_URL}/${userId}/${data.id}/${data.pictures[0].name}")
 //                        .placeholder(R.drawable.ic_camera_yellow_large).error(R.drawable.ic_camera_yellow_large).into(MyTarget(holder.picIV))

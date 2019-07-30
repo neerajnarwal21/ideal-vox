@@ -63,7 +63,7 @@ class ApiClient(private val context: Context, private val store: PrefStore) {
         try {
             if (cache == null)
                 cache = Cache(File(context.cacheDir, "http-cache"),
-                        (10 * 1024 * 1024).toLong()) // 10 MB
+                        (50 * 1024 * 1024).toLong()) // 50 MB
         } catch (e: Exception) {
             e.printStackTrace()
         }

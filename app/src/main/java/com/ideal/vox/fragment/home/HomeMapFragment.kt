@@ -125,7 +125,7 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
 
     private fun getList() {
         log("LatLng>>> ${myCurrentLocation?.latitude}, ${myCurrentLocation?.longitude}")
-        if (myCurrentLocation != null) {
+        if (myCurrentLocation != null && isVisible) {
             apiClient.clearCache()
             listCall = apiInterface.mapPhotographers(myCurrentLocation!!.latitude, myCurrentLocation!!.longitude, distanceSB.progress)
             apiManager.makeApiCall(listCall!!, this)
@@ -141,7 +141,7 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
                 }
                 it.uiSettings.isMapToolbarEnabled = false
                 googleMap = it
-                getAndSetCurrentLocation()
+//                getAndSetCurrentLocation()
 
                 distanceSB.onSeekChangeListener = object : OnSeekChangeListener {
                     override fun onSeeking(seekParams: SeekParams?) {
@@ -155,9 +155,15 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
                         getList()
                     }
                 }
-                getList()
+//                getList()
+
             }
-            childFragmentManager.beginTransaction().replace(R.id.map, mapFrag).commit()
+            try {
+                if (isVisible)
+                    childFragmentManager.beginTransaction().replace(R.id.map, mapFrag).commitAllowingStateLoss()
+            } catch (e: java.lang.Exception) {
+                baseActivity.onBackPressed()
+            }
         }
     }
 
@@ -169,13 +175,13 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
                 .commit()
     }
 
-    private fun getAndSetCurrentLocation() {
-        if (myCurrentLocation != null && googleMap != null) {
-            val cameraPosition = CameraPosition.Builder()
-                    .target(LatLng(myCurrentLocation!!.latitude, myCurrentLocation!!.longitude)).zoom(15f).build()
-            googleMap!!.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-        }
-    }
+//    private fun getAndSetCurrentLocation() {
+//        if (myCurrentLocation != null && googleMap != null) {
+//            val cameraPosition = CameraPosition.Builder()
+//                    .target(LatLng(myCurrentLocation!!.latitude, myCurrentLocation!!.longitude)).zoom(15f).build()
+//            googleMap!!.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+//        }
+//    }
 
     override fun onStartingGettingLocation() {
         initializeMap()
@@ -183,7 +189,13 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
 
     override fun onLocationFound(location: Location) {
         myCurrentLocation = location
-        getAndSetCurrentLocation()
+        if (googleMap != null) {
+            val cameraPosition = CameraPosition.Builder()
+                    .target(LatLng(myCurrentLocation!!.latitude, myCurrentLocation!!.longitude)).zoom(12f).build()
+            googleMap!!.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        }
+//        getAndSetCurrentLocation()
+        getList()
     }
 
     override fun onLocationNotFound() {
@@ -251,12 +263,12 @@ class HomeMapFragment : BaseFragment(), LocationManager.LocationUpdates {
                 } else
                     stateMap.put(data.state!!, arrayListOf(data.city!!))
             }
-            val spinnerArrayAdapter = ArrayAdapter<String>(baseActivity, R.layout.adapter_simple_item_dark, stateMap.keys.toMutableList())
+            val spinnerArrayAdapter = ArrayAdapter<String>(baseActivity, R.layout.adapter_simple_item_center, stateMap.keys.toMutableList())
             spinnerArrayAdapter.setDropDownViewResource(R.layout.adapter_simple_item_list)
             stateSP.adapter = spinnerArrayAdapter
 
             stateSP.mySpinnerCallback {
-                val arrayAdapter = ArrayAdapter<String>(baseActivity, R.layout.adapter_simple_item_dark, stateMap.get(it)!!.toMutableList())
+                val arrayAdapter = ArrayAdapter<String>(baseActivity, R.layout.adapter_simple_item_center, stateMap.get(it)!!.toMutableList())
                 arrayAdapter.setDropDownViewResource(R.layout.adapter_simple_item_list)
                 citySP.adapter = arrayAdapter
             }

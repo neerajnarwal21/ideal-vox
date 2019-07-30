@@ -3,347 +3,362 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/White">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/_10dp">
+        android:layout_height="match_parent">
 
-        <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/expertiseTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Expertise"
-            android:textSize="12sp"
-            android:theme="@style/TextLabel"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Spinner
-            android:id="@+id/expSP"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:background="@color/transparent"
-            android:textAlignment="center"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/expertiseTV" />
-
-        <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/expTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Experience"
-            android:textSize="12sp"
-            android:theme="@style/TextLabel"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/expSP" />
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/yearCL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/expTV">
-
-            <com.ideal.vox.customViews.MyEditText
-                android:id="@+id/yearET"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="2"
-                android:textColor="@color/WhiteSmoke"
-                android:theme="@style/TextLabel"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.ideal.vox.customViews.MyTextView
-                android:id="@+id/yearTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Years"
-                android:textColor="@color/colorSecondary"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/yearET"
-                app:layout_constraintTop_toTopOf="parent" />
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/monthCL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="-5dp"
-            app:layout_constraintStart_toEndOf="@id/yearCL"
-            app:layout_constraintTop_toBottomOf="@id/expTV">
-
-            <com.ideal.vox.customViews.MyEditText
-                android:id="@+id/monthET"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:inputType="number"
-                android:maxLength="2"
-                android:textColor="@color/WhiteSmoke"
-                android:theme="@style/TextLabel"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.ideal.vox.customViews.MyTextView
-                android:id="@+id/monthTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Months"
-                android:textColor="@color/colorSecondary"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/monthET"
-                app:layout_constraintTop_toTopOf="parent" />
-        </android.support.constraint.ConstraintLayout>
-
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/dobTIL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="16dp"
-            android:focusableInTouchMode="false"
-            android:theme="@style/TextLabel"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/yearCL">
-
-            <com.ideal.vox.customViews.MyEditText
-                android:id="@+id/dobET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusableInTouchMode="false"
-                android:gravity="start"
-                android:hint="D.O.B."
-                android:inputType="text"
-                android:longClickable="false"
-                android:textColor="@color/WhiteSmoke" />
-        </android.support.design.widget.TextInputLayout>
-
-        <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/genderTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="Gender"
-            android:textSize="12sp"
-            android:theme="@style/TextLabel"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dobTIL" />
-
-        <RadioGroup
-            android:id="@+id/genderRG"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:theme="@style/RadioTheme"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/genderTV">
-
-            <RadioButton
-                android:id="@+id/maleRB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="Male"
-                android:textColor="@color/colorSecondary"
-                android:textSize="14sp"
-                android:theme="@style/RadioTheme" />
-
-            <RadioButton
-                android:id="@+id/femaleRB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:text="Female"
-                android:textColor="@color/colorSecondary"
-                android:textSize="14sp"
-                android:theme="@style/RadioTheme" />
-
-        </RadioGroup>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/addressTIL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:theme="@style/TextLabel"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/genderRG">
-
-            <com.ideal.vox.customViews.MyEditText
-                android:id="@+id/addressET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start|top"
-                android:hint="Address"
-                android:inputType="textMultiLine"
-                android:lines="3"
-                android:maxLines="3"
-                android:textColor="@color/WhiteSmoke" />
-        </android.support.design.widget.TextInputLayout>
-
-        <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/stateTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="State"
-            android:textSize="12sp"
-            android:theme="@style/TextLabel"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addressTIL" />
-
-        <Spinner
-            android:id="@+id/stateSP"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:background="@color/transparent"
-            android:textAlignment="center"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/stateTV" />
-
-        <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/cityTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="City"
-            android:textSize="12sp"
-            android:theme="@style/TextLabel"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/stateSP" />
-
-        <Spinner
-            android:id="@+id/citySP"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:background="@color/transparent"
-            android:textAlignment="center"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cityTV" />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/pinTIL"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="16dp"
-            android:theme="@style/TextLabel"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/citySP">
-
-            <com.ideal.vox.customViews.MyEditText
-                android:id="@+id/pinET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:hint="PINCODE"
-                android:inputType="number"
-                android:textColor="@color/WhiteSmoke" />
-        </android.support.design.widget.TextInputLayout>
-
-        <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/locTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Location Pin set"
-            android:textColor="@color/colorSecondary"
-            android:textSize="14sp"
-            android:visibility="gone"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pinTIL" />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/aboutTIL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:theme="@style/TextLabel"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/locTV">
-
-            <com.ideal.vox.customViews.MyEditText
-                android:id="@+id/aboutET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start|top"
-                android:hint="About me"
-                android:inputType="textMultiLine"
-                android:lines="3"
-                android:maxLines="3"
-                android:textColor="@color/WhiteSmoke" />
-        </android.support.design.widget.TextInputLayout>
-
-        <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/otpTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textColor="@color/White"
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@id/aboutTIL" />
-
-        <com.mukesh.OtpView
-            android:id="@+id/otpET"
-            android:layout_width="206dp"
-            android:layout_height="52dp"
-            android:cursorVisible="false"
-            android:focusableInTouchMode="true"
-            android:inputType="number"
-            android:itemBackground="@color/colorSecondary"
-            android:textColor="@color/colorPrimary"
-            android:textSize="26sp"
-            app:itemCount="4"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/otpTV"
-            app:lineColor="@color/colorPrimary"
-            app:viewType="none" />
-
-
-        <com.ideal.vox.customViews.MyButton
-            android:id="@+id/submitBT"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/btn_yellow"
-            android:text="Submit"
-            android:textAllCaps="false"
-            android:textStyle="bold"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            app:cardBackgroundColor="@color/White"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/otpET" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+
+                <com.ideal.vox.customViews.MyTextView
+                    android:id="@+id/expertiseTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="Expertise"
+                    android:textSize="12sp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/expSP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/transparent"
+                    android:textAlignment="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/expertiseTV" />
+
+                <com.ideal.vox.customViews.MyTextView
+                    android:id="@+id/expTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="Experience"
+                    android:textSize="12sp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/expSP" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/yearCL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/expTV">
+
+                    <com.ideal.vox.customViews.MyEditText
+                        android:id="@+id/yearET"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        android:textColor="@color/Brown"
+                        android:theme="@style/TextLabel"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.ideal.vox.customViews.MyTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Years"
+                        android:textColor="@color/Brown"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/yearET"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="-5dp"
+                    app:layout_constraintStart_toEndOf="@id/yearCL"
+                    app:layout_constraintTop_toBottomOf="@id/expTV">
+
+                    <com.ideal.vox.customViews.MyEditText
+                        android:id="@+id/monthET"
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        android:textColor="@color/Brown"
+                        android:theme="@style/TextLabel"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.ideal.vox.customViews.MyTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Months"
+                        android:textColor="@color/Brown"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/monthET"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/dobTIL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="16dp"
+                    android:focusableInTouchMode="false"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/yearCL">
+
+                    <com.ideal.vox.customViews.MyEditText
+                        android:id="@+id/dobET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusableInTouchMode="false"
+                        android:gravity="start"
+                        android:hint="D.O.B."
+                        android:inputType="text"
+                        android:longClickable="false"
+                        android:textColor="@color/Brown" />
+                </android.support.design.widget.TextInputLayout>
+
+                <com.ideal.vox.customViews.MyTextView
+                    android:id="@+id/genderTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="Gender"
+                    android:textSize="12sp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dobTIL" />
+
+                <RadioGroup
+                    android:id="@+id/genderRG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:theme="@style/RadioTheme"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/genderTV">
+
+                    <RadioButton
+                        android:id="@+id/maleRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Male"
+                        android:textColor="@color/Brown"
+                        android:textSize="14sp"
+                        android:theme="@style/RadioTheme" />
+
+                    <RadioButton
+                        android:id="@+id/femaleRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="Female"
+                        android:textColor="@color/Brown"
+                        android:textSize="14sp"
+                        android:theme="@style/RadioTheme" />
+
+                </RadioGroup>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/addressTIL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/genderRG">
+
+                    <com.ideal.vox.customViews.MyEditText
+                        android:id="@+id/addressET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|top"
+                        android:hint="Address"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:maxLines="3"
+                        android:textColor="@color/Brown" />
+                </android.support.design.widget.TextInputLayout>
+
+                <com.ideal.vox.customViews.MyTextView
+                    android:id="@+id/stateTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="State"
+                    android:textSize="12sp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/addressTIL" />
+
+                <Spinner
+                    android:id="@+id/stateSP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/transparent"
+                    android:textAlignment="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/stateTV" />
+
+                <com.ideal.vox.customViews.MyTextView
+                    android:id="@+id/cityTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="City"
+                    android:textSize="12sp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/stateSP" />
+
+                <Spinner
+                    android:id="@+id/citySP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/transparent"
+                    android:textAlignment="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cityTV" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/pinTIL"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="16dp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/citySP">
+
+                    <com.ideal.vox.customViews.MyEditText
+                        android:id="@+id/pinET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:hint="PINCODE"
+                        android:inputType="number"
+                        android:textColor="@color/Brown" />
+                </android.support.design.widget.TextInputLayout>
+
+                <com.ideal.vox.customViews.MyTextView
+                    android:id="@+id/locTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location Pin set"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/pinTIL" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/aboutTIL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/TextLabel"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/locTV">
+
+                    <com.ideal.vox.customViews.MyEditText
+                        android:id="@+id/aboutET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|top"
+                        android:hint="About me"
+                        android:inputType="textMultiLine"
+                        android:lines="3"
+                        android:maxLines="3"
+                        android:textColor="@color/Brown" />
+                </android.support.design.widget.TextInputLayout>
+
+                <com.ideal.vox.customViews.MyTextView
+                    android:id="@+id/otpTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/aboutTIL" />
+
+                <com.mukesh.OtpView
+                    android:id="@+id/otpET"
+                    android:layout_width="206dp"
+                    android:layout_height="52dp"
+                    android:cursorVisible="false"
+                    android:focusableInTouchMode="true"
+                    android:inputType="number"
+                    android:itemBackground="@color/colorPrimary"
+                    android:textColor="@color/White"
+                    android:textSize="26sp"
+                    app:itemCount="4"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/otpTV"
+                    app:lineColor="@color/colorPrimary"
+                    app:viewType="none" />
+
+
+                <com.ideal.vox.customViews.MyButton
+                    android:id="@+id/submitBT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/btn_skyblue"
+                    android:text="Submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/White"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/otpET" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -5,9 +5,9 @@
     android:id="@+id/parentCL"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="2dp"
+    app:cardCornerRadius="10dp"
     app:cardElevation="1dp"
-    app:cardBackgroundColor="@color/colorSecondaryDark"
+    app:cardBackgroundColor="@color/colorPrimary"
     app:cardUseCompatPadding="true">
 
     <android.support.constraint.ConstraintLayout

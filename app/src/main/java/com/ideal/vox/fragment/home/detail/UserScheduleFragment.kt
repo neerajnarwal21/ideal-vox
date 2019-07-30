@@ -47,12 +47,13 @@ class UserScheduleFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar("Schedule", showDrawer = false)
+        setToolbar("Schedule", showDrawer = false, showToolbar = false)
 //        submitBT.text = "Submit"
         userData = (baseActivity as MainActivity).userData
         getSchedule(currentCal, null)
         toggle.visibility = View.GONE
         submitBT.visibility = View.GONE
+        backTBIV.setOnClickListener { baseActivity.onBackPressed() }
         flexCal.setCalendarListener(object : FlexibleCalendar.CalendarListener {
             override fun onDayClick(v: View?, day: Int) {
 

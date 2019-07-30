@@ -49,7 +49,7 @@ import java.util.*
 
 @BindingAdapter("doEnable")
 fun MyTextView.doColorChange(doEnable: Boolean) {
-    this.setTextColor(ContextCompat.getColor(this.context, if (doEnable) R.color.WhiteSmoke else R.color.WhiteSmokeDark))
+    this.setTextColor(ContextCompat.getColor(this.context, if (doEnable) R.color.colorPrimaryDark else R.color.colorPrimary))
 }
 
 @BindingAdapter("selected")
@@ -194,8 +194,8 @@ fun getAddress(lat: Double, lng: Double, context: Context): String {
 
 fun isNetworkAvailable(context: Context): Boolean {
     val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val networkInfo = cm.getActiveNetworkInfo()
-    return networkInfo != null && networkInfo.isConnected()
+    val networkInfo = cm.activeNetworkInfo
+    return networkInfo != null && networkInfo.isConnected
 }
 
 fun debugLog(tag: String, s: String) {
@@ -236,7 +236,7 @@ fun <T : Parcelable> copy(orig: T): T? {
     p.setDataPosition(0)
     var copy: T? = null
     try {
-        copy = orig.javaClass.getDeclaredConstructor(Parcel::class.java).newInstance(p) as T
+        copy = orig.javaClass.getDeclaredConstructor(Parcel::class.java).newInstance(p)
     } catch (e: Exception) {
         e.printStackTrace()
     }
@@ -282,21 +282,19 @@ fun Drawable.toBitmap(): Bitmap {
     }
 }
 
-fun RequestCreator.intoMyTarget(activity: Activity, imageView: ImageView) {
-    this.into(object : Target {
-        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-        }
 
-        override fun onBitmapFailed(errorDrawable: Drawable?) {
-        }
+class MyTarget(private val image: ImageView) : Target {
+    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+    }
 
-        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-            imageView.setImageBitmap(bitmap)
-            imageView.setOnClickListener {
-                if (bitmap != null) showFullScreenImage(activity, bitmap)
-            }
+    override fun onBitmapFailed(errorDrawable: Drawable?) {
+    }
+
+    override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+        if (bitmap != null) {
+            image.setImageBitmap(bitmap)
         }
-    })
+    }
 }
 
 fun logout(context: Context, store: PrefStore) {

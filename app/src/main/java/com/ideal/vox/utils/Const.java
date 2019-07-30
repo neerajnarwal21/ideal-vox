@@ -6,12 +6,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class Const {
 
-    public static final String SERVER_REMOTE_URL = "http://idealvox.com/public/api/";
-    public static final String IMAGE_BASE_URL = "http://idealvox.com/storage/app/public/avatars/";
-    public static final String IMAGE_SLIDER_BASE_URL = "http://idealvox.com/storage/app/public/slider_images/";
-    public static final String IMAGE_BANK_BASE_URL = "http://idealvox.com/storage/app/public/passbook_pic/";
-    public static final String IMAGE_ACC_BASE_URL = "http://idealvox.com/storage/app/public/accessorie_pic/";
-    public static final String IMAGE_ALBUM_BASE_URL = "http://idealvox.com/storage/app/public/album_pic/";
+    public static final String SERVER_REMOTE_URL = "http://app.idealvox.com/public/api/";
+    public static final String IMAGE_BASE_URL = "http://app.idealvox.com/storage/app/public/avatars/";
+    public static final String IMAGE_SLIDER_BASE_URL = "http://app.idealvox.com/storage/app/public/slider_images/";
+    public static final String IMAGE_BANK_BASE_URL = "http://app.idealvox.com/storage/app/public/passbook_pic/";
+    public static final String IMAGE_ACC_BASE_URL = "http://app.idealvox.com/storage/app/public/accessorie_pic/";
+    public static final String IMAGE_ALBUM_BASE_URL = "http://app.idealvox.com/storage/app/public/album_pic/";
 
     public static final String API_KEY = "AIzaSyAY1cezRA0mbLqSR2g6tVR7xdDKkJme3Kk";
 

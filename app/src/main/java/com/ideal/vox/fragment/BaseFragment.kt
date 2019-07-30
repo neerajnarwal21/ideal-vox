@@ -48,11 +48,11 @@ open class BaseFragment : Fragment(), AdapterView.OnItemClickListener, View.OnCl
     }
 
     fun setToolbar(title: String, showDrawer: Boolean = false, showEdit: Boolean = false, showMap: Boolean = false, showToolbar: Boolean = true) {
-        (baseActivity as MainActivity).setToolbar(showDrawer, title, showEdit, showMap, showToolbar);
+        (baseActivity as MainActivity).setToolbar(showDrawer, title, showEdit, showMap, showToolbar)
     }
 
     fun setLoginTimeToolbar(title: String) {
-        (baseActivity as LoginSignupActivity).setToolbar(title);
+        (baseActivity as LoginSignupActivity).setToolbar(title)
     }
 
     override fun onResume() {
@@ -69,7 +69,7 @@ open class BaseFragment : Fragment(), AdapterView.OnItemClickListener, View.OnCl
         baseActivity.showToast(msg, isError)
     }
 
-    public fun log(s: String) {
+    fun log(s: String) {
         baseActivity.log(s)
     }
 

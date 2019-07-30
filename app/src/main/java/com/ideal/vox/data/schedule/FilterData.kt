@@ -13,8 +13,7 @@ data class FilterData(
             parcel.readString(),
             parcel.readByte() != 0.toByte(),
             parcel.readInt(),
-            parcel.readInt()) {
-    }
+            parcel.readInt())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(category)

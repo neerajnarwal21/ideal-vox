@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.fg_ls_login.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
+import java.lang.Exception
 
 
 /**
@@ -58,8 +59,13 @@ class LoginFragment : BaseFragment() {
                     SocialLogin.doFbSignin {
                         val jsonObject = it.jsonObject
                         val name = jsonObject["first_name"].toString() + " " + jsonObject["last_name"].toString()
-                        val email = jsonObject["email"].toString()
-                        doSocialLogin(name, email)
+                        try {
+                            val email = jsonObject["email"].toString()
+
+                            doSocialLogin(name, email)
+                        } catch(ex:Exception) {
+                            showToast("Email Not Found, Login Failed",true)
+                        }
                     }
                 }
                 LoginStatus.GPLUS -> {
@@ -73,7 +79,7 @@ class LoginFragment : BaseFragment() {
             }
         })
         binding.setLifecycleOwner(this)
-        val view = binding.getRoot()
+        val view = binding.root
         return view
     }
 

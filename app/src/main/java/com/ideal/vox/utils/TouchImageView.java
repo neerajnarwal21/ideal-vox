@@ -933,11 +933,8 @@ public class TouchImageView extends AppCompatImageView {
         } else if (x >= -1 && direction < 0) {
             return false;
 
-        } else if (Math.abs(x) + viewWidth + 1 >= getImageWidth() && direction > 0) {
-            return false;
-        }
+        } else return !(Math.abs(x) + viewWidth + 1 >= getImageWidth()) || direction <= 0;
 
-        return true;
     }
 
     @Override
@@ -951,11 +948,8 @@ public class TouchImageView extends AppCompatImageView {
         } else if (y >= -1 && direction < 0) {
             return false;
 
-        } else if (Math.abs(y) + viewHeight + 1 >= getImageHeight() && direction > 0) {
-            return false;
-        }
+        } else return !(Math.abs(y) + viewHeight + 1 >= getImageHeight()) || direction <= 0;
 
-        return true;
     }
 
     /**
@@ -1360,7 +1354,7 @@ public class TouchImageView extends AppCompatImageView {
                 minY = maxY = startY;
             }
 
-            scroller.fling(startX, startY, (int) velocityX, (int) velocityY, minX, maxX, minY, maxY);
+            scroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
             currX = startX;
             currY = startY;
         }

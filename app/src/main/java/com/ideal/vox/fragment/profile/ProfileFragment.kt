@@ -3,7 +3,9 @@ package com.ideal.vox.fragment.profile
 import android.Manifest
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
@@ -45,7 +47,7 @@ class ProfileFragment : BaseFragment() {
         model = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
         binding.model = model
         binding.setLifecycleOwner(this)
-        val view = binding.getRoot()
+        val view = binding.root
         return view
     }
 
@@ -59,16 +61,16 @@ class ProfileFragment : BaseFragment() {
                 ProfileStatus.ABOUT, ProfileStatus.ABOUT_PAGER -> {
                     aboutTV.doColorChange(false)
                     albumsTV.doColorChange(true)
-                    aboutCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary2))
-                    albumsCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary))
+//                    aboutCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary2))
+//                    albumsCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary))
                     aboutIV.isSelected = true
                     albumsIV.isSelected = false
                 }
                 ProfileStatus.ALBUMS, ProfileStatus.ALBUMS_PAGER -> {
                     aboutTV.doColorChange(true)
                     albumsTV.doColorChange(false)
-                    aboutCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary))
-                    albumsCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary2))
+//                    aboutCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary))
+//                    albumsCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary2))
                     aboutIV.isSelected = false
                     albumsIV.isSelected = true
                 }
@@ -104,15 +106,55 @@ class ProfileFragment : BaseFragment() {
         model.onAboutClick()
 
         updateUI()
+
+
     }
 
     private fun updateUI() {
         val userData = store.getUserData(Const.USER_DATA, UserData::class.java)
-        if (userData != null) {
-            nameTV.setText(userData.name)
-            if (userData.avatar.isNotNullAndEmpty()) {
-                baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData.avatar).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
+
+        if (userData!!.photoProfile?.youtube.isNotNullAndEmpty()) {
+            lytIV.visibility = View.VISIBLE
+            ytIV.visibility = View.VISIBLE
+            ytIV.setOnClickListener {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(userData.photoProfile!!.youtube))
+                startActivity(Intent.createChooser(browserIntent, "Open with"))
             }
+        }
+        if (userData.photoProfile?.insta.isNotNullAndEmpty()) {
+            linstaIV.visibility = View.VISIBLE
+            instaIV.visibility = View.VISIBLE
+            instaIV.setOnClickListener {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/${userData.photoProfile!!.insta}"))
+                startActivity(Intent.createChooser(browserIntent, "Open with"))
+            }
+        }
+        if (userData.photoProfile?.fb.isNotNullAndEmpty()) {
+            lfbIV.visibility = View.VISIBLE
+            fbIV.visibility = View.VISIBLE
+            fbIV.setOnClickListener {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(userData.photoProfile!!.fb))
+                startActivity(Intent.createChooser(browserIntent, "Open with"))
+            }
+        }
+        callIV.setOnClickListener {
+            val call = Uri.parse("tel:${userData.mobileNumber}")
+            val callIntent = Intent(Intent.ACTION_DIAL, call)
+            baseActivity.startActivity(Intent.createChooser(callIntent, "Call with"))
+        }
+        mapIV.setOnClickListener {
+            val gmmIntentUri = Uri.parse("geo:${userData.photoProfile?.lat},${userData.photoProfile?.lng}" +
+                    "?q=${userData.photoProfile?.lat},${userData.photoProfile?.lng}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            if (mapIntent.resolveActivity(baseActivity.packageManager) != null) {
+                startActivity(Intent.createChooser(mapIntent, "Open with"))
+            }
+        }
+
+        nameTV.text = userData.name
+        if (userData.avatar.isNotNullAndEmpty()) {
+            baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData.avatar).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
         }
         picIV.setOnClickListener {
             if (PermissionsManager.checkPermissions(baseActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA), 12,

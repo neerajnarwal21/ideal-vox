@@ -65,7 +65,6 @@ class ProfileAboutFragment : BaseFragment() {
             expTV.text = userData!!.photoProfile?.expertise
             experTV.text = "${userData!!.photoProfile?.experienceInYear} years, ${userData!!.photoProfile?.experienceInMonths} months"
             ageTV.text = "${getAge(userData!!.photoProfile!!.dob)}, ${userData!!.photoProfile?.gender}"
-            mobileTV.text = userData!!.mobileNumber
             emailTV.text = userData!!.email
             addressTV.text = "${userData!!.photoProfile?.address}\n${userData!!.photoProfile?.pinCode}"
             if (userData!!.photoProfile?.about.isNotNullAndEmpty()) {
@@ -78,7 +77,7 @@ class ProfileAboutFragment : BaseFragment() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
                         ratingRB.rating = userData!!.rating
-                        reviewTV.text = "${userData!!.reviews} Reviews"
+                        reviewTV.text = "(${userData!!.reviews})"
                     }
 
             ratingRB.setOnClickListener {
@@ -89,44 +88,7 @@ class ProfileAboutFragment : BaseFragment() {
                         .commit()
             }
             reviewTV.setOnClickListener { ratingRB.callOnClick() }
-
-            if (userData!!.photoProfile?.youtube.isNotNullAndEmpty()) {
-                ytIV.visibility = View.VISIBLE
-                ytIV.setOnClickListener {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(userData!!.photoProfile!!.youtube))
-                    startActivity(Intent.createChooser(browserIntent, "Open with"))
-                }
-            }
-            if (userData!!.photoProfile?.insta.isNotNullAndEmpty()) {
-                instaIV.visibility = View.VISIBLE
-                instaIV.setOnClickListener {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/${userData!!.photoProfile!!.insta}"))
-                    startActivity(Intent.createChooser(browserIntent, "Open with"))
-                }
-            }
-            if (userData!!.photoProfile?.fb.isNotNullAndEmpty()) {
-                fbIV.visibility = View.VISIBLE
-                fbIV.setOnClickListener {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(userData!!.photoProfile!!.fb))
-                    startActivity(Intent.createChooser(browserIntent, "Open with"))
-                }
-            }
-            callIV.setOnClickListener {
-                val call = Uri.parse("tel:${userData!!.mobileNumber}")
-                val callIntent = Intent(Intent.ACTION_DIAL, call)
-                baseActivity.startActivity(Intent.createChooser(callIntent, "Call with"))
-            }
-            mapIV.setOnClickListener {
-                val gmmIntentUri = Uri.parse("geo:${userData!!.photoProfile?.lat},${userData!!.photoProfile?.lng}" +
-                        "?q=${userData!!.photoProfile?.lat},${userData!!.photoProfile?.lng}")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
-                if (mapIntent.resolveActivity(baseActivity.getPackageManager()) != null) {
-                    startActivity(Intent.createChooser(mapIntent, "Open with"))
-                }
-            }
-
-            if (userData?.userType == UserType.PHOTOGRAPHER) getList()
+           if (userData?.userType == UserType.PHOTOGRAPHER) getList()
             else {
                 accTV.visibility = View.GONE
                 accListRV.visibility = View.GONE

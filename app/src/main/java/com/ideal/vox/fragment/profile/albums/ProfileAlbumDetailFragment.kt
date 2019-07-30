@@ -27,7 +27,7 @@ import com.ideal.vox.utils.*
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import id.zelory.compressor.Compressor
-import kotlinx.android.synthetic.main.fg_p_albums.*
+import kotlinx.android.synthetic.main.fg_p_albums_view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -62,7 +62,7 @@ class ProfileAlbumDetailFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fg_p_albums, container, false)
+        return inflater.inflate(R.layout.fg_p_albums_view, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -5,6 +5,19 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
+    <ImageView
+        android:id="@+id/backTBIV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/white_circle_trans"
+        android:padding="3dp"
+        android:src="@drawable/ic_back_white"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -18,7 +31,7 @@
         android:id="@+id/day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="50dp"
         android:drawableStart="@drawable/ic_sun"
         android:drawablePadding="10dp"
         android:gravity="center"
@@ -29,10 +42,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.ideal.vox.customViews.MyTextView
-        android:id="@+id/night"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="50dp"
         android:drawableStart="@drawable/ic_moon"
         android:drawablePadding="10dp"
         android:gravity="center"
@@ -43,7 +55,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/availableCL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -165,7 +176,6 @@
             android:textColor="@color/WhiteSmoke" />
 
         <RadioButton
-            android:id="@+id/bookedRB"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="1dp"
@@ -199,42 +209,74 @@
     <!--android:layout_height="0dp"-->
     <!--android:overScrollMode="never">-->
 
-    <com.pugtools.fcalendar.widget.FlexibleCalendar
-        android:id="@+id/flexCal"
+    <View
+        android:id="@+id/halfV"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@+id/toggle" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="24dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/submitBT"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toggle"
-        app:state="expanded"
-        app:style="light" />
-    <!--</android.support.v4.widget.NestedScrollView>-->
-
-    <com.ideal.vox.customViews.MyButton
-        android:id="@+id/submitBT"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/btn_yellow"
-        android:text="Save changes"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:background="@color/White"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/halfV" />
 
-    <ProgressBar
-        android:id="@+id/loadingPB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:theme="@style/RadioTheme"
-        app:layout_constraintBottom_toTopOf="@id/submitBT"
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        app:cardBackgroundColor="@color/White"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toggle" />
+        app:layout_constraintTop_toBottomOf="@id/toggle">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <com.pugtools.fcalendar.widget.FlexibleCalendar
+                android:id="@+id/flexCal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="24dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/submitBT"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:state="expanded"
+                app:style="light" />
+            <!--</android.support.v4.widget.NestedScrollView>-->
+
+            <com.ideal.vox.customViews.MyButton
+                android:id="@+id/submitBT"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/btn_skyblue"
+                android:text="Save changes"
+                android:textColor="@color/White"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/loadingPB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="@style/RadioTheme"
+                app:layout_constraintBottom_toTopOf="@id/submitBT"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

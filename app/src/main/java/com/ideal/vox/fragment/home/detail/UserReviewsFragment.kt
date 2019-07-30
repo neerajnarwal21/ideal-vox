@@ -149,7 +149,7 @@ class UserReviewsFragment : BaseFragment() {
             addIV.visibility = View.INVISIBLE
             reviewCL.visibility = View.VISIBLE
             baseActivity.picasso.load(Const.IMAGE_BASE_URL + "/${datas[0].reviewUser?.avatar}")
-                    .transform(CircleTransform()).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera)
+                    .transform(CircleTransform()).resize(50,50).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera)
                     .into(picIV)
 
             nameTV.text = "Name: ${datas[0].reviewUser?.name}"

@@ -151,6 +151,7 @@ class LocationManager : GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnC
                 val loc = it.result
                 if (loc != null) {
                     locationUpdates?.onLocationFound(loc)
+                    removeLocationUpdates()
                 }
             }
         }

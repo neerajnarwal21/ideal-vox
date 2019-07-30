@@ -49,7 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/_20dp"
-        android:background="@drawable/btn_yellow"
+        android:background="@drawable/btn_skyblue"
+        android:textColor="@color/White"
         android:minHeight="@dimen/_40dp"
         android:text="Done"
         android:textStyle="bold" />

@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/White"
     android:overScrollMode="never">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/addIV"
@@ -39,7 +40,7 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="No Price categories added yet"
-            android:textColor="@color/WhiteSmoke"
+            android:textColor="@color/Brown"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

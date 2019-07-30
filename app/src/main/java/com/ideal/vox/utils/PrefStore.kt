@@ -34,6 +34,11 @@ class PrefStore(private val mAct: Context) {
     fun setInt(id: String, value: Int) = pref.edit().putInt(id, value).apply()
 
     @JvmOverloads
+    fun getDouble(key: String, defaultVal: Double = 0.0) = java.lang.Double.longBitsToDouble(pref.getLong(key, java.lang.Double.doubleToRawLongBits(defaultVal)))
+
+    fun setDouble(id: String, value: Double) = pref.edit().putLong(id, java.lang.Double.doubleToRawLongBits(value)).apply()
+
+    @JvmOverloads
     fun getInt(key: String, defaultVal: Int = 0) = pref.getInt(key, defaultVal)
 
     fun <T> setData(value: String, datas: ArrayList<T>) {

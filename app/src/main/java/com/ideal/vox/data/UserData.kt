@@ -32,8 +32,7 @@ data class UserData(
             UserType.values()[parcel.readInt()],
             parcel.readParcelable(PhotographicData::class.java.classLoader),
             parcel.readParcelable(BankData::class.java.classLoader),
-            parcel.createTypedArrayList(CategoryPriceData)) {
-    }
+            parcel.createTypedArrayList(CategoryPriceData))
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(email)

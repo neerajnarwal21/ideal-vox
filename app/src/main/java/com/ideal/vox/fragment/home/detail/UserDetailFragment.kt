@@ -2,15 +2,19 @@ package com.ideal.vox.fragment.home.detail
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.gson.JsonObject
 import com.ideal.vox.R
 import com.ideal.vox.activity.main.MainActivity
 import com.ideal.vox.adapter.PageAdapter
@@ -18,13 +22,13 @@ import com.ideal.vox.data.UserData
 import com.ideal.vox.data.UserType
 import com.ideal.vox.databinding.FgUserDetailBinding
 import com.ideal.vox.fragment.BaseFragment
-import com.ideal.vox.utils.Const
-import com.ideal.vox.utils.doColorChange
-import com.ideal.vox.utils.isNotNullAndEmpty
-import com.ideal.vox.utils.showFullScreenImage
+import com.ideal.vox.utils.*
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.fg_user_detail.*
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import retrofit2.Call
 
 
 /**
@@ -32,7 +36,10 @@ import kotlinx.android.synthetic.main.fg_user_detail.*
  */
 class UserDetailFragment : BaseFragment() {
 
+    private var userData: UserData? = null
     lateinit var model: UserViewModel
+    private var callLogCall: Call<JsonObject>? = null
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -41,13 +48,14 @@ class UserDetailFragment : BaseFragment() {
         model = ViewModelProviders.of(this).get(UserViewModel::class.java)
         binding.model = model
         binding.setLifecycleOwner(this)
-        val view = binding.getRoot()
+        val view = binding.root
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar("", showToolbar = false)
+        userData = (baseActivity as MainActivity).userData
+        setToolbar("" + userData?.name, showToolbar = true)
         val data = (baseActivity as MainActivity).userData
         if (data?.userType == UserType.HELPER) topCL.visibility = View.GONE
         model.getStatus().observe(this, Observer {
@@ -55,16 +63,16 @@ class UserDetailFragment : BaseFragment() {
                 UserStatus.ABOUT, UserStatus.ABOUT_PAGER -> {
                     aboutTV.doColorChange(false)
                     albumsTV.doColorChange(true)
-                    aboutCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary2))
-                    albumsCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary))
+//                    aboutCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary2))
+//                    albumsCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary))
                     aboutIV.isSelected = true
                     albumsIV.isSelected = false
                 }
                 UserStatus.ALBUMS, UserStatus.ALBUMS_PAGER -> {
                     aboutTV.doColorChange(true)
                     albumsTV.doColorChange(false)
-                    aboutCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary))
-                    albumsCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary2))
+//                    aboutCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary))
+//                    albumsCL.setBackgroundColor(ContextCompat.getColor(baseActivity, R.color.colorPrimary2))
                     aboutIV.isSelected = false
                     albumsIV.isSelected = true
                 }
@@ -106,20 +114,88 @@ class UserDetailFragment : BaseFragment() {
     private var tgt: MyTarget? = null
 
     private fun updateUI() {
-        val userData = (baseActivity as MainActivity).userData
+
+
         if (userData != null) {
-            collapseTL.title = userData.name
-            if (userData.avatar.isNotNullAndEmpty()) {
+            if (userData!!.photoProfile?.youtube.isNotNullAndEmpty()) {
+                lytIV.visibility = View.VISIBLE
+                ytIV.visibility = View.VISIBLE
+                ytIV.setOnClickListener {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(userData!!.photoProfile!!.youtube))
+                    startActivity(Intent.createChooser(browserIntent, "Open with"))
+                }
+            }
+            if (userData!!.photoProfile?.insta.isNotNullAndEmpty()) {
+                linstaIV.visibility = View.VISIBLE
+                instaIV.visibility = View.VISIBLE
+                instaIV.setOnClickListener {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/${userData!!.photoProfile!!.insta}"))
+                    startActivity(Intent.createChooser(browserIntent, "Open with"))
+                }
+            }
+            if (userData!!.photoProfile?.fb.isNotNullAndEmpty()) {
+                lfbIV.visibility = View.VISIBLE
+                fbIV.visibility = View.VISIBLE
+                fbIV.setOnClickListener {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(userData!!.photoProfile!!.fb))
+                    startActivity(Intent.createChooser(browserIntent, "Open with"))
+                }
+            }
+            callIV.setOnClickListener { showCallDialog() }
+            mapIV.setOnClickListener {
+                val gmmIntentUri = Uri.parse("geo:${userData!!.photoProfile?.lat},${userData!!.photoProfile?.lng}" +
+                        "?q=${userData!!.photoProfile?.lat},${userData!!.photoProfile?.lng}")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                if (mapIntent.resolveActivity(baseActivity.packageManager) != null) {
+                    startActivity(Intent.createChooser(mapIntent, "Open with"))
+                }
+            }
+            lscheduleIV.visibility = View.VISIBLE
+            scheduleIV.visibility = View.VISIBLE
+            scheduleIV.setOnClickListener {
+                baseActivity.supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fc_home, UserScheduleFragment())
+                        .addToBackStack(null)
+                        .commit()
+            }
+
+            nameTV.text = userData?.name
+            if (userData?.avatar.isNotNullAndEmpty()) {
                 tgt = MyTarget()
-                baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData.avatar).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).into(tgt)
+                baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData?.avatar).transform(CircleTransform()).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).into(tgt)
                 picIV.tag = tgt
             }
         }
-        backIV.setOnClickListener { baseActivity.onBackPressed() }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+
+    private fun showCallDialog() {
+        val bldr = AlertDialog.Builder(baseActivity)
+        bldr.setTitle("Confirm !")
+        bldr.setMessage("Make a phone call to ${userData?.name}?")
+        bldr.setPositiveButton("Yes") { dialogInterface, i ->
+            val userId = RequestBody.create(MediaType.parse("text/plain"), userData!!.id.toString())
+            callLogCall = apiInterface.addCalllog(userId)
+            apiManager.makeApiCall(callLogCall!!, this)
+            dialogInterface.dismiss()
+        }
+        bldr.setNegativeButton("No", null)
+        bldr.create().show()
+    }
+
+    override fun onSuccess(call: Call<*>, payload: Any) {
+        super.onSuccess(call, payload)
+        if (callLogCall != null && callLogCall == call) {
+            val callInt = Uri.parse("tel:${userData!!.mobileNumber}")
+            val callIntent = Intent(Intent.ACTION_DIAL, callInt)
+            baseActivity.startActivity(Intent.createChooser(callIntent, "Call with"))
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
         baseActivity.picasso.cancelRequest(tgt)
     }
 
@@ -132,8 +208,10 @@ class UserDetailFragment : BaseFragment() {
 
         override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
             if (bitmap != null) {
-                picIV.setImageBitmap(bitmap)
-                picIV.setOnClickListener { showFullScreenImage(baseActivity, bitmap) }
+                if (isVisible) {
+                    picIV.setImageBitmap(bitmap)
+                    picIV.setOnClickListener { showFullScreenImage(baseActivity, bitmap) }
+                }
             }
         }
     }

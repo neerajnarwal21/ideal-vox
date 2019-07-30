@@ -119,8 +119,8 @@ class HelpFragment : BaseFragment(), LocationManager.LocationUpdates {
                     showInfoDialog(markerHashMap[it]!!)
                 }
                 googleMap = it
-                getAndSetCurrentLocation()
-                getList()
+//                getAndSetCurrentLocation()
+//                getList()
             }
             childFragmentManager.beginTransaction().replace(R.id.map, mapFrag).commit()
         }
@@ -138,13 +138,13 @@ class HelpFragment : BaseFragment(), LocationManager.LocationUpdates {
         bldr.create().show()
     }
 
-    private fun getAndSetCurrentLocation() {
-        if (myCurrentLocation != null && googleMap != null) {
-            val cameraPosition = CameraPosition.Builder()
-                    .target(LatLng(myCurrentLocation!!.latitude, myCurrentLocation!!.longitude)).zoom(15f).build()
-            googleMap!!.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-        }
-    }
+//    private fun getAndSetCurrentLocation() {
+//        if (myCurrentLocation != null && googleMap != null) {
+//            val cameraPosition = CameraPosition.Builder()
+//                    .target(LatLng(myCurrentLocation!!.latitude, myCurrentLocation!!.longitude)).zoom(15f).build()
+//            googleMap!!.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+//        }
+//    }
 
     override fun onStartingGettingLocation() {
         initializeMap()
@@ -152,7 +152,8 @@ class HelpFragment : BaseFragment(), LocationManager.LocationUpdates {
 
     override fun onLocationFound(location: Location) {
         myCurrentLocation = location
-        getAndSetCurrentLocation()
+//        getAndSetCurrentLocation()
+        getList()
     }
 
     override fun onLocationNotFound() {

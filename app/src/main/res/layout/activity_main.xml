@@ -19,6 +19,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@+id/iclueIN" />
+
         <FrameLayout
             android:id="@+id/fc_home"
             android:layout_width="match_parent"
@@ -33,9 +39,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/colorPrimary"
+        android:background="@color/White"
         app:headerLayout="@layout/header"
         app:itemBackground="@null"
+        android:fitsSystemWindows="true"
         app:itemIconTint="@color/ic_drawer_item_color"
         app:itemTextColor="@color/ic_drawer_item_color" />
 </android.support.v4.widget.DrawerLayout>

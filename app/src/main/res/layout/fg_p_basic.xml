@@ -3,176 +3,194 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/picIV"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/yellow_circle"
-        android:padding="2dp"
-        android:src="@drawable/ic_camera"
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        app:cardBackgroundColor="@color/White"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/nameTIL"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:focusableInTouchMode="false"
-        android:theme="@style/TextLabelProfile"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/nameIV"
-        app:layout_constraintTop_toBottomOf="@id/picIV">
-
-        <com.ideal.vox.customViews.MyEditText
-            android:id="@+id/nameET"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:focusableInTouchMode="false"
-            android:gravity="start"
-            android:hint="FULL NAME"
-            android:inputType="textCapWords"
-            android:textColor="@color/WhiteSmoke" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="match_parent"
+            android:padding="20dp">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/nameEditTIL"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:theme="@style/TextLabel"
-        android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/nameIV"
-        app:layout_constraintTop_toBottomOf="@id/picIV">
+            <ImageView
+                android:id="@+id/picIV"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/yellow_circle"
+                android:padding="2dp"
+                android:src="@drawable/ic_camera"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.ideal.vox.customViews.MyEditText
-            android:id="@+id/nameEditET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:hint="FULL NAME"
-            android:inputType="textCapWords"
-            android:textColor="@color/WhiteSmoke" />
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/nameTIL"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:focusableInTouchMode="false"
+                android:theme="@style/TextLabelProfile"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/nameIV"
+                app:layout_constraintTop_toBottomOf="@id/picIV">
 
-    <ImageView
-        android:id="@+id/nameIV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:padding="10dp"
-        android:src="@drawable/ic_edit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/nameTIL"
-        app:layout_constraintTop_toBottomOf="@id/picIV" />
+                <com.ideal.vox.customViews.MyEditText
+                    android:id="@+id/nameET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="start"
+                    android:hint="FULL NAME"
+                    android:inputType="textCapWords"
+                    android:textColor="@color/Brown" />
+            </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/mobileTIL"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="16dp"
-        android:focusableInTouchMode="false"
-        android:theme="@style/TextLabelProfile"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/mobileIV"
-        app:layout_constraintTop_toBottomOf="@id/nameTIL">
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/nameEditTIL"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:theme="@style/TextLabel"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/nameIV"
+                app:layout_constraintTop_toBottomOf="@id/picIV">
 
-        <com.ideal.vox.customViews.MyEditText
-            android:id="@+id/mobileET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusableInTouchMode="false"
-            android:gravity="start"
-            android:hint="MOBILE NO."
-            android:inputType="number"
-            android:textColor="@color/WhiteSmoke" />
-    </android.support.design.widget.TextInputLayout>
+                <com.ideal.vox.customViews.MyEditText
+                    android:id="@+id/nameEditET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:hint="FULL NAME"
+                    android:inputType="textCapWords"
+                    android:textColor="@color/Brown" />
+            </android.support.design.widget.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/mobileIV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-        android:src="@drawable/ic_edit"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/mobileTIL"
-        app:layout_constraintTop_toBottomOf="@id/nameTIL" />
+            <ImageView
+                android:id="@+id/nameIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_edit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/nameTIL"
+                app:layout_constraintTop_toBottomOf="@id/picIV" />
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/emailTIL"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:focusableInTouchMode="false"
-        android:theme="@style/TextLabelProfile"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/emailIV"
-        app:layout_constraintTop_toBottomOf="@id/mobileTIL">
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/mobileTIL"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="16dp"
+                android:focusableInTouchMode="false"
+                android:theme="@style/TextLabelProfile"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/mobileIV"
+                app:layout_constraintTop_toBottomOf="@id/nameTIL">
 
-        <com.ideal.vox.customViews.MyEditText
-            android:id="@+id/emailET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusableInTouchMode="false"
-            android:gravity="start"
-            android:hint="EMAIL"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/WhiteSmoke" />
-    </android.support.design.widget.TextInputLayout>
+                <com.ideal.vox.customViews.MyEditText
+                    android:id="@+id/mobileET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="false"
+                    android:gravity="start"
+                    android:hint="MOBILE NO."
+                    android:inputType="number"
+                    android:textColor="@color/Brown" />
+            </android.support.design.widget.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/emailIV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-        android:src="@drawable/ic_edit"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/emailTIL"
-        app:layout_constraintTop_toBottomOf="@id/mobileTIL" />
+            <ImageView
+                android:id="@+id/mobileIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_edit"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/mobileTIL"
+                app:layout_constraintTop_toBottomOf="@id/nameTIL" />
 
-    <com.ideal.vox.customViews.MyButton
-        android:id="@+id/saveBT"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/btn_yellow"
-        android:text="SAVE DETAILS"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/emailTIL" />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/emailTIL"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:focusableInTouchMode="false"
+                android:theme="@style/TextLabelProfile"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/emailIV"
+                app:layout_constraintTop_toBottomOf="@id/mobileTIL">
 
-    <com.ideal.vox.customViews.MyButton
-        android:id="@+id/deleteBT"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@drawable/btn_red"
-        android:text="Delete Account"
-        android:textColor="@color/WhiteSmoke"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+                <com.ideal.vox.customViews.MyEditText
+                    android:id="@+id/emailET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="false"
+                    android:gravity="start"
+                    android:hint="EMAIL"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/Brown" />
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/emailIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_edit"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/emailTIL"
+                app:layout_constraintTop_toBottomOf="@id/mobileTIL" />
+
+            <com.ideal.vox.customViews.MyButton
+                android:id="@+id/saveBT"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/btn_skyblue"
+                android:textColor="@color/White"
+                android:text="SAVE DETAILS"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/emailTIL" />
+
+            <com.ideal.vox.customViews.MyTextView
+                android:id="@+id/deleteBT"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="Delete Account"
+                android:textColor="@color/colorPrimary"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

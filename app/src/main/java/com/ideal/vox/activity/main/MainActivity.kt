@@ -162,9 +162,9 @@ class MainActivity : BaseActivity() {
         val picIV = view.findViewById<ImageView>(R.id.picIV)
 
         val userData = store.getUserData(Const.USER_DATA, UserData::class.java)
-        nameTV.setText("Hi, ${if (userData != null) userData.name else "SignIn"}")
+        nameTV.text = "Hi, ${if (userData != null) userData.name else "SignIn"}"
         if (userData?.avatar.isNotNullAndEmpty()) {
-            picasso.load(Const.IMAGE_BASE_URL + userData?.avatar).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
+            picasso.load(Const.IMAGE_BASE_URL + userData?.avatar).resize(130,130).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
         }
         view.setOnClickListener {
             drawer.closeDrawers()
@@ -181,24 +181,19 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    fun openDrawer(){
+        drawer.openDrawer(Gravity.START)
+    }
+
     fun setToolbar(showDrawer: Boolean, text: String, showEdit: Boolean, showMap: Boolean, showToolbar: Boolean) {
         titleTBTV.text = text
-        menuTBIV.visibility = if (showDrawer) View.VISIBLE else View.GONE
-        menuTBIV.setOnClickListener { drawer.openDrawer(Gravity.START) }
         backTBIV.visibility = if (showDrawer) View.GONE else View.VISIBLE
         editTBIV.visibility = if (showEdit) View.VISIBLE else View.GONE
-        mapTBIV.visibility = if (showMap) View.VISIBLE else View.GONE
         toolbar.visibility = if (showToolbar) View.VISIBLE else View.GONE
         backTBIV.setOnClickListener { onBackPressed() }
         editTBIV.setOnClickListener {
             supportFragmentManager.beginTransaction()
                     .replace(R.id.fc_home, ProfileEditAdvFragment())
-                    .addToBackStack(null)
-                    .commit()
-        }
-        mapTBIV.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.fc_home, HomeMapFragment())
                     .addToBackStack(null)
                     .commit()
         }

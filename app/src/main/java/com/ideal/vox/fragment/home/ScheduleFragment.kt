@@ -50,7 +50,7 @@ class ScheduleFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar("My Schedule", showDrawer = false)
+        setToolbar("My Schedule", showDrawer = false,showToolbar = false)
 //        submitBT.text = "Submit"
         userData = store.getUserData(Const.USER_DATA, UserData::class.java)
         getSchedule(currentCal, null)
@@ -61,6 +61,7 @@ class ScheduleFragment : BaseFragment() {
                 showToast("No Changes in schedule")
             }
         }
+        backTBIV.setOnClickListener { baseActivity.onBackPressed() }
 
         flexCal.setCalendarListener(object : FlexibleCalendar.CalendarListener {
 

@@ -35,7 +35,6 @@ class LoginSignupActivity : BaseActivity() {
 
     fun setToolbar(text: String) {
         titleTBTV.text = text
-        menuTBIV.visibility = View.GONE
         backTBIV.visibility = View.VISIBLE
         backTBIV.setOnClickListener { onBackPressed() }
     }

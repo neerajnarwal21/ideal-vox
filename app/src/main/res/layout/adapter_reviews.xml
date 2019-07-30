@@ -5,7 +5,7 @@
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/colorPrimary2"
+    app:cardBackgroundColor="@color/White"
     app:cardCornerRadius="2dp"
     app:cardElevation="1dp"
     app:cardUseCompatPadding="true">
@@ -14,69 +14,64 @@
         android:id="@+id/parentCL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:padding="15dp">
+        android:layout_margin="2dp">
 
-        <ImageView
-            android:id="@+id/picIV"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/yellow_circle"
-            android:padding="2dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_camera"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="7dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:id="@+id/picIV"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/yellow_circle"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_camera"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/picIV">
 
-        <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/nameTV"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:gravity="start"
-            android:lines="1"
-            android:textColor="@color/WhiteSmoke"
-            android:textSize="16sp"
-            app:layout_constraintLeft_toRightOf="@+id/picIV"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tool:text="NAME" />
-
-        <ImageView
-            android:id="@+id/editReviewIV"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/yellow_circle"
-            android:padding="4dp"
-            android:src="@drawable/ic_edit_black"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nameTV" />
-
-        <android.support.v7.widget.AppCompatRatingBar
-            android:id="@+id/ratingRB"
-            style="@style/Base.Widget.AppCompat.RatingBar.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
-            android:numStars="5"
-            android:theme="@style/RatingTheme"
-            app:layout_constraintLeft_toRightOf="@+id/picIV"
-            app:layout_constraintTop_toBottomOf="@id/nameTV" />
-
-        <com.ideal.vox.customViews.MyTextView
-            android:id="@+id/reviewTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="2dp"
-            android:gravity="start"
-            android:textColor="@color/WhiteSmoke"
-            android:textSize="12sp"
-            app:layout_constraintLeft_toRightOf="@+id/picIV"
-            app:layout_constraintTop_toBottomOf="@id/ratingRB" />
-
+                <com.ideal.vox.customViews.MyTextView
+                    android:id="@+id/nameTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:lines="1"
+                    android:textColor="@color/Brown"
+                    android:textSize="16sp"
+                    tool:text="NAME" />
+                <ImageView
+                    android:id="@+id/editReviewIV"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/yellow_circle"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_edit"
+                    android:visibility="gone" />
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:id="@+id/ratingRB"
+                    style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:numStars="5"
+                    android:theme="@style/RatingTheme" />
+                <com.ideal.vox.customViews.MyTextView
+                    android:id="@+id/reviewTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:gravity="start"
+                    android:textColor="@color/Brown"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </RelativeLayout>
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

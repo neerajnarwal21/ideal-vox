@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/White">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -58,19 +58,18 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="2"
-                android:textColor="@color/WhiteSmoke"
+                android:textColor="@color/Brown"
                 android:theme="@style/TextLabel"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.ideal.vox.customViews.MyTextView
-                android:id="@+id/yearTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="Years"
-                android:textColor="@color/colorSecondary"
+                android:textColor="@color/Brown"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/yearET"
@@ -78,7 +77,6 @@
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/monthCL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -93,19 +91,18 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="2"
-                android:textColor="@color/WhiteSmoke"
+                android:textColor="@color/Brown"
                 android:theme="@style/TextLabel"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.ideal.vox.customViews.MyTextView
-                android:id="@+id/monthTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="Months"
-                android:textColor="@color/colorSecondary"
+                android:textColor="@color/Brown"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/monthET"
@@ -134,7 +131,7 @@
                 android:hint="D.O.B."
                 android:inputType="text"
                 android:longClickable="false"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <com.ideal.vox.customViews.MyTextView
@@ -166,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="Male"
-                android:textColor="@color/colorSecondary"
+                android:textColor="@color/Brown"
                 android:textSize="14sp"
                 android:theme="@style/RadioTheme" />
 
@@ -176,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="Female"
-                android:textColor="@color/colorSecondary"
+                android:textColor="@color/Brown"
                 android:textSize="14sp"
                 android:theme="@style/RadioTheme" />
 
@@ -201,7 +198,7 @@
                 android:hint="YOUTUBE PAGE LINK"
                 android:inputType="text"
                 android:maxLines="1"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -224,7 +221,7 @@
                 android:inputType="textMultiLine"
                 android:maxLength="200"
                 android:maxLines="1"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -247,7 +244,7 @@
                 android:inputType="textMultiLine"
                 android:maxLength="200"
                 android:maxLines="1"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <ImageView
@@ -278,7 +275,7 @@
                 android:inputType="textMultiLine"
                 android:lines="3"
                 android:maxLines="3"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <com.ideal.vox.customViews.MyTextView
@@ -343,7 +340,7 @@
                 android:gravity="start"
                 android:hint="PINCODE"
                 android:inputType="number"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <com.ideal.vox.customViews.MyTextView
@@ -351,7 +348,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:textColor="@color/colorSecondary"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pinTIL" />
@@ -375,7 +372,7 @@
                 android:inputType="textMultiLine"
                 android:lines="3"
                 android:maxLines="3"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <com.ideal.vox.customViews.MyButton
@@ -385,7 +382,8 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="24dp"
-            android:background="@drawable/btn_yellow"
+            android:background="@drawable/btn_skyblue"
+            android:textColor="@color/White"
             android:text="Submit"
             android:textAllCaps="false"
             android:textStyle="bold"

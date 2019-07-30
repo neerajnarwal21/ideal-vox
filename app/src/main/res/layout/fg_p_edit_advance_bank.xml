@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/White">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="253dp"
             android:layout_marginTop="30dp"
-            android:background="@color/colorSecondary"
+            android:background="@color/LightGrey"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_camera"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:hint="ACCOUNT HOLDER'S NAME"
                 android:inputType="textCapWords"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:hint="ACCOUNT NUMBER"
                 android:inputType="text"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:hint="CONFIRM ACCOUNT NUMBER"
                 android:inputType="text"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:hint="IFSC CODE"
                 android:inputType="text"
-                android:textColor="@color/WhiteSmoke" />
+                android:textColor="@color/Brown" />
         </android.support.design.widget.TextInputLayout>
 
         <com.ideal.vox.customViews.MyButton
@@ -121,7 +121,8 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"
-            android:background="@drawable/btn_yellow"
+            android:background="@drawable/btn_skyblue"
+            android:textColor="@color/White"
             android:text="SAVE DETAILS"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -136,7 +137,7 @@
             android:drawableStart="@drawable/ic_info_white"
             android:drawablePadding="10dp"
             android:text="Please enter your correct bank details carefully. They will be used for all refunds, payments."
-            android:textColor="@color/WhiteSmoke"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/saveBT" />
 

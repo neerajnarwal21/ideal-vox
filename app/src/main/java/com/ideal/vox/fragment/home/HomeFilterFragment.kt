@@ -67,14 +67,14 @@ class HomeFilterFragment : BaseFragment() {
         rangeSB.setMinStartValue(filterData!!.min.toFloat())
                 .setMaxStartValue(filterData!!.max.toFloat()).apply()
         rangeSB.setOnRangeSeekbarChangeListener { minValue, maxValue ->
-            minTV.setText(minValue.toString())
-            maxTV.setText(maxValue.toString())
+            minTV.text = minValue.toString()
+            maxTV.text = maxValue.toString()
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        setToolbar("Home", true, showMap = true)
+        setToolbar("Home", true, showMap = true, showToolbar = false)
     }
 
     override fun onSuccess(call: Call<*>, payload: Any) {

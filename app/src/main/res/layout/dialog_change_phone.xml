@@ -27,7 +27,7 @@
         android:hint="Phone number"
         android:inputType="number"
         android:padding="@dimen/_7dp"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/Brown"
         android:textSize="22sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

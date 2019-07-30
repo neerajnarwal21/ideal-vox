@@ -105,7 +105,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         OkHttpClient okHttpClient = new OkHttpClient();
         try {
             okHttpClient.setCache(new Cache(new File(getExternalCacheDir(), "img-cache"),
-                    (20 * 1024 * 1024)));
+                    (200 * 1024 * 1024)));
         } catch (IOException e) {
             e.printStackTrace();
         }
