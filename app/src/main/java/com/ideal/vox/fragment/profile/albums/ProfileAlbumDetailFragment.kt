@@ -45,7 +45,7 @@ class ProfileAlbumDetailFragment : BaseFragment() {
     private var deleteCall: Call<JsonObject>? = null
     private var adapter: PicAdapter? = null
     private var albumData: AlbumData? = null
-    private var MAX_ITEMS = 5
+    private var MAX_ITEMS = 10
     private var userData: UserData? = null
     private var datas = ArrayList<PicData>()
     private var progressPB: ProgressBar? = null
@@ -190,8 +190,8 @@ class ProfileAlbumDetailFragment : BaseFragment() {
         val listArr = jsonObj.get("pictures").asJsonArray
         val objectType = object : TypeToken<ArrayList<PicData>>() {}.type
         datas = Gson().fromJson<ArrayList<PicData>>(listArr, objectType)
-        if (jsonObj.has("max_picture"))
-            MAX_ITEMS = jsonObj["max_picture"].asInt
+//        if (jsonObj.has("max_picture"))
+//            MAX_ITEMS = jsonObj["max_picture"].asInt
         if (datas.size < MAX_ITEMS) {
             datas.add(PicData(id = -1))
         }

@@ -39,7 +39,7 @@ class AccessoryAdapter(private val activity: BaseActivity, groups: ArrayList<Acc
     override fun onBindChildViewHolder(holder: MyViewHolder, flatPosition: Int, group: ExpandableGroup<*>?, childIndex: Int) {
         val daata = (group?.items as ArrayList<AccessoryData>)[childIndex]
         activity.picasso.load(Const.IMAGE_ACC_BASE_URL + "/${userId}/" + daata.picture)
-                .resize(90,70)
+                .resize(180,140)
                 .placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera)
                 .into(holder.picIV)
         holder.nameTV.text = daata.name

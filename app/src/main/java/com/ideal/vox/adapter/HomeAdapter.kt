@@ -42,7 +42,7 @@ class HomeAdapter(private val activity: BaseActivity, private val datas: ArrayLi
             val data = datas[holder.adapterPosition]
             if (data.avatar.isNotNullAndEmpty())
                 activity.picasso.load(Const.IMAGE_BASE_URL + "/${data.avatar}")
-                        .resize(80,80)
+                        .resize(160,160)
                         .transform(CircleTransform()).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera)
                         .into(holder.picIV)
             holder.nameTV.text = data.name

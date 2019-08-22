@@ -30,7 +30,7 @@ class ReviewsAdapter(private val activity: BaseActivity, private val datas: Arra
             val data = datas[holder.adapterPosition]
             if (data.reviewUser?.avatar.isNotNullAndEmpty())
                 activity.picasso.load(Const.IMAGE_BASE_URL + "/${data.reviewUser?.avatar}")
-                        .transform(CircleTransform()).resize(50,50).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera)
+                        .transform(CircleTransform()).resize(100,100).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera)
                         .into(holder.picIV)
             holder.nameTV.text = data.reviewUser?.name
             holder.ratingRB.rating = data.rating

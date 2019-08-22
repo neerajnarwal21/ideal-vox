@@ -4,7 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.graphics.Bitmap
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -164,7 +164,7 @@ class UserDetailFragment : BaseFragment() {
             nameTV.text = userData?.name
             if (userData?.avatar.isNotNullAndEmpty()) {
                 tgt = MyTarget()
-                baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData?.avatar).transform(CircleTransform()).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).into(tgt)
+                baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData?.avatar).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).into(tgt)
                 picIV.tag = tgt
             }
         }
@@ -209,10 +209,33 @@ class UserDetailFragment : BaseFragment() {
         override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
             if (bitmap != null) {
                 if (isVisible) {
-                    picIV.setImageBitmap(bitmap)
+                    val bit= getCroppedBitmap(bitmap)
+                    picIV.setImageBitmap(bit)
                     picIV.setOnClickListener { showFullScreenImage(baseActivity, bitmap) }
                 }
             }
         }
     }
+
+    fun getCroppedBitmap(bitmap: Bitmap):Bitmap {
+    val output = Bitmap.createBitmap(bitmap.getWidth(),
+            bitmap.getHeight(), Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(output)
+
+//    val color = 0xff424242
+    val paint = Paint()
+    val rect = Rect(0, 0, bitmap.getWidth(), bitmap.getHeight())
+
+    paint.setAntiAlias(true)
+    canvas.drawARGB(0, 0, 0, 0)
+//    paint.setColor(color)
+    // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+    canvas.drawCircle(bitmap.getWidth() / 2f, bitmap.getHeight() / 2f,
+            bitmap.getWidth() / 2f, paint);
+    paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+    canvas.drawBitmap(bitmap, rect, rect, paint);
+    //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+    //return _bmp;
+    return output;
+}
 }

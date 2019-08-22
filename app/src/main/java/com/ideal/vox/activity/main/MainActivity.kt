@@ -27,15 +27,17 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_custom.*
 import retrofit2.Call
 import android.content.ActivityNotFoundException
+import android.content.DialogInterface
 import android.net.Uri
-
-
+import com.ideal.vox.BuildConfig
+import java.lang.Exception
 
 
 class MainActivity : BaseActivity() {
 
     var userData: UserData? = null
     private var userCall: Call<JsonObject>? = null
+    private var appVerCall: Call<JsonObject>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +63,8 @@ class MainActivity : BaseActivity() {
             userCall = apiInterface.getProfile()
             apiManager.makeApiCall(userCall!!, this, false)
         }
+        appVerCall = apiInterface.getAppVersion()
+        apiManager.makeApiCall(appVerCall!!, this, false)
     }
 
     private fun jumpToHome() {
@@ -164,7 +168,7 @@ class MainActivity : BaseActivity() {
         val userData = store.getUserData(Const.USER_DATA, UserData::class.java)
         nameTV.text = "Hi, ${if (userData != null) userData.name else "SignIn"}"
         if (userData?.avatar.isNotNullAndEmpty()) {
-            picasso.load(Const.IMAGE_BASE_URL + userData?.avatar).resize(130,130).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
+            picasso.load(Const.IMAGE_BASE_URL + userData?.avatar).resize(260, 260).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
         }
         view.setOnClickListener {
             drawer.closeDrawers()
@@ -181,7 +185,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    fun openDrawer(){
+    fun openDrawer() {
         drawer.openDrawer(Gravity.START)
     }
 
@@ -242,6 +246,31 @@ class MainActivity : BaseActivity() {
             val userData = Gson().fromJson(userObj, UserData::class.java)
             store.saveUserData(Const.USER_DATA, userData)
             setupHeaderView()
+        } else if (appVerCall != null && appVerCall === call) {
+            val dataObj = payload as JsonObject
+            if (dataObj.has("app_version")) {
+                try {
+                    val serverAppVersion = dataObj["app_version"].asInt
+                    val appVersion = BuildConfig.VERSION_CODE
+                    if (serverAppVersion > appVersion) {
+                        showUpdateDialog()
+                    }
+                } catch (ignored: Exception) {
+                }
+            }
+        }
+    }
+
+    private fun showUpdateDialog() {
+        val bldr = AlertDialog.Builder(this)
+        bldr.setTitle("App Update")
+        bldr.setMessage("A new version of ${getString(R.string.app_name)} is available.\nKindly update your application")
+        bldr.setPositiveButton("Update") { _, _ -> }
+        bldr.setCancelable(false)
+        val dialog = bldr.create()
+        dialog?.show()
+        dialog?.getButton(DialogInterface.BUTTON_POSITIVE)?.setOnClickListener {
+            rateOnGooglePlay()
         }
     }
 }

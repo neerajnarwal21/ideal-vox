@@ -56,7 +56,7 @@ class ProfileBasicFragment : BaseFragment() {
             mobileET.setText(userData.mobileNumber)
             mobileIV.setOnClickListener { showChangePhoneNumberDialog() }
             if (userData.avatar.isNotNullAndEmpty()) {
-                baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData.avatar).resize(130,130).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
+                baseActivity.picasso.load(Const.IMAGE_BASE_URL + userData.avatar).resize(260,260).placeholder(R.drawable.ic_camera).error(R.drawable.ic_camera).transform(CircleTransform()).into(picIV)
             }
         }
         picIV.setOnClickListener {

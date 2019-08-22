@@ -30,6 +30,9 @@ interface ApiInterface {
     @POST("profile")
     fun getProfile(): Call<JsonObject>
 
+    @GET("app_version")
+    fun getAppVersion(): Call<JsonObject>
+
     @Multipart
     @POST("social_login")
     fun socialLogin(@Part("name") name: RequestBody,

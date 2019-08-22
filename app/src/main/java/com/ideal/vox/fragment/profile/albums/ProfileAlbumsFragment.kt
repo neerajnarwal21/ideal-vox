@@ -36,7 +36,7 @@ class ProfileAlbumsFragment : BaseFragment() {
     private var updateCall: Call<JsonObject>? = null
     private var adapter: AlbumsAdapter? = null
     private var userData: UserData? = null
-    private var MAX_ITEMS = 5
+    private var MAX_ITEMS = 6
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fg_p_albums, container, false)
@@ -115,8 +115,8 @@ class ProfileAlbumsFragment : BaseFragment() {
         val listArr = jsonObj.get("albums").asJsonArray
         val objectType = object : TypeToken<ArrayList<AlbumData>>() {}.type
         val datas = Gson().fromJson<ArrayList<AlbumData>>(listArr, objectType)
-        if (jsonObj.has("max_album"))
-            MAX_ITEMS = jsonObj["max_album"].asInt
+//        if (jsonObj.has("max_album"))
+//            MAX_ITEMS = jsonObj["max_album"].asInt
         if (datas.size < MAX_ITEMS) {
             datas.add(AlbumData(id = -1))
         }
